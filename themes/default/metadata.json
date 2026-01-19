@@ -1,0 +1,8 @@
+{
+  "id": "default",
+  "name": "Default Theme",
+  "description": "A clean and simple default theme",
+  "thumbnail": "/themes/default-thumb.jpg",
+  "version": "1.0.0",
+  "author": "SaaS Platform"
+}
