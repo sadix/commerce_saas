@@ -3,13 +3,19 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+  }>;
+}
+
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: ReqParamProps
 ) {
-  await params;
+  const { id } = await params;
   const shop = await prisma.shop.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       theme: true,
       pages: true,
@@ -25,7 +31,7 @@ export async function GET(
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 
@@ -55,16 +61,16 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
-  await params;
+  const { id } = await params;
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const shop = await prisma.shop.findUnique({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   if (!shop || shop.userId !== session.user.id) {
@@ -72,7 +78,7 @@ export async function DELETE(
   }
 
   await prisma.shop.delete({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   return NextResponse.json({ success: true });

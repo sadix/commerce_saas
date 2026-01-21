@@ -1,13 +1,20 @@
 // src/app/api/shops/[id]/products/[productId]/route.ts
 
-import { NextResponse } from 'next/server';
+import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+    productId: string;
+  }>;
+}
+
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string; productId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const { id, productId } = await params;
   const product = await prisma.product.findUnique({
@@ -22,8 +29,8 @@ export async function GET(
 }
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string; productId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 
@@ -53,8 +60,8 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; productId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 

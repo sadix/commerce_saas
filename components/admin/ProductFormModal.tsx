@@ -78,10 +78,12 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
     setLoading(true);
     setError('');
 
+    
+
     try {
 
       //image upload logic to be added here
-      let imageUrl = formData.images;
+      //let imageUrl = formData.images;
 
        if (imageFile) {
         const uploadData = new FormData();
@@ -97,8 +99,8 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
         }
 
         const uploadResult = await uploadRes.json();
-        imageUrl = uploadResult.url;
-        formData.images = [imageUrl];
+        const newImageUrl = uploadResult.url;
+        formData.images=[newImageUrl];
        }
       //image upload logic to be added here
       /* if(variations.length === 0){
@@ -106,6 +108,11 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
         setLoading(false);
         return;
       } */
+        if(formData.categoryId === ''){
+          setError('Please select a category for the product.');
+          setLoading(false);
+          return;
+        }
 
       const url = product
         ? `/api/shops/${shopId}/products/${product.id}`
@@ -263,7 +270,7 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
                 </label>
 
                 {formData.images && (
-                    <img src={imageFile ? URL.createObjectURL(imageFile) : formData.images} alt="Product preview"  className="mb-3 h-32 rounded-md object-cover border" />
+                    <img src={imageFile ? URL.createObjectURL(imageFile) : formData.images[0]} alt="Product preview"  className="mb-3 h-32 rounded-md object-cover border" />
                 )}
 
                 <input
@@ -295,7 +302,7 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
                     className="w-full px-4 py-2 border border-gray-300 rounded-md
                     focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                    <option value="">Uncategorized</option>
+                    <option value="">Select a category</option>
                     {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                         {cat.name}
@@ -321,7 +328,8 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
                 </button>
               </div>
             </form>
-            <ProductVariationsManager  productId={product?.id} shopId={shopId}  initialVariations={variations} />
+            {product && (
+            <ProductVariationsManager  productId={product?.id} shopId={shopId}  initialVariations={variations} />)}
           </div>
         </div>
       )}

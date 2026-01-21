@@ -3,9 +3,15 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+  }>;
+}
+
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
   const {id} = await params;

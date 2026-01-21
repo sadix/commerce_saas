@@ -1,13 +1,20 @@
 // API Route: src/app/api/shops/[id]/products/[productId]/variations/route.ts
 
-import { NextResponse } from 'next/server';
+import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+    productId: string;
+  }>;
+}
+
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string; productId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const {productId} = await params;
   const variations = await prisma.productVariation.findMany({
@@ -18,8 +25,8 @@ export async function GET(
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string; productId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
   const {productId} = await params;

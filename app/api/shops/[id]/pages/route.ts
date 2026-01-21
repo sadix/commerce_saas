@@ -1,14 +1,21 @@
-import { NextResponse } from 'next/server';
+import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+  }>;
+}
+
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
+  const { id } = await params;
   const pages = await prisma.page.findMany({
-    where: { shopId: params.id },
+    where: { shopId: id },
     orderBy: { created_at: 'asc' },
   });
 
@@ -16,8 +23,8 @@ export async function GET(
 }
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 
@@ -73,8 +80,8 @@ export async function POST(
 }
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 

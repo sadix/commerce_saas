@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { BlockEditor, Block } from './BlockEditor';
 import { Page } from '@prisma/client';
+import { string } from 'zod';
 
 interface PageEditorProps {
   shopId: string;
   pages: Page[];
 }
+
+
 
 export function PageEditor({ shopId, pages }: PageEditorProps) {
   const [selectedPage, setSelectedPage] = useState<Page | null>(pages[0] || null);
@@ -110,10 +113,26 @@ export function PageEditor({ shopId, pages }: PageEditorProps) {
       </div>
 
       <BlockEditor
-        initialBlocks={selectedPage.layout as Block[]}
+        initialBlocks={isValidBlockArray(selectedPage.layout) ? selectedPage.layout as Block[] : []}
         onSave={handleSave}
         availableBlocks={availableBlocks}
       />
     </div>
   );
+}
+
+// A function to check if a single item is a Block
+function isBlock(item: any): item is Block {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    'id' in item && typeof item.id === 'string' &&
+    'type' in item && typeof item.type === 'string' &&
+    'props' in item && typeof item.props === 'object'
+  );
+}
+
+// A function to validate the entire array
+function isValidBlockArray(data: any): data is Block[] {
+  return Array.isArray(data) && data.every(isBlock);
 }

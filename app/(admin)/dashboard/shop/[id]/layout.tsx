@@ -4,13 +4,25 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ShopSidebar } from '@/components/admin/ShopSidebar';
 
+
+
+interface ParamProps {
+  params: Promise<{ 
+    id: string;
+  }>;
+}
+
+interface ShopProps {
+  children: React.ReactNode;
+  params: Promise<{ 
+    id: string;
+  }>;
+}
+
 export default async function ShopLayout({
   children,
   params,
-}: {
-  children: React.ReactNode;
-  params: { id: string };
-}) {
+}: ShopProps) {
   const session = await getServerSession(authOptions);
   const { id } = await params;
   

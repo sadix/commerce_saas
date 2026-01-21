@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 export default function Newsletter() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');

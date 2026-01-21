@@ -1,12 +1,20 @@
 // src/app/api/shops/[id]/products/[productId]/variations/[variationId]/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+    productId: string;
+    variationId: string;
+  }>;
+}
+
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; productId: string; variationId: string } }
+  request: NextRequest,
+  { params }: ReqParamProps
 ) {
   const session = await getServerSession(authOptions);
 

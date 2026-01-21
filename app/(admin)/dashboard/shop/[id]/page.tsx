@@ -4,7 +4,13 @@ import { prisma } from '@/lib/prisma';
 import { Package, FileText, FolderTree, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
-export default async function ShopOverviewPage({ params }: { params: { id: string } }) {
+interface ReqParamProps {
+  params: Promise<{ // <- Added Promise wrapper
+    id: string;
+  }>;
+}
+
+export default async function ShopOverviewPage({ params }: ReqParamProps) {
   const { id } = await params;
   const shop = await prisma.shop.findUnique({
     where: { id: id },

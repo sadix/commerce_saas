@@ -12,6 +12,8 @@ interface Product {
   price: number;
   images: string[];
   stock: number;
+  hasVariations: boolean;
+  published: boolean;
   categoryId: string | null;
   category?: {
     id: string;
@@ -67,7 +69,7 @@ export default function ProductsList({
       if (response.ok) {
         const data = await response.json();
         // Only show published products
-        setProducts(data.filter((p: Product) => p.published));
+        setProducts(data.filter((p: Product) => p.published && p.hasVariations));
       }
     } catch (error) {
       console.error('Failed to fetch products:', error);

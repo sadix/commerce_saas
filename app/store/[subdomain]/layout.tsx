@@ -6,14 +6,18 @@ import { CartProvider } from '@/contexts/CartContext';
 import { CustomerAuthProvider } from '@/contexts/CustomerAuthContext';
 import { CartDrawer } from '@/components/storefront/CartDrawer';
 
+interface StoreProps {
+  children: React.ReactNode;
+  params: Promise<{ 
+    subdomain: string;
+  }>;
+}
+
 export default async function StorefrontLayout({
   children,
   params,
-}: {
-  children: React.ReactNode;
-  params: { subdomain: string };
-}) {
-  const {subdomain} = await params;
+}: StoreProps) {
+  const { subdomain } = await params;
   const shop = await prisma.shop.findUnique({
     where: { subdomain: subdomain },
   });

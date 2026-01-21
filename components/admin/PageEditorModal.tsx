@@ -116,7 +116,7 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
 
         <div className="flex-1 overflow-hidden p-6 overflow-y-auto">
           <BlockEditor
-            initialBlocks={page.layout as Block[]}
+            initialBlocks={isValidBlockArray(page.layout) ? page.layout as Block[] : []}
             onSave={handleSave}
             availableBlocks={availableBlocks}
           />
@@ -124,4 +124,23 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
       </div>
     </div>
   );
+}
+
+
+// A function to check if a single item is a Block
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isBlock(item: any): item is Block {
+  return (
+    typeof item === 'object' &&
+    item !== null &&
+    'id' in item && typeof item.id === 'string' &&
+    'type' in item && typeof item.type === 'string' &&
+    'props' in item && typeof item.props === 'object'
+  );
+}
+
+// A function to validate the entire array
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isValidBlockArray(data: any): data is Block[] {
+  return Array.isArray(data) && data.every(isBlock);
 }
