@@ -15,9 +15,10 @@ interface ReqParamProps {
 
 export async function GET(
   request: NextRequest,
-  { params }: ReqParamProps
+  context: { params: ReqParamProps }
 ) {
-  const { id, categoryId } = await params;
+  const { params } = await context.params;
+  const { id, categoryId } =  params;
   const category = await prisma.category.findUnique({
     where: { id: categoryId },
     include: {
