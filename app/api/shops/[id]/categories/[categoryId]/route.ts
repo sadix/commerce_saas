@@ -1,13 +1,12 @@
 // src/app/api/shops/[id]/categories/[categoryId]/route.ts
 
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 interface ReqParamProps {
-  params: Promise<{ // <- Added Promise wrapper
+  params: Promise<{ 
     id: string;
     categoryId: string;
   }>;
@@ -15,9 +14,9 @@ interface ReqParamProps {
 
 export async function GET(
   request: NextRequest,
-  context: { params: ReqParamProps }
+  context:  ReqParamProps 
 ) {
-  const { params } = await context.params;
+  const params = await context.params;
   const { id, categoryId } =  params;
   const category = await prisma.category.findUnique({
     where: { id: categoryId },
