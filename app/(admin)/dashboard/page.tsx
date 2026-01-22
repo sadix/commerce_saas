@@ -5,7 +5,12 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import {Shop, Theme} from '@prisma/client';
 import { Store, Settings, FileText } from 'lucide-react';
+
+interface ShopWithTheme extends Shop {
+  theme: Theme | null;
+}
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -52,7 +57,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {shops.map((shop) => (
+            {shops.map((shop: ShopWithTheme) => (
               <div key={shop.id} className="bg-white rounded-lg shadow hover:shadow-lg transition">
                 <div className="p-6">
                   {shop.logoUrl && (
