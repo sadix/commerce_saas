@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {useState} from 'react';
 import { 
   FileText, 
   Package, 
@@ -12,12 +13,14 @@ import {
   LayoutDashboard,
   User
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ShopSidebarProps {
   shopId: string;
 }
 
 export function ShopSidebar({ shopId }: ShopSidebarProps) {
+  const [isExpanded, setIsExpanded] = useState(true);
   const pathname = usePathname();
 
   const navigation = [
@@ -65,7 +68,8 @@ export function ShopSidebar({ shopId }: ShopSidebarProps) {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r min-h-screen">
+    <div className={cn(isExpanded? 'w-64': 'w-20', 'transition-all duration-300 ease-in-out sm:flex h-fill')}>
+    <aside className=" bg-white border-r min-h-screen overflow-y-auto relative">
       <nav className="p-4 space-y-1">
         {navigation.map((item) => {
           const isActive = pathname === item.href;
@@ -82,11 +86,20 @@ export function ShopSidebar({ shopId }: ShopSidebarProps) {
               }`}
             >
               <Icon className="w-5 h-5" />
-              {item.name}
+              {isExpanded && item.name}
             </Link>
           );
         })}
       </nav>
     </aside>
+     <div className='relative'>
+       <button
+         onClick={() => setIsExpanded(!isExpanded)}
+         className="absolute -right-2 top-1/2 transform -translate-y-1/2 bg-white border rounded-full p-1 shadow-md hover:bg-gray-50"
+       >
+         {isExpanded ? '◀' : '▶'}
+       </button>
+     </div>
+    </div>
   );
 }

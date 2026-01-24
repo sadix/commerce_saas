@@ -82,9 +82,9 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
   };
 
   return (
-    <div className="flex h-full gap-4">
+    <div className="flex  gap-4 flex-col md:flex-row">
       {/* Block List */}
-      <div className="w-2/3 bg-white rounded-lg shadow p-4">
+      <div className="md:w-2/3 bg-white rounded-lg shadow p-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Page Blocks</h2>
           <button
@@ -117,7 +117,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
       </div>
 
       {/* Sidebar */}
-      <div className="w-1/3 space-y-4">
+      <div className="md:w-1/3 space-y-4">
         {/* Add Block Panel */}
         <div className="bg-white rounded-lg shadow p-4">
           <h3 className="font-bold mb-3">Add Block</h3>
