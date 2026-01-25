@@ -127,6 +127,19 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
       });
 
       if (response.ok) {
+        const createdProduct = await response.json();
+        // If creating a new product, you create default variations here if needed
+        if (!product) {
+          // Create a default variation for the new product if none exist
+          if (variations.length === 0) {
+            await fetch(`/api/shops/${shopId}/products/${createdProduct.id}/variations`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: 'Default Variation', price: formData.price, stock: formData.stock, attributes: {} }),
+            });
+          }
+        }
+
         setIsOpen(false);
         window.location.reload();
       } else {

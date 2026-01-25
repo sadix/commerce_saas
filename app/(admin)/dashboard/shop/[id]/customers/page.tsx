@@ -23,7 +23,7 @@ export default async function CustomersPage({ params }: { params: { id: string }
   }
 
   const customers = await prisma.customer.findMany({
-    where: { shopId: params.id },
+    where: { shopId: id },
     include: {
       _count: {
         select: { orders: true },

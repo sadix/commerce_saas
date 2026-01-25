@@ -72,6 +72,13 @@ export function ProductVariationsManager({
     if (!confirm('Delete this variation?')) return;
 
     try {
+      //Check if variation is not unique if not cancel the deletion
+      const isOnlyVariation = variations.length === 1;
+      if (isOnlyVariation) {
+        alert('Cannot delete the only variation. A product must have at least one variation.');
+        return;
+      }
+
       const response = await fetch(
         `/api/shops/${shopId}/products/${productId}/variations/${variationId}`,
         { method: 'DELETE' }
