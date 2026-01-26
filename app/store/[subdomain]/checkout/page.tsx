@@ -50,7 +50,24 @@ export default function CheckoutPage() {
   };
 
   if (!isAuthenticated || items.length === 0) {
-    return null;
+    // Return button to login or home page
+    return (<div className="min-h-screen flex flex-col justify-center items-center bg-gray-50">
+      <h2 className="text-2xl font-bold mb-4">Your cart is empty or you are not logged in.</h2>
+      <div className="space-x-4">
+        <button
+          onClick={() => router.push(`/store/${subdomain}/account/login?redirect=/store/${subdomain}/checkout`)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Login
+        </button>
+        <button
+          onClick={() => router.push(`/store/${subdomain}/`)}
+          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+        >
+          Home
+        </button>
+      </div>
+    </div>);
   }
 
   return (  
