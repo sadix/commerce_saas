@@ -19,6 +19,8 @@ interface ProductVariationsManagerProps {
   initialVariations?: Variation[];
 }
 
+
+
 export function ProductVariationsManager({
   productId,
   shopId,
@@ -121,22 +123,7 @@ export function ProductVariationsManager({
       {/* Variation Form */}
       {showForm && (
         <form onSubmit={handleSubmit} className="border rounded-lg p-4 bg-gray-50 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              type="text"
-              placeholder="Size (e.g., Small, Medium)"
-              value={formData.size}
-              onChange={(e) => setFormData({ ...formData, size: e.target.value })}
-              className="px-3 py-2 border rounded"
-            />
-            <input
-              type="text"
-              placeholder="Color (e.g., Red, Blue)"
-              value={formData.color}
-              onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-              className="px-3 py-2 border rounded"
-            />
-          </div>
+          
 
           <input
             type="text"
@@ -168,6 +155,23 @@ export function ProductVariationsManager({
               value={formData.stock}
               onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
               required
+              className="px-3 py-2 border rounded"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <input
+              type="text"
+              placeholder="Size (e.g., Small, Medium)"
+              value={formData.size}
+              onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+              className="px-3 py-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="Color (e.g., Red, Blue)"
+              value={formData.color}
+              onChange={(e) => setFormData({ ...formData, color: e.target.value })}
               className="px-3 py-2 border rounded"
             />
           </div>

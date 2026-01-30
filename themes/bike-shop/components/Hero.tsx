@@ -11,7 +11,7 @@ export default function Hero({
     <section
       className="relative h-[600px] bg-cover bg-center"
       style={{
-        backgroundImage: backgroundImage || 
+        backgroundImage: `url(${backgroundImage})` || 
           `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23059669" width="1200" height="600"/></svg>')`,
       }}
     >
@@ -27,12 +27,7 @@ export default function Hero({
               >
                 {buttonText}
               </a>
-              <a
-                href="/about"
-                className="px-8 py-4 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition text-lg"
-              >
-                Learn More
-              </a>
+              
             </div>
           </div>
         </div>

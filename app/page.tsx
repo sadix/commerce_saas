@@ -238,7 +238,8 @@ export default function HomePage() {
       </section>
 
       {/*Bottom Logo & Menus */}
-      <section className="container flex flex-col gap-16 py-16 my-0 sm:justify-start sm:pb-16 md:flex-row md:flex-nowrap md:justify-between md:pb-20 md:py-20 md:gap-20 xl:w-full bg-black text-white " >
+      <section className=" xl:w-full bg-black text-white " >
+        <div className=" container flex flex-col gap-16 py-16 my-0 sm:justify-start sm:pb-16 md:flex-row md:flex-nowrap md:justify-between md:pb-20 md:py-20 md:gap-20 max-w-7xl mx-auto">
         <div className="min-w-24">
           <a href="" data-component-name="logo-home" className="inline-block shrink-0">
             <img src={whiteLogo.src} alt="" className="h-11" data-component-name="" />
@@ -272,7 +273,18 @@ export default function HomePage() {
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Community" data-component-name="shopify-community">BaoBuy Community</a></li>
               </ul>
             </div>
+            <div className="w-[calc(50%-1rem)] sm:w-fit" data-component-name="integration">
+              <h2 className="text-base font-bold text-white">Integration</h2>
+              <ul className="mt-4 md:mt-6">
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Merchant Support" data-component-name="merchant-support">API Documentation</a></li>
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Help Center" data-component-name="shopify-help-center">BaoBuy Theme creation</a></li>
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Hire a Partner" data-component-name="hire-a-partner">Create a dev account</a></li>
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Academy" data-component-name="shopify-academy">BaoBuy Academy</a></li>
+              
+              </ul>
+            </div>
           </div>
+        </div>
         </div>
       </section> 
 

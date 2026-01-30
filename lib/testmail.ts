@@ -2,12 +2,13 @@
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  /* host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: false,
+  secure: false, */
+  service:'gmail',
   auth: {
     user: "serignetine08@gmail.com",
-    pass: "antarestar",
+    pass: "ixhl xbhx cqcc kilm",
   },
 });
 
@@ -65,6 +66,8 @@ const emailHtml = `
       </body>
     </html>
   `;
+async function main() {
+  
 
 await transporter.sendMail({
     from: "serignetine08@gmail.com",
@@ -72,3 +75,7 @@ await transporter.sendMail({
     subject: `Order Confirmation - TEST`,
     html: emailHtml,
   });
+
+}
+
+main();

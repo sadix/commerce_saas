@@ -7,7 +7,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'SaaS eCommerce Platform',
+  title: 'BaoBuy | eCommerce Platform',
   description: 'Create your online store in minutes',
 };
 

@@ -5,6 +5,7 @@ import { use, useEffect, useState } from 'react';
 import { Product } from '@prisma/client';
 import { X, Plus, Edit } from 'lucide-react';
 import { ProductVariationsManager } from './ProductVariationsManager';
+import { ProductVariationsManagerCustom } from './ProductVariationsManagerCustom';
 import { th } from 'zod/v4/locales';
 
 interface ProductFormModalProps {
@@ -33,13 +34,14 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
     price: product?.price || 0,
     stock: product?.stock || 0,
     published: product?.published || false,
-    images: product?.images ?? [],
+    images: product?.images ?? ["https://placehold.co/600x400@3x.png"],
     categoryId: product?.categoryId ?? '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]); // Placeholder for categories, replace with actual data fetching if needed
   const [variations, setVariations] = useState<Variation[]>([]);
+  const [variationAttributeIsDynamic,setVariationAttributeIsDynamic] = useState(true);
   useEffect(() => {
     // Fetch categories for the shop
     async function fetchCategories() {      
@@ -282,7 +284,7 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
                     Product Image
                 </label>
 
-                {formData.images && (
+                {formData.images &&  (
                     <img src={imageFile ? URL.createObjectURL(imageFile) : formData.images[0]} alt="Product preview"  className="mb-3 h-32 rounded-md object-cover border" />
                 )}
 
@@ -341,8 +343,20 @@ export function ProductFormModal({ shopId, product, trigger }: ProductFormModalP
                 </button>
               </div>
             </form>
+            {product && (<div className="flex px-4 py-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Variation input type |
+                </label>
+               <span className='px-2'>Dynamic : <input type="radio" name="isDynamic" id="dynamic"  value="Dynamic" onClick={() => setVariationAttributeIsDynamic(true)} checked={variationAttributeIsDynamic}/></span>
+               <span className='px-2'> Category: <input type="radio" name="isDynamic" id="category" value="Category"onClick={() => setVariationAttributeIsDynamic(false)} checked={!variationAttributeIsDynamic} /></span>
+                
+
+            </div>)}
             {product && (
-            <ProductVariationsManager  productId={product?.id} shopId={shopId}  initialVariations={variations} />)}
+              variationAttributeIsDynamic && (
+                <ProductVariationsManagerCustom  productId={product?.id} shopId={shopId}  initialVariations={variations} mode='dynamic'  />
+              ) || (
+            <ProductVariationsManagerCustom  productId={product?.id} shopId={shopId}  initialVariations={variations} mode='category' categoryId={formData.categoryId} />))}
           </div>
         </div>
       )}
