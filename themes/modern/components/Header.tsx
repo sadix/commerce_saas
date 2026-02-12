@@ -30,7 +30,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
             {navPages.map((page) => (
               <a
                 key={page.slug}
-                href={`/store/${shopData.subdomain}/${page.slug}`}
+                href={`/${page.slug}`}
                 className="text-gray-500 hover:text-white transition font-medium "
               >
                 {page.title}
@@ -56,7 +56,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
             {navPages.map((page) => (
               <a
                 key={page.slug}
-                href={`/store/${shopData.subdomain}/${page.slug}`}
+                href={`/${page.slug}`}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded font-medium"
               >
                 {page.title}
@@ -69,7 +69,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
       {/* Right Side Icons */}
         <div className="flex items-center gap-4">
           <a
-            href={`/store/${shopData.subdomain}/account`}
+            href={`/account`}
             className="p-2 hover:bg-gray-100 rounded-full transition"
             title="Account"
           >

@@ -55,13 +55,13 @@ export default function CheckoutPage() {
       <h2 className="text-2xl font-bold mb-4">Your cart is empty or you are not logged in.</h2>
       <div className="space-x-4">
         <button
-          onClick={() => router.push(`/store/${subdomain}/account/login?redirect=/store/${subdomain}/checkout`)}
+          onClick={() => router.push(`/account/login?redirect=/checkout`)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           Login
         </button>
         <button
-          onClick={() => router.push(`/store/${subdomain}/`)}
+          onClick={() => router.push(`/`)}
           className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
         >
           Home
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
                   items={items}
                   onSuccess={() => {
                     clearCart();
-                    router.push(`/store/${subdomain}/account?tab=orders`);
+                    router.push(`/account?tab=orders`);
                   }}
                 />
               </Elements>

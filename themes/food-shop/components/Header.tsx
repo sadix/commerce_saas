@@ -27,7 +27,7 @@ export default function Header({ shopData, pages = [] }: any) {
       {/* Main Header */}
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-8">
-          <a href={`/store/${shopData.subdomain}/`} className="flex items-center gap-3">
+          <a href={`/`} className="flex items-center gap-3">
             {shopData.logoUrl && (
               <img src={shopData.logoUrl} alt="Logo" className="h-12 w-12 object-contain" />
             )}
@@ -49,7 +49,7 @@ export default function Header({ shopData, pages = [] }: any) {
           </div>
           
           <div className="flex items-center gap-4">
-            <a href={`/store/${shopData.subdomain}/account`} className="flex flex-col items-center text-gray-700 hover:text-orange-600">
+            <a href={`/account`} className="flex flex-col items-center text-gray-700 hover:text-orange-600">
               <User className="w-6 h-6" />
               <span className="text-xs">Account</span>
             </a>
@@ -73,7 +73,7 @@ export default function Header({ shopData, pages = [] }: any) {
           {pages.filter((p: any) => p.showInNav).map((page: any) => (
             <a
               key={page.slug}
-              href={`/store/${shopData.subdomain}/${page.slug}`}
+              href={`/${page.slug}`}
               className="text-gray-700 hover:text-orange-600 font-medium transition"
             >
               {page.title}

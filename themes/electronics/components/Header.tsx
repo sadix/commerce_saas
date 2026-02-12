@@ -17,7 +17,7 @@ export default function Header({ shopData, pages = [] }: any) {
       
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <a href={`/store/${shopData.subdomain}/`} className="flex items-center gap-3">
+          <a href={`/`} className="flex items-center gap-3">
             {shopData.logoUrl && (
               <img src={shopData.logoUrl} alt="Logo" className="h-10 w-10" />
             )}
@@ -38,7 +38,7 @@ export default function Header({ shopData, pages = [] }: any) {
           </div>
           
           <div className="flex items-center gap-4">
-            <a href={`/store/${shopData.subdomain}/account`} className="hover:text-blue-400 transition">
+            <a href={`/account`} className="hover:text-blue-400 transition">
               <User className="w-6 h-6" />
             </a>
             <button onClick={() => setIsOpen(true)} className="relative hover:text-blue-400 transition">
@@ -54,7 +54,7 @@ export default function Header({ shopData, pages = [] }: any) {
         
         <nav className="hidden md:flex gap-8 mt-4 pt-4 border-t border-gray-800">
           {pages.filter((p: any) => p.showInNav).map((page: any) => (
-            <a key={page.slug} href={`/store/${shopData.subdomain}/${page.slug}`} className="hover:text-blue-400 transition">
+            <a key={page.slug} href={`/${page.slug}`} className="hover:text-blue-400 transition">
               {page.title}
             </a>
           ))}

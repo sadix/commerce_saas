@@ -116,6 +116,7 @@ model Product {
   id          String   @id @default(cuid())
   shopId      String
   categoryId  String?
+  platform_categoryId String?
   name        String
   description String?
   price       Float
@@ -132,6 +133,10 @@ model Product {
   
   shop     Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
   category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  platform_category    PlatformCategory? @relation(fields: [platform_categoryId], references: [id], onDelete: SetNull)
+
+  // Product attributes (dynamic properties)
+  attributes  ProductAttribute[]
 
   variations   ProductVariation[]
   cartItems CartItem[]
@@ -139,6 +144,7 @@ model Product {
   
   @@index([shopId])
   @@index([categoryId])
+  @@index([platform_categoryId])
 }
 
 // NEW: Product Variations
@@ -290,4 +296,139 @@ model OrderItem {
   
   @@index([orderId])
   @@index([productId])
+}
+
+
+// ============================================
+// ACTIVITY (Top-level category groups)
+// ============================================
+model Activity {
+  id         String     @id @default(cuid())
+  name       String     @unique // e.g., "Animals & Pet Supplies"
+  slug       String     @unique
+  categories PlatformCategory[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([slug])
+  @@map("activities")
+}
+
+// ============================================
+// CATEGORY (Hierarchical taxonomy)
+// ============================================
+model PlatformCategory {
+  id          String   @id // e.g., "gid://shopify/TaxonomyCategory/ap-2"
+  name        String
+  slug        String
+  description String?
+  
+  // Self-referential relationship for hierarchy
+  parentId    String?
+  parent      PlatformCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children    PlatformCategory[] @relation("CategoryHierarchy")
+  
+  // Link to Activity (top-level group)
+  activityId  String?
+  activity    Activity?  @relation(fields: [activityId], references: [id], onDelete: SetNull)
+  
+  // Attributes associated with this category
+  categoryAttributes CategoryAttribute[]
+  
+  // Products in this category
+  products    Product[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([parentId])
+  @@index([activityId])
+  @@index([slug])
+  @@map("categories")
+}
+
+// ============================================
+// ATTRIBUTE (Product attributes/properties)
+// ============================================
+model Attribute {
+  id          String   @id // e.g., "gid://shopify/TaxonomyAttribute/1308"
+  name        String
+  handle      String   @unique // URL-friendly identifier
+  description String?
+  type        String   @default("select") // select, text, number, boolean, etc.
+  required    Boolean  @default(false)
+  extended    Boolean  @default(false) // Extended attributes are optional/specialized
+  
+  // Attribute options (for select type)
+  options     AttributeOption[]
+  
+  // Categories that use this attribute
+  categoryAttributes CategoryAttribute[]
+  
+  // Product attribute values
+  productAttributes ProductAttribute[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([handle])
+  @@index([type])
+  @@map("attributes")
+}
+
+// ============================================
+// ATTRIBUTE OPTION (Available values for attributes)
+// ============================================
+model AttributeOption {
+  id          String    @id @default(cuid())
+  value       String
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+
+  @@unique([attributeId, value])
+  @@index([attributeId])
+  @@map("attribute_options")
+}
+
+// ============================================
+// CATEGORY-ATTRIBUTE (Junction table)
+// ============================================
+model CategoryAttribute {
+  id          String    @id @default(cuid())
+  categoryId  String
+  category    PlatformCategory  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  required    Boolean   @default(false)
+  sortOrder   Int       @default(0)
+  
+  createdAt   DateTime  @default(now())
+
+  @@unique([categoryId, attributeId])
+  @@index([categoryId])
+  @@index([attributeId])
+  @@map("category_attributes")
+}
+
+
+// ============================================
+// PRODUCT ATTRIBUTE (Product-specific attribute values)
+// ============================================
+model ProductAttribute {
+  id          String    @id @default(cuid())
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  value       String    // The selected/entered value
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([productId, attributeId])
+  @@index([productId])
+  @@index([attributeId])
+  @@map("product_attributes")
 }

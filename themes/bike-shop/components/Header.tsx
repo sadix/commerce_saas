@@ -29,7 +29,7 @@ export default function Header({ shopData, pages = [] }: any) {
             {shopData.logoUrl && (
               <img src={shopData.logoUrl} alt="Logo" className="h-12 w-12 object-contain" />
             )}
-            <a href={`/store/${shopData.subdomain}/`}className="text-2xl font-bold hover:text-green-200 transition">
+            <a href={`/`}className="text-2xl font-bold hover:text-green-200 transition">
               {shopData.name}
             </a>
           </div>
@@ -38,7 +38,7 @@ export default function Header({ shopData, pages = [] }: any) {
             {navPages.map((page: any) => (
               <a
                 key={page.slug}
-                href={`/store/${shopData.subdomain}/${page.slug}`}
+                href={`/${page.slug}`}
                 className="font-medium hover:text-green-200 transition"
               >
                 {page.title}
@@ -47,7 +47,7 @@ export default function Header({ shopData, pages = [] }: any) {
           </nav>
 
           <div className="flex items-center gap-4">
-            <a href={`/store/${shopData.subdomain}/account`} className="p-2 hover:bg-green-600 rounded-full transition">
+            <a href={`/account`} className="p-2 hover:bg-green-600 rounded-full transition">
               <User className="w-5 h-5" />
             </a>
             <button

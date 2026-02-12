@@ -40,7 +40,7 @@ export function ShopSidebar({ shopId }: ShopSidebarProps) {
       icon: Package,
     },
     {
-      name: 'Categories',
+      name: 'Collections',
       href: `/dashboard/shop/${shopId}/categories`,
       icon: FolderTree,
     },

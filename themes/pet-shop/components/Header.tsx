@@ -17,7 +17,7 @@ export default function Header({ shopData, pages = [] }: any) {
       
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <a href={`/store/${shopData.subdomain}/`} className="flex items-center gap-3">
+          <a href={`/`} className="flex items-center gap-3">
             {shopData.logoUrl && (
               <img src={shopData.logoUrl} alt="Logo" className="h-12 w-12" />
             )}
@@ -28,16 +28,16 @@ export default function Header({ shopData, pages = [] }: any) {
           </a>
           
           <nav className="hidden md:flex gap-8">
-            <a href={`/store/${shopData.subdomain}/products/dogs`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
+            <a href={`/products/dogs`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
               🐕 Dogs
             </a>
-            <a href={`/store/${shopData.subdomain}/products/cats`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
+            <a href={`/products/cats`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
               🐈 Cats
             </a>
-            <a href={`/store/${shopData.subdomain}/products/birds`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
+            <a href={`/products/birds`} className="flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium">
               🦜 Birds
             </a>
-            <a href={`/store/${shopData.subdomain}/sale`} className="flex items-center gap-2 text-red-600 hover:text-red-700 font-bold">
+            <a href={`/sale`} className="flex items-center gap-2 text-red-600 hover:text-red-700 font-bold">
               🏷️ Sale
             </a>
           </nav>
@@ -46,7 +46,7 @@ export default function Header({ shopData, pages = [] }: any) {
             <button className="hover:text-pink-600 transition">
               <Heart className="w-6 h-6" />
             </button>
-            <a href={`/store/${shopData.subdomain}/account`} className="hover:text-purple-600 transition">
+            <a href={`/account`} className="hover:text-purple-600 transition">
               <User className="w-6 h-6" />
             </a>
             <button onClick={() => setIsOpen(true)} className="relative hover:text-purple-600 transition">

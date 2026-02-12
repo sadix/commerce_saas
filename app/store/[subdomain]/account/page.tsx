@@ -48,14 +48,14 @@ export default function CustomerAccountPage({params}: {params: {subdomain: strin
           <h2 className="text-2xl font-bold mb-6">Sign In</h2>
           <p className="text-gray-600 mb-4">Please sign in to view your account</p>
           <a
-            href={`/store/${subdomain}/account/login`}
+            href={`/account/login`}
             className="block w-full py-3 bg-blue-600 text-white text-center rounded-lg hover:bg-blue-700"
           >
             Sign In
           </a>
           <p className="text-center mt-4 text-sm text-gray-600">
             Don't have an account?{' '}
-            <a href={`/store/${subdomain}/account/signup`} className="text-blue-600 hover:text-blue-800">
+            <a href={`/account/signup`} className="text-blue-600 hover:text-blue-800">
               Register
             </a>
           </p>

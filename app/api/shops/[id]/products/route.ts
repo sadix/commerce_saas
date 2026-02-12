@@ -19,6 +19,12 @@ export async function GET(
   const products = await prisma.product.findMany({
     where: { shopId: id },
     orderBy: { created_at: 'desc' },
+    include: {
+      attributes:{
+        include:{attribute:true}
+      },
+      platform_category: true,
+    }
   });
 
   return NextResponse.json(products);
@@ -46,10 +52,20 @@ export async function POST(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
+  
+
+  
+
+  
+  
+
   const product = await prisma.product.create({
     data: {
       ...body,
       shopId: id,
+      attributes: {
+        create: body.attributes
+      }
     },
   });
 

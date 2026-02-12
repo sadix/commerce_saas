@@ -32,3 +32,9 @@ export function truncate(text: string, length: number): string {
   if (text.length <= length) return text;
   return text.slice(0, length) + '...';
 }
+
+export const protocol =
+  process.env.NODE_ENV === 'production' ? 'https' : 'http';
+export const rootDomain =
+  process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000';
+

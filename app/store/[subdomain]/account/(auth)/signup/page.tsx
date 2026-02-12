@@ -16,7 +16,7 @@ export default async function SignupPage({ params }: { params: { subdomain: stri
           <h2 className="text-center text-3xl font-bold">Create your account</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-500">
+            <a href="/account/login" className="text-blue-600 hover:text-blue-500">
               Sign in
             </a>
           </p>

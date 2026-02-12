@@ -17,7 +17,7 @@ export default async function LoginPage({params}: {params: {subdomain: string}})
           <h2 className="text-center text-3xl font-bold">Sign in to your account</h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <a href={`/store/${subdomain}/account/signup`} className="text-blue-600 hover:text-blue-500">
+            <a href={`/account/signup`} className="text-blue-600 hover:text-blue-500">
               create a new account
             </a>
           </p>

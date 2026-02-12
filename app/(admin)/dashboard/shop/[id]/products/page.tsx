@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { ProductsList } from '@/components/admin/ProductsList';
 import { ProductFormModal } from '@/components/admin/ProductFormModal';
+import ProductsListPage from '@/components/admin/ProductsPage'
 
 export default async function ProductsPage({ 
   params,
@@ -22,7 +23,7 @@ export default async function ProductsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+       {/* <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Products</h2>
           <p className="text-gray-600">Manage your store products</p>
@@ -30,7 +31,8 @@ export default async function ProductsPage({
         <ProductFormModal shopId={id} trigger="button" />
       </div>
 
-      <ProductsList products={products} shopId={id} />
+      <ProductsList products={products} shopId={id} />  */}
+      <ProductsListPage shopid={id} /> 
     </div>
   );
 }

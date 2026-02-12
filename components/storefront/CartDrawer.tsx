@@ -118,7 +118,7 @@ export function CartDrawer() {
               onClick={() => {
                 setIsOpen(false);
 
-                window.location.href = `/store/${subdomain}/checkout`;
+                window.location.href = `/checkout`;
               }}
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
             >

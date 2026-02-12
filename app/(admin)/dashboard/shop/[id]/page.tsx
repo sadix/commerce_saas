@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { Package, FileText, FolderTree, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { rootDomain, protocol } from '@/lib/utils';
 
 interface ReqParamProps {
   params: Promise<{ // <- Added Promise wrapper
@@ -47,7 +48,7 @@ export default async function ShopOverviewPage({ params }: ReqParamProps) {
       bg: 'bg-green-50',
     },
     {
-      name: 'Categories',
+      name: 'Collections',
       value: 0, // Will be updated when categories are added
       icon: FolderTree,
       href: `/dashboard/shop/${id}/categories`,
@@ -98,9 +99,9 @@ export default async function ShopOverviewPage({ params }: ReqParamProps) {
           <div>
             <label className="text-sm text-gray-600">Store URL</label>
             <div className="flex items-center gap-2">
-              <p className="font-medium">{shop.subdomain}.yourdomain.com</p>
+              <p className="font-medium">{shop.subdomain}.{rootDomain}</p>
               <a
-                href={`/store/${shop.subdomain}`}
+                href={`${protocol}://${shop.subdomain}.${rootDomain}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:text-blue-800"

@@ -51,10 +51,37 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const updated = await prisma.product.update({
+ /*  const updated = await prisma.product.update({
+    data: {
+      ...body,
+      attributes: {
+        update:body.attributes,
+      },
+      
+    },
     where: { id:productId },
-    data: body,
+  }); */
+
+  const updated = await prisma.$transaction(async (prisma) => {
+  // 1. Delete all existing UserTeam records for the user
+  await prisma.productAttribute.deleteMany({
+    where: {
+      productId: productId,
+    },
   });
+
+
+  return await prisma.product.update({
+    data: {
+      ...body,
+      attributes: {
+        create:body.attributes,
+      },
+      
+    },
+    where: { id:productId },
+  });
+});
 
   return NextResponse.json(updated);
 }

@@ -22,8 +22,8 @@ export default async function CategoriesPage({ params }: { params: { id: string 
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Categories</h2>
-          <p className="text-gray-600">Organize your products into categories</p>
+          <h2 className="text-2xl font-bold">Collections</h2>
+          <p className="text-gray-600">Organize your products into collections</p>
         </div>
         <CategoryFormModal shopId={id} trigger="button" />
       </div>
