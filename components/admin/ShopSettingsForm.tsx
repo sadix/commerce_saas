@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Shop } from '@prisma/client';
+import { rootDomain, protocol } from '@/lib/utils';
 
 interface ShopSettingsFormProps {
   shop: Shop;
@@ -97,7 +98,7 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
       <div className="bg-gray-50 p-4 rounded-md">
         <h3 className="font-medium mb-2">Store URL</h3>
         <p className="text-sm text-gray-600">
-          {shop.subdomain}.yourdomain.com
+          {shop.subdomain}.{rootDomain}
         </p>
       </div>
 

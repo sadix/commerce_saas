@@ -67,6 +67,28 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    /* async signIn({account,profile }){
+      if(account?.provider == "google"){
+        // Check if user exists in the database
+        const existingUser = await prisma.user.findUnique({
+          where: { email: profile?.email || '' },
+        });
+        // If user doesn't exist, create a new user
+        if (!existingUser) {
+          await prisma.user.create({
+            data: {
+              email: profile?.email || '',
+              name: profile?.name || '',
+              password: '', // No password since it's a Google account
+            },
+          });
+        }
+        
+
+        return true;
+      }
+      return false;
+    } */
   },
 };
 

@@ -4,10 +4,14 @@
 import React from 'react';
 import { ShoppingCart, User, Menu } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useState } from 'react';
 
-export default function Header({ shopData, pages = [] }: any) {
+export default function Header({ shopData, pages = [],buttonText1 = 'About',
+  buttonLink1 = '/about',buttonText2 = 'Contact',
+  buttonLink2 = '/contact' }: any) {
   const { itemCount, setIsOpen } = useCart();
   const navPages = pages.filter((page: any) => page.showInNav !== false);
+  const [mobileMenutoggle, setMobileMenuToggle] = useState(false);
   
   return (
     <header className="bg-green-700 text-white sticky top-0 z-50 shadow-lg">
@@ -17,8 +21,8 @@ export default function Header({ shopData, pages = [] }: any) {
           <div className="flex justify-between items-center">
             <span>🚴 Free Shipping on Orders Over $100</span>
             <div className="flex gap-4">
-              <a href="/about" className="hover:text-green-200">About</a>
-              <a href="/contact" className="hover:text-green-200">Contact</a>
+              <a href={buttonLink1} className="hover:text-green-200">{buttonText1}</a>
+              <a href={buttonLink2} className="hover:text-green-200">{buttonText2}</a>
             </div>
           </div>
         </div>
@@ -61,9 +65,30 @@ export default function Header({ shopData, pages = [] }: any) {
                 </span>
               )}
             </button>
-            <button className="md:hidden p-2">
+            <button className="md:hidden p-2" onClick={() => setMobileMenuToggle(!mobileMenutoggle)} >
               <Menu className="w-6 h-6" />
             </button>
+            {/* Mobile menu */}
+            {navPages.length > 0 && mobileMenutoggle && (
+              <div className="md:hidden absolute w-full top-2 left-0 bg-green-700 text-white   z-10">
+                <button className="absolute right-2 top-2 p-2 text-white z-10 " onClick={() => setMobileMenuToggle(!mobileMenutoggle)}>
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <nav className="flex flex-col p-4 space-y-2">
+                  {navPages.map((page:any) => (
+                    <a
+                      key={page.slug}
+                      href={`/${page.slug}`}
+                      className="px-4 py-2  hover:bg-gray-50 rounded font-medium"
+                    >
+                      {page.title}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )}
           </div>
         </div>
       </div>

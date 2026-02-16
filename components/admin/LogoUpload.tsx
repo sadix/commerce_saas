@@ -84,7 +84,7 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-semibold mb-4">Store Logo</h2>
       
-      <div className="flex items-start gap-6">
+      <div className="flex items-start gap-6 flex-col md:flex-row">
         {/* Logo Preview */}
         <div className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
           {logoUrl ? (

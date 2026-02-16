@@ -371,7 +371,7 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
           {filteredProducts.map((product) => (
             <div key={product.id}  className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"  >
               <div className="p-6">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col md:flex-row items-start justify-between">
                    {product.images && product.images.length > 0 ? (
                         <img
                           src={product.images[0]}

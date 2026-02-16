@@ -83,7 +83,7 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Category
+          Add Collection
         </button>
       ) : (
         <button

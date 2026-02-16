@@ -6,7 +6,8 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import {Shop, Theme} from '@prisma/client';
-import { Store, Settings, FileText } from 'lucide-react';
+import { Store, Settings, FileText, LayoutDashboard  } from 'lucide-react';
+import { rootDomain, protocol } from '@/lib/utils';
 
 interface ShopWithTheme extends Shop {
   theme: Theme | null;
@@ -68,11 +69,18 @@ export default async function DashboardPage() {
                     />
                   )}
                   <h3 className="text-xl font-semibold mb-2">{shop.name}</h3>
-                  <p className="text-gray-600 mb-4">{shop.subdomain}.yourdomain.com</p>
+                  <p className="text-gray-600 mb-4">{shop.subdomain}.{rootDomain}</p>
                   <div className="text-sm text-gray-500 mb-4">
                     Theme: {shop.theme?.name || 'None'}
                   </div>
                   <div className="flex gap-2">
+                    <Link
+                      href={`/dashboard/shop/${shop.id}/`}
+                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border rounded hover:bg-gray-50"
+                    >
+                      <LayoutDashboard className="w-4 h-4" />
+                      Overview
+                    </Link>
                     <Link
                       href={`/dashboard/shop/${shop.id}/pages`}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border rounded hover:bg-gray-50"
@@ -80,13 +88,7 @@ export default async function DashboardPage() {
                       <FileText className="w-4 h-4" />
                       Pages
                     </Link>
-                    <Link
-                      href={`/dashboard/shop/${shop.id}/theme`}
-                      className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border rounded hover:bg-gray-50"
-                    >
-                      <Settings className="w-4 h-4" />
-                      Theme
-                    </Link>
+                    
                   </div>
                 </div>
               </div>

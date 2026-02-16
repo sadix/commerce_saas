@@ -58,7 +58,7 @@ export default async function ShopOverviewPage({ params }: ReqParamProps) {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 ">
       <div>
         <h2 className="text-2xl font-bold mb-2">Store Overview</h2>
         <p className="text-gray-600">Manage your store and view statistics</p>

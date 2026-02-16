@@ -9,6 +9,7 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  TouchSensor
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -40,7 +41,13 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
+    useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300, // Hold for 300ms to start drag
+      tolerance: 8, // Allow 8px movement during the delay
+    },
+  }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -104,6 +111,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
                 isSelected={selectedBlock === block.id}
                 onSelect={() => setSelectedBlock(block.id)}
                 onDelete={() => deleteBlock(block.id)}
+                
               />
             ))}
           </SortableContext>
@@ -168,6 +176,7 @@ function SortableBlock({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    touchAction: 'none' 
   };
 
   return (

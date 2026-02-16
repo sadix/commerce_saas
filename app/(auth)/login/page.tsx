@@ -1,8 +1,23 @@
 // src/app/(auth)/login/page.tsx
 
 import { LoginForm } from '@/components/auth/LoginForm';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-export default function LoginPage() {
+export async function generateMetadata() {
+  return {
+    title: 'Login',
+  };
+}
+
+
+
+export default async function LoginPage() {
+  const session = await getServerSession(authOptions);
+  if(session){
+    redirect('/dashboard');
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">

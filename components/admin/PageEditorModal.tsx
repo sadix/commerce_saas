@@ -17,7 +17,12 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
     {
       type: 'Header',
       label: 'Header',
-      defaultProps: {},
+      defaultProps: {
+        buttonText1:'About',
+        buttonLink1:'/about',
+        buttonText2:'Contact',
+        buttonLink2:'/contact'
+      },
     },
     {
       type: 'Hero',

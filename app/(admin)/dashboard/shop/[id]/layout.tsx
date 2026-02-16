@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ShopSidebar } from '@/components/admin/ShopSidebar';
+import { rootDomain, protocol } from '@/lib/utils';
 
 
 
@@ -39,12 +40,12 @@ export default async function ShopLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50  ">
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">{shop.name}</h1>
-            <p className="text-sm text-gray-500">{shop.subdomain}.yourdomain.com</p>
+            <p className="text-sm text-gray-500">{shop.subdomain}.{rootDomain}</p>
           </div>
           <a
             href="/dashboard"
@@ -55,9 +56,9 @@ export default async function ShopLayout({
         </div>
       </nav>
 
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         <ShopSidebar shopId={id} />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ">
           {children}
         </main>
       </div>

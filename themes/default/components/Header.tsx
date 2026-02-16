@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingCart, User } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import { useState } from 'react';
 
 interface HeaderProps {
   shopData: { name: string; logoUrl?: string; subdomain?: string };
@@ -13,7 +14,8 @@ interface HeaderProps {
 
 export default function Header({ shopData, pages  }: HeaderProps) {
   const { itemCount, setIsOpen } = useCart();
-  const navPages = pages?.filter(page => page.showInNav !== false) || [];
+  const navPages = pages?.filter((page:any) => page.showInNav !== false) || [];
+  const [mobileMenutoggle, setMobileMenuToggle] = useState(false);
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -41,7 +43,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
 
         {/* Mobile menu button */}
         {navPages.length > 0 && (
-          <button className="md:hidden p-2 text-gray-700 hover:text-blue-600">
+          <button className="md:hidden p-2 text-gray-700 hover:text-blue-600" onClick={() => setMobileMenuToggle(!mobileMenutoggle)}>
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -50,10 +52,15 @@ export default function Header({ shopData, pages  }: HeaderProps) {
       
 
       {/* Mobile menu */}
-      {navPages.length > 0 && (
-        <div className="md:hidden border-t">
+      {navPages.length > 0 && mobileMenutoggle && (
+        <div className="md:hidden absolute w-full top-2 left-0  bg-white z-10">
+          <button className="absolute right-2 top-2 p-2 text-black z-10 " onClick={() => setMobileMenuToggle(!mobileMenutoggle)}>
+           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
           <nav className="flex flex-col p-4 space-y-2">
-            {navPages.map((page) => (
+            {navPages.map((page:any) => (
               <a
                 key={page.slug}
                 href={`/${page.slug}`}

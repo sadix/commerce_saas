@@ -51,6 +51,10 @@ export async function GET(
        categoryIds.push(currentCategory.id);
        break; 
      }
+     else{
+      continue;
+     }
+    
       
     }
     console.log(categoryIds);

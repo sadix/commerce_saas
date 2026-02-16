@@ -90,7 +90,7 @@ export function LoginForm() {
 
       <button
         type="button"
-        onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+        onClick={() => signIn('google')}
         className="w-full flex justify-center items-center gap-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24">
