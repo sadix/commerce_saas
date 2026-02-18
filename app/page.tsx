@@ -158,13 +158,13 @@ export default function HomePage() {
           Everything You Need to Sell Online
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {[{name: "Theme Marketplace", icon: themeIcon}, {name: "Drag & Drop Builder", icon: builderIcon}, {name: "Custom Domains", icon: domainIcon}].map((feature) => (
+          {[{name: "Theme Marketplace", icon: themeIcon, text:"Choose from a library of stunning themes designed to sell"}, {name: "Drag & Drop Builder", icon: builderIcon, text:"Easily build your store with customizable blocks"}, {name: "Custom Domains", icon: domainIcon, text:"Connect your own domain name to your shop"}].map((feature) => (
             <Card key={feature.name} className="rounded-2xl shadow-sm hover:shadow-lg transition text-center border-0">
               <CardContent className="p-6">
                 <img src={feature.icon.src} alt={feature.name} className="w-20 h-20 mb-4 mx-auto" />
                 <h3 className="text-xl font-semibold mb-2">{feature.name}</h3>
                 <p className="text-gray-600">
-                  Build and customize your store easily with powerful tools designed for modern commerce.
+                  {feature.text}
                 </p>
               </CardContent>
             </Card>

@@ -38,6 +38,20 @@ export default function Header({ shopData, pages = [] }: HeaderProps) {
               {shopData.name}
             </span>
           </a>
+
+          {navPages.length > 0 && (
+          <nav className="hidden md:flex gap-6">
+            {navPages.map((page) => (
+              <a
+                key={page.slug}
+                href={`/${page.slug}`}
+                className="text-gray-700 hover:text-blue-600 transition font-medium"
+              >
+                {page.title}
+              </a>
+            ))}
+          </nav>
+        )}
           
           <div className="hidden md:flex flex-1 max-w-lg mx-8">
             <div className="relative w-full">
@@ -64,6 +78,15 @@ export default function Header({ shopData, pages = [] }: HeaderProps) {
             </button>
           </div>
         </div>
+
+         {/* Mobile menu button */}
+        {navPages.length > 0 && (
+          <button className="md:hidden p-2 text-gray-700 hover:text-blue-600" onClick={() => setMobileMenuToggle(!mobileMenutoggle)}>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        )}
         
        
 
