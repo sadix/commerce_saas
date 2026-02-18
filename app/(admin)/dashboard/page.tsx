@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import {Shop, Theme} from '@prisma/client';
-import { Store, Settings, FileText, LayoutDashboard  } from 'lucide-react';
-import { rootDomain, protocol } from '@/lib/utils';
+import { Store, FileText, LayoutDashboard  } from 'lucide-react';
+import { rootDomain,  } from '@/lib/utils';
 
 interface ShopWithTheme extends Shop {
   theme: Theme | null;
