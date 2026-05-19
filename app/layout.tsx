@@ -3,6 +3,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import {routing} from '@/i18n/routing';
+import {notFound} from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,14 +14,19 @@ export const metadata: Metadata = {
   description: 'Create your online store in minutes',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  
+
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html >
+      <NextIntlClientProvider  >
+        <body className={inter.className}>{children}</body>
+      </NextIntlClientProvider>
+      
     </html>
   );
 }

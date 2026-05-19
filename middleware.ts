@@ -1,5 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { rootDomain } from '@/lib/utils';
+import createMiddleware from 'next-intl/middleware';
+import {routing} from './i18n/routing';
 
 function extractSubdomain(request: NextRequest): string | null {
   const url = request.url;
@@ -44,6 +46,10 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const subdomain = extractSubdomain(request);
 
+  const publicPathnameRegex = RegExp(
+  '^(/(' + ['en','fr'].join('|') + '))?/(api|_next/static|_next/image|favicon.ico).*$'
+  );
+
   if (subdomain) {
     // Block access to admin page from subdomains
     if (pathname.startsWith('/admin')) {
@@ -62,6 +68,8 @@ export async function middleware(request: NextRequest) {
   // On the root domain, allow normal access
   return NextResponse.next();
 }
+
+//export default createMiddleware(routing);
 
 export const config = {
   matcher: [

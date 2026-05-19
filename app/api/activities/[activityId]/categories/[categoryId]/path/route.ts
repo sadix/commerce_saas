@@ -32,15 +32,22 @@ export async function GET(
                         parent: {
                           include: {
                             parent: true,
+                            translations: true,
                           },
                         },
+                        translations: true,
                       },
                     },
+                    translations: true,
                   },
                 },
+                translations: true,
               },
+              
             },
+            translations: true,
           },
+          
         },
         activity: {
           select: {
@@ -48,6 +55,7 @@ export async function GET(
             name: true,
           },
         },
+        translations: true,
       },
     });
 
@@ -81,6 +89,7 @@ export async function GET(
         slug: currentCategory.slug,
         parentId: currentCategory.parentId,
         activityId: currentCategory.activityId || category.activity?.id || null,
+        translations: currentCategory.translations || [],
         level: level,
       });
       currentCategory = currentCategory.parent;

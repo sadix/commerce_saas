@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, Filter, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 
+import { ProductDetailModal } from './ProductDetailModal';
+
 
 interface Product {
   id: string;
@@ -65,6 +67,8 @@ export default function ProductsList({
   const [platformCategories, setPlatformCategories] = useState<PlatformCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const { addItem } = useCart();
   
@@ -400,7 +404,7 @@ export default function ProductsList({
         {/* Platform Categories (Hierarchical) */}
         { platformCategories.length > 0 && (
           <div>
-            <h3 className="font-semibold text-gray-900 mb-3">Platform Categories</h3>
+            <h3 className="font-semibold text-gray-900 mb-3">Categories</h3>
             <div className="space-y-1">
               <label className="flex items-center gap-2 cursor-pointer py-1.5 hover:bg-gray-50 rounded px-2">
                 <span className="w-4" />
@@ -659,7 +663,7 @@ export default function ProductsList({
                     className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group"
                   >
                     {/* Product Image */}
-                    <div className="aspect-square bg-gray-200 overflow-hidden">
+                    <div className="aspect-square bg-gray-200 overflow-hidden" onClick={() => setSelectedProduct(product)}>
                       {product.images && product.images.length > 0 ? (
                         <img
                           src={product.images[0]}
@@ -690,7 +694,7 @@ export default function ProductsList({
                       )}
                       <div className="flex items-center justify-between">
                         <span className="text-xl font-bold text-gray-900">
-                          ${product.price.toFixed(2)}
+                          XOF {product.price.toFixed(2)}
                         </span>
                         {product.stock > 0 ? (
                           <button 
@@ -746,7 +750,7 @@ export default function ProductsList({
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-gray-900">
-                          ${product.price.toFixed(2)}
+                          XOF{product.price.toFixed(2)}
                         </span>
                         {product.stock > 0 ? (
                           <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
@@ -795,6 +799,15 @@ export default function ProductsList({
           </div>
         </div>
       )}
+
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          shopId={shopId}
+        />
+      )}
+
     </section>
   );
 }

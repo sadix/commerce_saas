@@ -6,9 +6,11 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { PageEditor } from '@/components/admin/PageEditor';
 import { PagesManager } from '@/components/admin/PagesManager';
+import {getTranslations} from 'next-intl/server';
 
 export default async function PagesPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
+  const t = await getTranslations('admin.shop_pages');
 
   const { id } = await params;
   
@@ -36,12 +38,14 @@ export default async function PagesPage({ params }: { params: { id: string } }) 
     redirect('/dashboard');
   }
 
+
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Pages</h2>
-          <p className="text-gray-600">Manage your store pages and navigation</p>
+          <h2 className="text-2xl font-bold">{t('title')}</h2>
+          <p className="text-gray-600">{t('description')}</p>
         </div>
       </div>
 

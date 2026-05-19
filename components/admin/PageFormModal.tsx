@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Page } from '@prisma/client';
 import { X, Plus, Settings } from 'lucide-react';
+import {useTranslations} from 'next-intl';
 
 interface PageFormModalProps {
   shopId: string;
@@ -22,6 +23,8 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
     isHome: page?.isHome || false,
     showInNav: page ? (page as any).showInNav ?? true : true,
   });
+
+  const t = useTranslations('admin.shop_pages.manager.form_modal');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -124,7 +127,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Page
+          {t('submit_button_create')}
         </button>
       ) : (
         <button
@@ -159,7 +162,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
 
               <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                  Page Title *
+                  {t('name_label')} *
                 </label>
                 <input
                   id="title"
@@ -169,13 +172,13 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., About Us, Contact"
+                  placeholder={t('name_placeholder')}
                 />
               </div>
 
               <div>
                 <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
-                  URL Slug *
+                  {t('url_slug_label')} *
                 </label>
                 <div className="flex items-center">
                   <span className="px-3 py-2 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md text-gray-600 text-sm">
@@ -194,7 +197,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                   />
                 </div>
                 <p className="mt-1 text-sm text-gray-500">
-                  Only lowercase letters, numbers, and hyphens. This will be the page URL.
+                  {t('url_slug_description')}
                 </p>
               </div>
 
@@ -209,7 +212,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="isHome" className="ml-2 block text-sm text-gray-900">
-                    Set as home page
+                    {t('set_as_home_label')}
                   </label>
                 </div>
               )}
@@ -225,7 +228,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="published" className="ml-2 block text-sm text-gray-900">
-                    Published (visible on your store)
+                    {t('published_label')}
                   </label>
                 </div>
 
@@ -239,7 +242,7 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="showInNav" className="ml-2 block text-sm text-gray-900">
-                    Show in navigation menu
+                    {t('show_in_nav_label')}
                   </label>
                 </div>
               </div>
@@ -250,14 +253,14 @@ export function PageFormModal({ shopId, page, trigger }: PageFormModalProps) {
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('cancel_button')}
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading ? 'Saving...' : page ? 'Update Page' : 'Create Page'}
+                  {loading ? t('saving') : page ? t('submit_button_edit') : t('submit_button_create')}
                 </button>
               </div>
             </form>

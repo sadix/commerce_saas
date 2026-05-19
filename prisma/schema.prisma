@@ -371,8 +371,26 @@ model Activity {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 
+  translations ActivityTranslation[]
+
   @@index([slug])
   @@map("activities")
+}
+
+model ActivityTranslation{
+  activityId  String
+  activity    Activity  @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  locale String
+  
+  name String
+
+  // Clé primaire composée : empêche les doublons pour une même langue
+  @@id([activityId, locale])
+  
+  // Index pour accélérer les recherches par langue
+  @@index([locale])
+  @@map("activity_translation")
 }
 
 // ============================================
@@ -402,10 +420,28 @@ model PlatformCategory {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
+  translations PlatformCategoryTranslation[]
+
   @@index([parentId])
   @@index([activityId])
   @@index([slug])
   @@map("categories")
+}
+
+model PlatformCategoryTranslation{
+  platform_categoryId  String
+  platform_category    PlatformCategory  @relation(fields: [platform_categoryId], references: [id], onDelete: Cascade)
+
+  locale String
+  
+  name String
+
+  // Clé primaire composée : empêche les doublons pour une même langue
+  @@id([platform_categoryId, locale])
+  
+  // Index pour accélérer les recherches par langue
+  @@index([locale])
+  @@map("platform_category_translation")
 }
 
 // ============================================
@@ -432,9 +468,27 @@ model Attribute {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
+  translations AttributeTranslation[]
+
   @@index([handle])
   @@index([type])
   @@map("attributes")
+}
+
+model AttributeTranslation{
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  locale String
+  
+  name String
+
+  // Clé primaire composée : empêche les doublons pour une même langue
+  @@id([attributeId, locale])
+  
+  // Index pour accélérer les recherches par langue
+  @@index([locale])
+  @@map("attribute_translation")
 }
 
 // ============================================
@@ -448,9 +502,28 @@ model AttributeOption {
   
   createdAt   DateTime  @default(now())
 
+  translations AttributeOptionTranslation[]
+
   @@unique([attributeId, value])
   @@index([attributeId])
   @@map("attribute_options")
+}
+
+model AttributeOptionTranslation {
+  attribute_optionId String
+  attribute_option AttributeOption @relation(fields: [attribute_optionId], references: [id], onDelete: Cascade)
+
+  locale String
+
+  name String
+
+  // Clé primaire composée : empêche les doublons pour une même langue
+  @@id([attribute_optionId, locale])
+  
+  // Index pour accélérer les recherches par langue
+  @@index([locale])
+  @@map("attribute_option_translation")
+
 }
 
 // ============================================

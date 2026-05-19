@@ -1,0 +1,189 @@
+{
+  "admin": {
+    "dashboard": {
+      "create_store": "Create New Store",
+      "first_store": "Create Your First Store",
+      "no_store": "No stores yet",
+      "no_store_text": "Create your first online store to get started",
+      "overview": "Overview",
+      "pages": "Pages",
+      "stores_title": "Your Stores",
+      "title": "Admin Dashboard"
+    },
+    "shop_layout": {
+      "back_to_dashboard": "Back to dashboard",
+      "shop_sidebar": {
+        "collections": "Collections",
+        "customers": "Customers",
+        "orders": "Orders",
+        "overview": "Overview",
+        "pages": "Pages",
+        "products": "Products",
+        "theme": "Themes",
+        "settings": "Settings"
+      }
+    },
+    "shop_overview": {
+      "add_product": "Add Product",
+      "edit_pages": "Edit Pages",
+      "stat_collections": "Collections",
+      "stat_pages": "Pages",
+      "stat_products": "Products",
+      "store_active_theme": "Active Theme",
+      "store_description": "Description",
+      "store_info": "Store Information",
+      "store_name": "Store Name",
+      "store_overview": "Store Overview",
+      "store_overview_description": "Manage your store and view statistics",
+      "store_quick_actions": "Quick Actions",
+      "store_url": "Store URL"
+    },
+    "shop_pages":{
+      "title": "Pages",
+      "description": "Manage your pages and navigation",
+      "manager": {
+        "no_page_yet_title": "No pages yet",
+        "no_page_yet_description": "Create your first page to get started",
+        "home": "Home",
+        "edit": "Edit Content",
+        "published":"Published",
+        "draft": "Draft",
+        "delete_confirmation": "Are you sure you want to delete this page? This action cannot be undone.",
+        "failed_to_delete": "Failed to delete the page. Please try again.",
+        "form_modal":{
+          "create_title": "Create New Page",
+          "edit_title": "Edit Page",
+          "name_label": "Page Title ",
+          "name_placeholder": "e.g., About Us, Contact",
+          "url_slug_label": "URL Slug *",
+          "url_slug_description": "Only lowercase letters, numbers, and hyphens. This will be the page URL.",
+          "set_as_home_label":"Set as home page",
+          "set_as_home_description": "If enabled, this page will be the homepage of your",
+          "content_label": "Content (HTML)",
+          "content_placeholder": "<h1>My Page</h1><p>Page content here...</p>",
+          "show_in_nav_label": "Show in navigation",
+          "show_in_nav_description": "If enabled, this page will appear in your store's navigation menu.",
+          "published_label": "Published (visible on your store)",
+          "cancel_button":"Cancel",
+          "submit_button_create": "Create Page",
+          "submit_button_edit": "Save Changes",
+          "saving": "Saving..."
+        },
+        "editor_modal": {
+          "edit_page_label":"Edit Page:"
+          
+        },
+        "block_editor_modal":{
+          "save_changes": "Save changes",
+          "no_blocks_yet":  "No blocks yet. Add one from the sidebar.",
+          "block_properties_label": "Block Properties",
+          "add_block": "Add Block"
+        }
+      }
+    },
+    "shop_products": {
+      "title": "Products",
+      "description": "Manage your products and inventory",
+      "add_product" : "Add Product",
+      "manager": {
+        "no_product_yet_title": "No products yet",
+        "no_product_yet_description": "Get started by creating your first product",
+        "edit": "Edit Product",
+        "published":"Published",
+        "draft": "Draft",
+        "delete_confirmation": "Are you sure you want to delete this product? This action cannot be undone.",
+        "failed_to_delete": "Failed to delete the product. Please try again.",
+        "loading": "Loading products...",
+        "failed_to_load": "Failed to load products. Please try again.",
+        "failed_to_create": "Failed to create the product. Please try again.",
+        "search_placeholder": "Search Product",
+        "price_label": "Price: ",
+        "stock_label": "Stock: ",
+        "form_modal":{
+          "create_title": "Create  Product",
+          "edit_title": "Edit Product",
+          "basic_info_label": "Basic Information",
+          "name_label": "Product Name ",
+          "name_placeholder": "e.g., T-Shirt, Coffee Mug",
+          "images_label": "Product Image",
+          "description_label": "Description",
+          "description_placeholder": "Enter a description for your product.",
+          "collection_label": "Collection",
+          "select_collection_placeholder": "Select a collection...",
+          "price_label": "Price :",
+          "stock_label": "Stock:",
+          "category_label": "Category",
+          "activity_label": "Activity",
+          "activity_select_label": "Select an activity...",
+          "selected_category_label": "Selected category:",
+          "change_button" : "Change",
+          "loading_categories": "Loading categories",
+          "subcategories":  "subcategories",
+          "price_placeholder": "e.g., 19.99",
+          "published_label": "Published (visible on your store)",
+          "product_attributes_label": "Product Attributes",
+          "cancel_button":"Cancel",
+          "submit_button_create": "Create Product",
+          "submit_button_edit": "Save Changes",
+          "saving": "Saving...",
+          "category_search_label": "Search categories...",
+          "category_search_helper": "Type to search categories...",
+          "category_search_placeholder": "e.g., Clothing, Accessories"
+        }
+      }
+    },
+    "shop_collections":{
+      "title": "Collections",
+      "description": "Organise your products into collections",
+      "manager":{
+        "delete_confirmation":"Are you sure you want to delete this collection? This action cannot be undone.",
+        "failed_to_delete":"Failed to delete the collection. Please try again.",
+        "no_collection_yet_title":"No collection yet",
+        "no_collection_yet_description":"Create your first collection to organize your products",
+        "product_number_label":"{count, plural, =0 {No products} =1 {One product} other {# products}}",
+        "form_modal":{
+          "add_collection_button": "Add collection",
+          "name_label": "Collection name",
+          "slug_label": "Slug",
+          "slug_description": "Used in URLs. Only lowercase letters, numbers, and hyphens.",
+          "description_label": "Description",
+          "description_placeholder": "Optional description...",
+          "cancel_button": "Cancel",
+          "saving": "Saving...",
+          "update": "Update Collection",
+          "create": "Create Collection"
+        }
+      }
+    }
+    
+  },
+  "landing": {
+    "button_action1": "Get Started",
+    "button_action2": "View Demo",
+    "features": {
+      "feature1_text": "Choose from a library of stunning themes designed to sell",
+      "feature1_title": "Theme Marketplace",
+      "feature2_text": "Easily build your store with customizable blocks",
+      "feature2_title": "Drag & Drop Builder",
+      "feature3_text": "Connect your own domain name to your shop",
+      "feature3_title": "Custom Domains",
+      "title": "Everything You Need to Sell Online"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "features": "Features",
+      "get_started": "Get Started",
+      "pricing": "Pricing",
+      "sign_in": "Sign In",
+      "sign_out": "Sign Out",
+      "testimonials": "Testimonials"
+    },
+    "pricing": {
+      "button": "Choose",
+      "title": "Pricing"
+    },
+    "subtitle": "BaoBuy helps entrepreneurs and businesses build beautiful, fully customizable online stores — designed for Africa and ready for the world.\n",
+    "title_first": "Open Your Market.",
+    "title_second": "Sell Without Limits."
+  }
+}

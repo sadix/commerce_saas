@@ -113,6 +113,7 @@ export async function GET(
 
         },
       },
+      translations:true,
      },
       orderBy: {
         name: 'asc',

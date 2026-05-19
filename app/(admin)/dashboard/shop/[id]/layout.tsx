@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ShopSidebar } from '@/components/admin/ShopSidebar';
 import { rootDomain, protocol } from '@/lib/utils';
+import {getTranslations} from 'next-intl/server';
 
 
 
@@ -26,6 +27,8 @@ export default async function ShopLayout({
 }: ShopProps) {
   const session = await getServerSession(authOptions);
   const { id } = await params;
+
+  const t = await getTranslations('admin.shop_layout');
   
   if (!session?.user) {
     redirect('/login');
@@ -51,7 +54,7 @@ export default async function ShopLayout({
             href="/dashboard"
             className="text-sm text-blue-600 hover:text-blue-800"
           >
-            ← Back to Dashboard
+            ← {t('back_to_dashboard')}
           </a>
         </div>
       </nav>

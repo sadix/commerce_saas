@@ -25,6 +25,7 @@ export async function GET(
             },
           },
         },
+        translations: true,
       },
       orderBy: {
         name: 'asc',
@@ -102,6 +103,9 @@ export async function GET(
       orderBy: {
         name: 'asc',
       },
+      include:{
+        translations:true,
+      }
     });
 
 

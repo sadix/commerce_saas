@@ -1,6 +1,6 @@
 // src/app/page.tsx
 
-import Link from 'next/link';
+import {Link} from '@/i18n/navigation'
 import logoImage from '../public/images/logos/logo-baobuy-colored.png';
 import whiteLogo from '../public/images/logos/logo-baobuy-white.png'
 import dashboardMockup from '../public/images/dashboard-mockup.png'; 
@@ -14,8 +14,24 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { LandingLinks } from '@/components/LandingLinks';
+import {LocaleSwitcher} from '@/components/LocaleSwitcher';
+
+import { use } from 'react';
+import { setRequestLocale } from 'next-intl/server';
+
+
+
+import {useTranslations } from 'next-intl';
+
 
 export default function HomePage() {
+  const t = useTranslations('landing');
+ 
+  // Source - https://stackoverflow.com/a/66624143
+// Posted by juliomalves, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-02-19, License - CC BY-SA 4.0
+
+
   return (
     <div className="min-h-screen bg-[#F5F3EF] text-[#1E2A3A]">
       <nav className="bg-white shadow-sm">
@@ -24,13 +40,13 @@ export default function HomePage() {
           {/* Navigation to sections Links */}
           <div className="hidden md:flex space-x-4">
             <Link href="#features" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-              Features
+              {t('nav.features')}
             </Link>
             <Link href="#pricing" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-              Pricing
+              {t('nav.pricing')}
             </Link>
             <Link href="#testimonials" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-              Testimonials
+              {t('nav.testimonials')}
             </Link>
           </div>
 
@@ -54,13 +70,13 @@ export default function HomePage() {
 
               <div id="mobile-menu" className="hidden peer-checked:flex  flex-col bg-white">
                 <Link href="#features" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-                  Features
+                  {t('nav.features')}
                 </Link>
                 <Link href="#pricing" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-                  Pricing
+                  {t('nav.pricing')}
                 </Link>
                 <Link href="#testimonials" className="px-4 py-2 text-gray-700 hover:text-gray-900">
-                  Testimonials
+                  {t('nav.testimonials')}
                 </Link>
 
               </div>
@@ -122,21 +138,21 @@ export default function HomePage() {
       <section id="hero" className="container mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-4 py-16">
         <div className=''>
           <h1 className="text-5xl font-bold leading-tight">
-            Open Your Market.
+            {t('title_first')}
             <br />
-            Sell Without Limits.
+            {t('title_second')}
           </h1>
           <p className="mt-6 text-lg text-gray-700 max-w-xl">
-            BaoBuy helps entrepreneurs and businesses build beautiful, fully customizable online stores — designed for Africa and ready for the world.
+            {t('subtitle')}
           </p>
           <div className="mt-8 flex gap-4">
             
             <Link href="/login" className="bg-[#F68B1E] hover:bg-[#e07c18] text-white px-6 py-3 rounded-2xl">
-            Get Started
+            {t('button_action1')}
             </Link>
             
             <Link href="/store/mamy-store" className="rounded-2xl px-6 py-3 border border-gray-300 hover:bg-gray-100">
-              View Demo
+              {t('button_action2')}
             </Link>
           </div>
         </div>
@@ -155,10 +171,10 @@ export default function HomePage() {
       {/* Features */}
       <section id="features" className="container mx-auto px-6 py-20 max-w-7xl">
         <h2 className="text-3xl font-semibold text-center mb-12">
-          Everything You Need to Sell Online
+          {t('features.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {[{name: "Theme Marketplace", icon: themeIcon, text:"Choose from a library of stunning themes designed to sell"}, {name: "Drag & Drop Builder", icon: builderIcon, text:"Easily build your store with customizable blocks"}, {name: "Custom Domains", icon: domainIcon, text:"Connect your own domain name to your shop"}].map((feature) => (
+          {[{name: t('features.feature1_title') , icon: themeIcon, text:t('features.feature1_text')}, {name: t('features.feature2_title'), icon: builderIcon, text:t('features.feature2_text')}, {name: t('features.feature3_title'), icon: domainIcon, text:t('features.feature3_text')}].map((feature) => (
             <Card key={feature.name} className="rounded-2xl shadow-sm hover:shadow-lg transition text-center border-0">
               <CardContent className="p-6">
                 <img src={feature.icon.src} alt={feature.name} className="w-20 h-20 mb-4 mx-auto" />
@@ -176,7 +192,7 @@ export default function HomePage() {
       <section id="pricing" className="bg-white py-20">
         <div className="container mx-auto px-6 max-w-7xl">
           <h2 className="text-3xl font-semibold text-center mb-12">
-             Pricing
+             {t('pricing.title')}
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -194,7 +210,7 @@ export default function HomePage() {
                     ))}
                   </ul>
                   <Button className="bg-[#F68B1E] hover:bg-[#e07c18] text-white px-6 py-3 rounded-2xl">
-                    Choose {plan.tier}
+                    {t('pricing.button')} {plan.tier}
                   </Button>
                 </CardContent>
               </Card>
@@ -244,6 +260,7 @@ export default function HomePage() {
           <a href="" data-component-name="logo-home" className="inline-block shrink-0">
             <img src={whiteLogo.src} alt="" className="h-11" data-component-name="" />
         </a>
+        <LocaleSwitcher />
         </div>
         <div className="md:block md:justify-end">
           <div className="flex flex-col flex-wrap gap-12 gap-x-4 md:gap-20 md:gap-x-16 sm:grid sm:max-h-fit sm:grid-cols-3 lg:grid-cols-4 max-h-368 sm:max-h-300">

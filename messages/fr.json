@@ -1,0 +1,188 @@
+{
+  "admin": {
+    "dashboard": {
+      "create_store": "Créer un nouveau magasin",
+      "first_store": "Créez votre première boutique",
+      "no_store": "Aucun magasin pour l'instant",
+      "no_store_text": "Créez votre première boutique en ligne pour commencer",
+      "overview": "Aperçu",
+      "pages": "Pages",
+      "stores_title": "Vos magasins",
+      "title": "Tableau de bord administrateur"
+    },
+    "shop_layout": {
+      "back_to_dashboard": "Retour au tableau de bord",
+      "shop_sidebar": {
+        "collections": "Collections",
+        "customers": "Clients",
+        "orders": "Commandes",
+        "overview": "Aperçu",
+        "pages": "Pages",
+        "products": "Produits",
+        "theme": "Thèmes",
+        "settings": "Paramètres"
+      }
+    },
+    "shop_overview": {
+      "add_product": "Ajouter un produit",
+      "edit_pages": "Modifier les pages",
+      "stat_collections": "Collections",
+      "stat_pages": "Pages",
+      "stat_products": "Produits",
+      "store_active_theme": "Thème actif",
+      "store_description": "Description",
+      "store_info": "Informations sur le magasin",
+      "store_name": "Nom du magasin",
+      "store_overview": "Aperçu du magasin",
+      "store_overview_description": "Gérez votre magasin et consultez les statistiques",
+      "store_quick_actions": "Actions rapides",
+      "store_url": "URL du magasin"
+    },
+    "shop_pages":{
+      "title": "Pages",
+      "description": "Gérez vos pages et navigation",
+      "manager": {
+        "no_page_yet_title": "Aucune page pour l'instant",
+        "no_page_yet_description": "Créez votre première page pour commencer",
+        "home": "Accueil",
+        "edit": "Modifier le contenu",
+        "published":"Publiée",
+        "draft": "Brouillon",
+        "delete_confirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette action ne peut pas être annulée.",
+        "failed_to_delete": "Échec de la suppression de la page. Veuillez réessayer.",
+        "form_modal":{
+          "create_title": "Créer une nouvelle page",
+          "edit_title": "Modifier la page",
+          "name_label": "Titre de la page",
+          "name_placeholder": "e.g., À propos de nous, Contact",
+          "url_slug_label": "URL Slug *",
+          "url_slug_description": "Seuls les lettres minuscules, les chiffres et les tirets sont autorisés. Cela sera l'URL de la page.",
+          "set_as_home_label":"Définir comme page d'accueil",
+          "set_as_home_description": "Si activé, cette page deviendra la page d'accueil de votre magasin.",
+          "content_label": "Contenu (HTML)",
+          "content_placeholder": "<h1>Ma Page</h1><p>Contenu de la page ici...</p>",
+          "show_in_nav_label": "Afficher dans la navigation",
+          "show_in_nav_description": "Si activé, cette page apparaîtra dans le menu de navigation de votre magasin.",
+          "published_label": "Publiée (visible sur votre magasin)",
+          "cancel_button":"Annuler",
+          "submit_button_create": "Créer la page",
+          "submit_button_edit": "Enregistrer les modifications",
+          "saving": "Enregistrement en cours..."
+        },
+        "editor_modal": {
+          "edit_page_label":"Modifier Page:"
+          
+        },
+        "block_editor_modal":{
+          "save_changes": "Enregistrer les modifications",
+          "no_blocks_yet":  "Aucun bloc pour l'instant. Ajoutez-en un à partir de la barre latérale.",
+          "block_properties_label": "Propriétés du bloc",
+          "add_block": "Ajouter un bloc"
+        }
+      }
+    },
+    "shop_products": {
+      "title": "Produits",
+      "description": "Gérez vos produits et votre inventaire",
+      "add_product" : "Ajouter un produit",
+      "manager": {
+        "no_product_yet_title": "Aucun produit pour l'instant",
+        "no_product_yet_description": "Commencez par créer votre premier produit",
+        "edit": "Modifier le produit",
+        "published":"Publié",
+        "draft": "Brouillon",
+        "delete_confirmation": "Êtes-vous sûr de vouloir supprimer ce produit ? Cette action ne peut pas être annulée.",
+        "failed_to_delete": "Échec de la suppression du produit. Veuillez réessayer.",
+        "loading": "Chargement des produits...",
+        "failed_to_load": "Échec du chargement des produits. Veuillez réessayer.",
+        "failed_to_create": "Échec de la création du produit. Veuillez réessayer.",
+        "search_placeholder": "Rechercher un produit",
+        "price_label": "Prix: ",
+        "stock_label": "Stock: ",
+        "form_modal":{
+          "create_title": "Créer un produit",
+          "edit_title": "Modifier le produit",
+          "basic_info_label": "Informations de base",
+          "name_label": "Nom du produit ",
+          "name_placeholder": "e.g., T-Shirt, Coffee Mug",
+          "images_label": "Image du produit",
+          "description_label": "Description",
+          "description_placeholder": "Entrez une description pour votre produit.",
+          "collection_label": "Collection",
+          "select_collection_placeholder": "choisir une collection...",
+          "price_label": "Prix :",
+          "stock_label": "Stock:",
+          "category_label": "Catégorie",
+          "activity_label": "Activité",
+          "activity_select_label": "choisir une activité...",
+          "selected_category_label": "Catégorie sélectionnée:",
+          "change_button" : "Changer",
+          "loading_categories": "Chargement des catégories",
+          "subcategories":  "sous-catégories",
+          "price_placeholder": "e.g., 19.99",
+          "published_label": "Publié (visible sur votre magasin)",
+          "product_attributes_label": "Attributs de produit",
+          "cancel_button":"Annuler",
+          "submit_button_create": "Créer le produit",
+          "submit_button_edit": "Enregistrer les modifications",
+          "saving": "Enregistrement en cours...",
+          "category_search_label": "Rechercher des catégories...",
+          "category_search_helper": "Tapez pour rechercher des catégories...",
+          "category_search_placeholder": "e.g., Voiture, Vêtements"
+        }
+      }
+    },
+    "shop_collections":{
+      "title": "Collections",
+      "description": "Organisez vos produits en collections",
+      "manager":{
+        "delete_confirmation":"Êtes-vous sûr de vouloir supprimer cette collection ? Cette action ne peut pas être annulée.",
+        "failed_to_delete":"Échec de la suppression de la collection. Veuillez réessayer.",
+        "no_collection_yet_title":"Aucune collection pour l'instant",
+        "no_collection_yet_description":"Créez votre première collection pour organiser vos produits",
+        "product_number_label":"{count, plural, =0 {pas de produits} =1 {1 produit} other {# produits}}",
+        "form_modal":{
+          "add_collection_button": "Ajouter une collection",
+          "name_label": "Nom de la collection",
+          "slug_label": "Slug",
+          "slug_description": "Utilisé dans les URLs. Seuls les lettres minuscules, chiffres et tirets sont autorisés.",
+          "description_label": "Description",
+          "description_placeholder": "Description optionnelle...",
+          "cancel_button": "Annuler",
+          "saving": "Enregistrement en cours...",
+          "update": "Mettre à jour la collection",
+          "create": "Créer une collection"
+        }
+      }
+    }
+  },
+  "landing": {
+    "button_action1": "Commencer",
+    "button_action2": "Voir la démo",
+    "features": {
+      "feature1_text": "Choisissez parmi une bibliothèque de thèmes époustouflants conçus pour vendre",
+      "feature1_title": "Marketplace de thèmes",
+      "feature2_text": "Construisez facilement votre boutique avec des blocs personnalisables",
+      "feature2_title": "Constructeur par glisser-déposer",
+      "feature3_text": "Connectez votre propre nom de domaine à votre boutique",
+      "feature3_title": "Domaines personnalisés",
+      "title": "Tout ce dont vous avez besoin pour vendre en ligne"
+    },
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "features": "Fonctionnalités",
+      "get_started": "Commencer",
+      "pricing": "Tarification",
+      "sign_in": "Se connecter",
+      "sign_out": "Se déconnecter",
+      "testimonials": "Témoignages"
+    },
+    "pricing": {
+      "button": "Choisir",
+      "title": "Tarification"
+    },
+    "subtitle": "BaoBuy aide les entrepreneurs et les entreprises à créer de magnifiques boutiques en ligne entièrement personnalisables — conçues pour l'Afrique et prêtes pour le monde.",
+    "title_first": "Ouvrez votre boutique.",
+    "title_second": "Vendez sans limites."
+  }
+}

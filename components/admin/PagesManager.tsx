@@ -6,6 +6,8 @@ import { Page } from '@prisma/client';
 import { PageFormModal } from './PageFormModal';
 import { PageEditorModal } from './PageEditorModal';
 import { FileText, Edit, Trash2, Home, Eye, EyeOff } from 'lucide-react';
+//import {getTranslations} from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 
 interface PagesManagerProps {
   shopId: string;
@@ -15,8 +17,10 @@ interface PagesManagerProps {
 export function PagesManager({ shopId, pages }: PagesManagerProps) {
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
 
+  const t = useTranslations('admin.shop_pages.manager');
+
   const handleDelete = async (pageId: string) => {
-    if (!confirm('Are you sure you want to delete this page?')) return;
+    if (!confirm(t('delete_confirmation'))) return;
 
     try {
       const response = await fetch(`/api/shops/${shopId}/pages/${pageId}`, {
@@ -26,11 +30,11 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
       if (response.ok) {
         window.location.reload();
       } else {
-        alert('Failed to delete page');
+        alert(t('failed_to_delete'));
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete page');
+      alert(t('failed_to_delete'));
     }
   };
 
@@ -55,8 +59,8 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
     return (
       <div className="bg-white rounded-lg shadow p-12 text-center">
         <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-        <h3 className="text-xl font-semibold mb-2">No pages yet</h3>
-        <p className="text-gray-600 mb-6">Create your first page to get started</p>
+        <h3 className="text-xl font-semibold mb-2">{t('no_page_yet_title')}</h3>
+        <p className="text-gray-600 mb-6">{t('no_page_yet_description')}</p>
         <PageFormModal shopId={shopId} trigger="button" />
       </div>
     );
@@ -79,7 +83,7 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
                     {page.isHome && (
                       <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         <Home className="w-3 h-3" />
-                        Home
+                       {t('home')}
                       </span>
                     )}
                   </div>
@@ -99,12 +103,12 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
                   {page.published ? (
                     <>
                       <Eye className="w-3 h-3" />
-                      Published
+                     {t('published')}
                     </>
                   ) : (
                     <>
                       <EyeOff className="w-3 h-3" />
-                      Draft
+                      {t('Draft')}
                     </>
                   )}
                 </button>
@@ -115,7 +119,7 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
                   onClick={() => setSelectedPage(page)}
                   className="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
                 >
-                  Edit Content
+                  {t('edit')}
                 </button>
                 <PageFormModal shopId={shopId} page={page} trigger="icon" />
                 {!page.isHome && (

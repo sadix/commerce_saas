@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { CreditCard, Truck, MapPin } from 'lucide-react';
+import { rootDomain,protocol  } from '@/lib/utils';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 export default function CheckoutPage() {
@@ -175,6 +176,12 @@ export default function CheckoutPage() {
                   }}
                 />
               </Elements>
+
+              {/* Alternative Wave Mobile Payment */}
+              {/* {selectedAddress && wavemobilePaymentForm(customer!.id, selectedAddress, total, items)} */} 
+              <WavemobilePaymentForm customerId={customer!.id} addressId={selectedAddress} total={total} subdomain={subdomain} items={items} />
+
+
             </div>
           </div>
 
@@ -438,3 +445,137 @@ function AddressForm({ customerId, onSave, onCancel }: any) {
     </form>
   );
 }
+
+function WavemobilePaymentForm({ customerId, addressId, total, items, subdomain, onSuccess }: any) {
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const api_key = "wave_sn_prod_1hqS5Q0fxhRyBmZtANbZxb2zK1LVm5UA";
+    const domain = `${protocol}${subdomain}.${rootDomain}`;
+
+    const checkout_params = {
+      amount: total,
+      currency: "XOF",
+      error_url: `${protocol}://${subdomain}.${rootDomain}/checkout/error`,
+      success_url: `${protocol}://${subdomain}.${rootDomain}/checkout/success`,
+    };
+
+    const response = await fetch('/api/checkout/create-wave-payment-session', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${api_key}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(checkout_params),
+    });
+    if (response.ok){
+      // You can now use the response to redirect the user to the Wave app
+      const response_data = await response.json();
+      const wave_launch_url = response_data.wave_launch_url;
+      window.location.href = wave_launch_url;
+    }else{
+      console.error("Failed to create Wave checkout session");
+    }
+  }
+  return (
+    <div className="mt-4">
+      <h3 className="text-lg font-semibold mb-2">Or Pay with Wave Mobile</h3>
+      <form onSubmit={handleSubmit}>
+        <div className='flex items-center justify-center'>
+          
+          <img
+          src={`${protocol}://${rootDomain}/images/wave.png`}
+          alt="Wave Logo"
+          width={50}
+          height={50}
+        />
+
+        </div>
+        
+        <div className='mt-2 mb-4'>
+          <label >Complete Name</label>
+          <input type="text" name="customer_name" className="w-full px-4 py-2 border rounded-lg" />
+        </div>
+        <div className='mt-2 mb-4'>
+          <label >Phone number</label>
+          <input type="text" name="customer_phone" className="w-full px-4 py-2 border rounded-lg" />
+        </div>
+        <button
+        type="submit"
+        disabled={ loading }
+        className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50"
+      >
+        {loading ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+      </button>
+
+      </form>
+
+    </div>
+  );
+} 
+
+
+function WavemobilePaymentFormWOApi({ customerId, addressId, total, items, subdomain, onSuccess }: any) {
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const api_key = "wave_sn_prod_1hqS5Q0fxhRyBmZtANbZxb2zK1LVm5UA";
+    const domain = `${protocol}${subdomain}.${rootDomain}`;
+
+    const checkout_params = {
+      amount: total,
+      currency: "XOF",
+      error_url: `${protocol}://${subdomain}.${rootDomain}/checkout/error`,
+      success_url: `${protocol}://${subdomain}.${rootDomain}/checkout/success`,
+    };
+
+    const payment_utl = "https://pay.wave.com/m/M_sn_36kJZkh0MiqA/c/sn/?amount=" + total;
+
+    // You can now use the response to redirect the user to the Wave app
+    window.location.href = payment_utl;
+  }
+  return (
+    <div className="mt-4">
+      <h3 className="text-lg font-semibold mb-2">Or Pay with Wave Mobile</h3>
+      <form onSubmit={handleSubmit}>
+        <div className='flex items-center justify-center'>
+          
+          <img
+          src={`${protocol}://${rootDomain}/images/wave.png`}
+          alt="Wave Logo"
+          width={50}
+          height={50}
+        />
+
+        </div>
+        
+        <div className='mt-2 mb-4'>
+          <label >Complete Name</label>
+          <input type="text" name="customer_name" className="w-full px-4 py-2 border rounded-lg" />
+        </div>
+        <div className='mt-2 mb-4'>
+          <label >Phone number</label>
+          <input type="text" name="customer_phone" className="w-full px-4 py-2 border rounded-lg" />
+        </div>
+        <button
+        type="submit"
+        disabled={ loading }
+        className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold disabled:opacity-50"
+      >
+        {loading ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+      </button>
+
+      </form>
+
+    </div>
+  );
+} 
+                   

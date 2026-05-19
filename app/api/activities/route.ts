@@ -30,11 +30,11 @@ const session = await getServerSession(authOptions);
       orderBy: {
         name: 'asc',
       },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-      },
+      include:{
+        translations:true,
+      }
+      
+      
     });
 
     return NextResponse.json(activities);

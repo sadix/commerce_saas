@@ -8,6 +8,7 @@ import Link from 'next/link';
 import {Shop, Theme} from '@prisma/client';
 import { Store, FileText, LayoutDashboard  } from 'lucide-react';
 import { rootDomain,  } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
 interface ShopWithTheme extends Shop {
   theme: Theme | null;
@@ -15,6 +16,7 @@ interface ShopWithTheme extends Shop {
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
+  const t = await getTranslations('admin.dashboard');
   
   if (!session?.user) {
     redirect('/login');
@@ -29,31 +31,31 @@ export default async function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-2xl font-bold">{t('title')}</h1>
         </div>
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Your Stores</h2>
+          <h2 className="text-xl font-semibold">{t('stores_title')}</h2>
           <Link
             href="/dashboard/create-shop"
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Create New Store
+            {t('create_store')}
           </Link>
         </div>
 
         {shops.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <Store className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No stores yet</h3>
-            <p className="text-gray-600 mb-6">Create your first online store to get started</p>
+            <h3 className="text-xl font-semibold mb-2">{t('no_store')}</h3>
+            <p className="text-gray-600 mb-6">{t('no_store_text')}</p>
             <Link
               href="/dashboard/create-shop"
               className="inline-block px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              Create Your First Store
+              {t('no_store_text')}
             </Link>
           </div>
         ) : (
@@ -79,14 +81,14 @@ export default async function DashboardPage() {
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border rounded hover:bg-gray-50"
                     >
                       <LayoutDashboard className="w-4 h-4" />
-                      Overview
+                      {t('overview')}
                     </Link>
                     <Link
                       href={`/dashboard/shop/${shop.id}/pages`}
                       className="flex-1 flex items-center justify-center gap-2 px-3 py-2 border rounded hover:bg-gray-50"
                     >
                       <FileText className="w-4 h-4" />
-                      Pages
+                      {t('pages')}
                     </Link>
                     
                   </div>

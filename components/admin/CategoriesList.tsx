@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Category } from '@prisma/client';
 import { Edit, Trash2, FolderTree } from 'lucide-react';
 import { CategoryFormModal } from './CategoryFormModal';
+import {useTranslations} from 'next-intl';
 
 interface CategoriesListProps {
   categories: (Category & {
@@ -16,8 +17,9 @@ interface CategoriesListProps {
 }
 
 export function CategoriesList({ categories, shopId }: CategoriesListProps) {
+  const t = useTranslations('admin.shop_collections.manager');
   const handleDelete = async (categoryId: string) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
+    if (!confirm(t('delete_confirmation'))) return;
 
     try {
       const response = await fetch(`/api/shops/${shopId}/categories/${categoryId}`, {
@@ -27,11 +29,11 @@ export function CategoriesList({ categories, shopId }: CategoriesListProps) {
       if (response.ok) {
         window.location.reload();
       } else {
-        alert('Failed to delete category');
+        alert(t('failed_to_delete'));
       }
     } catch (error) {
       console.error('Delete error:', error);
-      alert('Failed to delete category');
+      alert(t('failed_to_delete'));
     }
   };
 
@@ -39,8 +41,8 @@ export function CategoriesList({ categories, shopId }: CategoriesListProps) {
     return (
       <div className="bg-white rounded-lg shadow p-12 text-center">
         <FolderTree className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-        <h3 className="text-xl font-semibold mb-2">No categories yet</h3>
-        <p className="text-gray-600 mb-6">Create categories to organize your products</p>
+        <h3 className="text-xl font-semibold mb-2">{t('no_collection_yet_title')}</h3>
+        <p className="text-gray-600 mb-6">{t('no_collection_yet_description')}</p>
         <CategoryFormModal shopId={shopId} trigger="button" />
       </div>
     );
@@ -61,7 +63,7 @@ export function CategoriesList({ categories, shopId }: CategoriesListProps) {
 
           <div className="flex items-center justify-between pt-4 border-t">
             <span className="text-sm text-gray-500">
-              {category._count.products} {category._count.products === 1 ? 'product' : 'products'}
+            {t('product_number_label',{count:category._count.products})}
             </span>
             <div className="flex gap-2">
               <CategoryFormModal

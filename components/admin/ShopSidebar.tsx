@@ -14,6 +14,7 @@ import {
   User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {useTranslations} from 'next-intl';
 
 interface ShopSidebarProps {
   shopId: string;
@@ -22,46 +23,46 @@ interface ShopSidebarProps {
 export function ShopSidebar({ shopId }: ShopSidebarProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const pathname = usePathname();
-
+  const t = useTranslations('admin.shop_layout.shop_sidebar');
   const navigation = [
     {
-      name: 'Overview',
+      name: t('overview'),
       href: `/dashboard/shop/${shopId}`,
       icon: LayoutDashboard,
     },
     {
-      name: 'Pages',
+      name: t('pages'),
       href: `/dashboard/shop/${shopId}/pages`,
       icon: FileText,
     },
     {
-      name: 'Products',
+      name: t('products'),
       href: `/dashboard/shop/${shopId}/products`,
       icon: Package,
     },
     {
-      name: 'Collections',
+      name: t('collections'),
       href: `/dashboard/shop/${shopId}/categories`,
       icon: FolderTree,
     },
     {
-      name: 'Customers',
+      name: t('customers'),
       href: `/dashboard/shop/${shopId}/customers`,
       icon: User,
     },
     {
-      name: 'Orders',
+      name: t('orders'),
       href: `/dashboard/shop/${shopId}/orders`,
       icon: Package,
     },
     
     {
-      name: 'Theme',
+      name: t('theme'),
       href: `/dashboard/shop/${shopId}/theme`,
       icon: Palette,
     },
     {
-      name: 'Settings',
+      name: t('settings'),
       href: `/dashboard/shop/${shopId}/settings`,
       icon: Settings,
     },

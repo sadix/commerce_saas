@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { Category } from '@prisma/client';
 import { X, Plus, Edit } from 'lucide-react';
+import {useTranslations} from 'next-intl';
 
 interface CategoryFormModalProps {
   shopId: string;
@@ -20,6 +21,8 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
     slug: category?.slug || '',
     description: category?.description || '',
   });
+
+  const t = useTranslations('admin.shop_collections.manager.form_modal');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -83,7 +86,7 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Collection
+          {t('add_collection_button')} 
         </button>
       ) : (
         <button
@@ -118,7 +121,7 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
 
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Category Name *
+                  {t('name_label')}*
                 </label>
                 <input
                   id="name"
@@ -134,7 +137,7 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
 
               <div>
                 <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
-                  Slug *
+                 {t('slug_label')} *
                 </label>
                 <input
                   id="slug"
@@ -148,13 +151,13 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
                   placeholder="e.g., electronics"
                 />
                 <p className="mt-1 text-sm text-gray-500">
-                  Used in URLs. Only lowercase letters, numbers, and hyphens.
+                  {t('slug_description')}
                 </p>
               </div>
 
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                  Description
+                  {t('description_label')}
                 </label>
                 <textarea
                   id="description"
@@ -163,7 +166,7 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
                   onChange={handleChange}
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Optional description..."
+                  placeholder={t('description_placeholder')}
                 />
               </div>
 
@@ -173,14 +176,14 @@ export function CategoryFormModal({ shopId, category, trigger }: CategoryFormMod
                   onClick={() => setIsOpen(false)}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  {t('cancel_button')}
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading ? 'Saving...' : category ? 'Update Category' : 'Create Category'}
+                  {loading ? t('saving') : category ? t('update') : t('create')}
                 </button>
               </div>
             </form>

@@ -4,11 +4,20 @@
 import { useState, useEffect } from 'react';
 import { X, ChevronRight, Loader2 } from 'lucide-react';
 import { CategoryPath, getCategoryAncestors} from '@/lib/categoryHelpers';
+import {useTranslations, useLocale} from 'next-intl';
+import { set } from 'zod';
+
+
+interface Translation {
+  locale: string;
+  name: string;
+}
 
 interface Activity {
   id: string;
   name: string;
   slug: string;
+  translations: Translation[];
 }
 
 interface Category {
@@ -19,6 +28,7 @@ interface Category {
   activityId: string | null;
   children?: Category[];
   parent?: Category;
+  translations: Translation[];
 }
 
 interface Attribute {
@@ -28,11 +38,13 @@ interface Attribute {
   type: string;
   required: boolean;
   options: AttributeOption[];
+  translations: Translation[];
 }
 
 interface AttributeOption {
   id: string;
   value: string;
+  translations: Translation[];
 }
 
 interface ProductFormData {
@@ -92,6 +104,12 @@ export function ProductFormModal({
   const [loadingAttributes, setLoadingAttributes] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [initializing, setInitializing] = useState(false);
+
+  const [categorySearch, setCategorySearch] = useState<Category[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const t = useTranslations('admin.shop_products.manager'); 
+  const locale = useLocale();
 
   // Load activities on mount and handle initial data for editing
   useEffect(() => {
@@ -195,6 +213,7 @@ export function ProductFormModal({
               slug: pathData[i].slug,
               parentId: pathData[i].parentId || null,
               activityId: pathData[i].activityId || null,
+              translations: pathData[i].translations || [],
             });
           }
           
@@ -396,6 +415,7 @@ export function ProductFormModal({
     setCategoryPath([]);
     setCategories([]);
     setAvailableAttributes([]);
+    setImageFile(null);
     onClose();
   };
 
@@ -404,6 +424,44 @@ export function ProductFormModal({
       ...formData,
       [e.target.name]: e.target.checked,
     });
+  };
+
+  const searchCategoryInput = (value: string) => {
+    setSearchTerm(value);
+    const trimmedValue = value.trim().toLowerCase();
+    if (trimmedValue === '') {
+      setCategorySearch([]);
+    } else {
+      if(locale == "en"){
+        const filtered = categories.filter((c) => c.name.toLowerCase().includes(trimmedValue));
+      setCategorySearch(filtered);
+      }
+      else{
+
+        const filtered = categories.filter((c) => {
+          const translation = c.translations.find(t => t.locale === locale);
+          return translation && translation.name.toLowerCase().includes(trimmedValue);
+        });
+        setCategorySearch(filtered);  
+      }
+      
+    }
+  };
+
+  const handleCategorySearchSelect = (category: Category) => {
+    if (category.children && category.children.length > 0) {
+      // Has children, navigate deeper
+      
+      setCategoryPath([...categoryPath, category]);
+      setSearchTerm('');
+      setCategorySearch([]);
+      setFormData((prev) => ({ ...prev, platform_categoryId: category.id }));
+    } else {
+      // Leaf category, select it
+      setSearchTerm('');
+      setCategorySearch([]);
+      setFormData((prev) => ({ ...prev, platform_categoryId: category.id }));
+    }
   };
 
   if (!isOpen) return null;
@@ -420,7 +478,7 @@ export function ProductFormModal({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-2xl font-bold text-gray-900">
-            {initialData ? 'Edit Product' : 'Create New Product'}
+            {initialData ? t('form_modal.edit_title'): t('form_modal.create_title')}
           </h2>
           <button
             onClick={handleClose}
@@ -444,11 +502,11 @@ export function ProductFormModal({
             <div className="p-6 space-y-6">
               {/* Basic Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Basic Information</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('form_modal.basic_info_label')}</h3>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Product Name <span className="text-red-500">*</span>
+                    {t('form_modal.name_label')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -456,7 +514,7 @@ export function ProductFormModal({
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter product name"
+                    placeholder={t('form_modal.name_placeholder')}
                   />
                 </div>
                 <div className="flex items-center">
@@ -469,17 +527,17 @@ export function ProductFormModal({
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <label htmlFor="published" className="ml-2 block text-sm text-gray-900">
-                    Publish product (make it visible in your store)
+                    {t('form_modal.published_label')}
                   </label>
                 </div>
 
                 {/* image upload to be added here */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Product Image
+                        {t('form_modal.images_label')}
                     </label>
 
-                    {formData.images &&  (
+                    {((formData.images && formData.images.length > 0) || imageFile) && (
                         <img src={imageFile ? URL.createObjectURL(imageFile) : formData.images[0]} alt="Product preview"  className="mb-3 h-32 rounded-md object-cover border" />
                     )}
 
@@ -501,7 +559,7 @@ export function ProductFormModal({
 
              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Collection
+                     {t('form_modal.collection_label')}
                 </label>
                 <select
                     name="categoryId"
@@ -512,7 +570,7 @@ export function ProductFormModal({
                     className="w-full px-4 py-2 border border-gray-300 rounded-md
                     focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                    <option value="">Select a collection</option>
+                    <option value="">{t('form_modal.select_collection_placeholder')}</option>
                     {collections.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                         {cat.name}
@@ -523,14 +581,14 @@ export function ProductFormModal({
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Description
+                    {t('form_modal.description_label')}
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter product description"
+                    placeholder={t('form_modal.description_placeholder')}
                   />
                 </div>
 
@@ -550,7 +608,7 @@ export function ProductFormModal({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Price <span className="text-red-500">*</span>
+                      {t('form_modal.price_label')} XOF<span className="text-red-500">*</span>
                     </label>
                     <input
                       type="number"
@@ -559,13 +617,15 @@ export function ProductFormModal({
                       value={formData.price}
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="0.00"
+                      placeholder="0.00 XOF"
+                      
                     />
+                    
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stock <span className="text-red-500">*</span>
+                      {t('form_modal.stock_label')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="number"
@@ -581,12 +641,12 @@ export function ProductFormModal({
 
               {/* Category Selection */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Category</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('form_modal.category_label')}</h3>
 
                 {/* Activity Selection */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Activity <span className="text-red-500">*</span>
+                    {t('form_modal.activity_label')} <span className="text-red-500">*</span>
                   </label>
                   <select
                     required
@@ -598,10 +658,10 @@ export function ProductFormModal({
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     disabled={loading}
                   >
-                    <option value="">Select an activity...</option>
+                    <option value="">{t('form_modal.activity_select_label')}</option>
                     {activities.map((activity) => (
                       <option key={activity.id} value={activity.id}>
-                        {activity.name}
+                       {(locale == "en") ? activity.name : activity.translations.find(t => t.locale === locale)?.name || activity.name}
                       </option>
                     ))}
                   </select>
@@ -611,7 +671,7 @@ export function ProductFormModal({
                 {formData.activityId && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Category <span className="text-red-500">*</span>
+                      {t('form_modal.category_label')} <span className="text-red-500">*</span>
                     </label>
                     
                     {/* Breadcrumb Navigation */}
@@ -625,7 +685,7 @@ export function ProductFormModal({
                           onClick={() => setCategoryPath([])}
                           className="hover:text-blue-600 font-medium"
                         >
-                          {selectedActivity?.name}
+                          {(locale == "en") ? selectedActivity?.name : selectedActivity?.translations.find(t => t.locale === locale)?.name || selectedActivity?.name}
                         </button>
                         {categoryPath.map((cat, index) => (
                           <div key={cat.id} className="flex items-center gap-2">
@@ -637,27 +697,47 @@ export function ProductFormModal({
                                 index === categoryPath.length - 1 ? 'font-semibold text-gray-900' : 'font-medium'
                               }`}
                             >
-                              {cat.name}
+                              {(locale == "en") ? cat.name : cat.translations.find(t => t.locale === locale)?.name || cat.name}
                             </button>
                           </div>
                         ))}
                       </div>
                     )}
 
+                    {/* Category text Search and Selection */ }
+                    <div className="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm font-medium text-blue-900">{t('form_modal.category_search_label')}</p>
+                      <p className="text-sm text-blue-700">{t('form_modal.category_search_helper')}</p> 
+                       <input type="search" className="w-full p-2 border border-gray-300 rounded-md" placeholder={t('form_modal.category_search_placeholder')} 
+                       onChange={(e) => searchCategoryInput(e.target.value)}  value={searchTerm}/>
+                       <div>
+                        {categorySearch.length > 0 && (
+                          <div className="mt-2 p-2 bg-white border border-gray-300 rounded-md max-h-40 overflow-y-auto">
+                            {categorySearch.map((cat) => (
+                              <button key={cat.id} type="button" onClick={() => handleCategorySearchSelect(cat)} className="w-full text-left px-2 py-1 hover:bg-gray-100 rounded">
+                                {(locale == "en") ? cat.name : cat.translations.find(t => t.locale === locale)?.name || cat.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                       </div>
+                    
+                    </div>
+
                     {/* Selected Category Display */}
                     {(formData.platform_categoryId && selectedCategory) && (
                       <div className="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm font-medium text-blue-900">Selected Category:</p>
-                            <p className="text-blue-700">{selectedCategory.name}</p>
+                            <p className="text-sm font-medium text-blue-900">{t('form_modal.selected_category_label')}</p>
+                            <p className="text-blue-700">{(locale == "en") ? selectedCategory.name : selectedCategory.translations.find(t => t.locale === locale)?.name || selectedCategory.name}</p>
                           </div>
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, platform_categoryId: '' })}
                             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                           >
-                            Change
+                            {t('form_modal.change_button')}
                           </button>
                         </div>
                       </div>
@@ -669,7 +749,7 @@ export function ProductFormModal({
                         {loadingCategories ? (
                           <div className="p-8 text-center">
                             <Loader2 className="w-8 h-8 animate-spin mx-auto text-gray-400" />
-                            <p className="text-sm text-gray-500 mt-2">Loading categories...</p>
+                            <p className="text-sm text-gray-500 mt-2">{t('form_modal.loading_categories')}</p>
                           </div>
                         ) : currentLevelCategories.length > 0 ? (
                           <>
@@ -693,7 +773,7 @@ export function ProductFormModal({
                                     className="w-full px-4 py-3 text-left hover:bg-blue-50 border-b border-gray-200 last:border-b-0 flex items-center justify-between group transition-colors"
                                   >
                                     <div className="flex-1">
-                                      <span className="text-gray-900 font-medium">{category.name}</span>
+                                      <span className="text-gray-900 font-medium">{(locale == "en") ? category.name : category.translations.find(t => t.locale === locale)?.name || category.name}</span>
                                       {!hasChildren && (
                                         <span className="ml-2 text-xs text-green-600 font-medium">
                                           • Leaf Category
@@ -703,7 +783,7 @@ export function ProductFormModal({
                                     {hasChildren ? (
                                       <div className="flex items-center gap-2 text-blue-600">
                                         <span className="text-xs font-medium">
-                                          {category.children?.length} subcategories
+                                          {category.children?.length} {t('form_modal.subcategories')}
                                         </span>
                                         <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                       </div>
@@ -743,7 +823,7 @@ export function ProductFormModal({
               {/* Attributes */}
               {formData.platform_categoryId && availableAttributes.length > 0 && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Product Attributes</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{t('form_modal.product_attributes_label')}</h3>
                   
                   {loadingAttributes ? (
                     <div className="p-8 text-center">
@@ -755,7 +835,7 @@ export function ProductFormModal({
                       {availableAttributes.map((attribute) => (
                         <div key={attribute.id}>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            {attribute.name}
+                            {(locale == "en") ? attribute.name : attribute.translations.find(t => t.locale === locale)?.name || attribute.name}
                             {attribute.required && <span className="text-red-500"> *</span>}
                           </label>
                           
@@ -766,10 +846,11 @@ export function ProductFormModal({
                               onChange={(e) => handleAttributeChange(attribute.id, e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                              <option value="">Select {attribute.name}...</option>
+                              <option value="">Select {(locale == "en") ? attribute.name : attribute.translations.find(t => t.locale === locale)?.name || attribute.name}...</option>
                               {attribute.options.map((option) => (
                                 <option key={option.id} value={option.value}>
-                                  {option.value}
+                                  
+                                  {(locale == "en")? option.value : option.translations.find(t => t.locale === locale)?.name || option.value}
                                 </option>
                               ))}
                             </select>
@@ -799,7 +880,7 @@ export function ProductFormModal({
                 className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 font-medium"
                 disabled={submitting}
               >
-                Cancel
+                {t('form_modal.cancel_button')}
               </button>
               <button
                 type="submit"
@@ -807,7 +888,7 @@ export function ProductFormModal({
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                {submitting ? 'Saving...' : initialData ? 'Update Product' : 'Create Product'}
+                {submitting ? 'Saving...' : initialData ? t('form_modal.submit_button_edit') : t('form_modal.submit_button_create')}
               </button>
             </div>
           </form>

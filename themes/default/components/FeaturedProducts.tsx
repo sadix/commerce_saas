@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { ShoppingCart, Eye } from 'lucide-react';
+import { ProductDetailModal } from './ProductDetailModal';
 
 interface FeaturedProductsProps {
   title?: string;
@@ -24,6 +25,8 @@ export default function FeaturedProducts({
 }: FeaturedProductsProps) {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const { addItem } = useCart();
 
   useEffect(() => {
@@ -123,7 +126,7 @@ export default function FeaturedProducts({
 
                   {/* Quick View Overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" onClick={() => setSelectedProduct(product)}>
                       <Eye className="w-4 h-4" />
                       Quick View
                     </button>
@@ -178,6 +181,14 @@ export default function FeaturedProducts({
           <div className="text-center text-gray-500">No products available</div>
         )}
       </div>
+
+      {selectedProduct && shopId &&(
+              <ProductDetailModal
+                product={selectedProduct}
+                onClose={() => setSelectedProduct(null)}
+                shopId={shopId} 
+              />
+            )}
     </section>
   );
 }

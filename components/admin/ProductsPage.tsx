@@ -7,6 +7,7 @@ import { ProductVariationsManager } from '@/components/admin/ProductVariationsMa
 import { Plus, Edit, Trash2, Package, Eye, EyeOff  } from 'lucide-react';
 import { platform } from 'os';
 import { CategoryPath, getCategoryAncestors } from '@/lib/categoryHelpers';
+import {useTranslations} from 'next-intl';
 
 
 interface Product {
@@ -66,6 +67,8 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
   // Replace with actual shop ID from auth/session
   const shopId = shopid;
 
+  const t = useTranslations('admin.shop_products');
+
   useEffect(() => {
     loadProducts();
   }, []);
@@ -114,11 +117,11 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
         setIsModalOpen(false);
       } else {
         const error = await response.json();
-        alert(`Failed to create product: ${error.error}`);
+        alert(t('manager.failed_to_create') + `: ${error.error}`);
       }
     } catch (error) {
       console.error('Failed to create product:', error);
-      alert('Failed to create product. Please try again.');
+      alert(t('manager.failed_to_create'));
     }
   };
 
@@ -309,9 +312,9 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Manage your product catalog
+            {t('description')}
           </p>
         </div>
         <button
@@ -319,7 +322,7 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 font-medium"
         >
           <Plus className="w-5 h-5" />
-          Add Product
+          {t('add_product')}
         </button>
       </div>
 
@@ -339,23 +342,23 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
       {loading ? (
         <div className="text-center py-12">
           <div className="inline-block w-8 h-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
-          <p className="text-gray-500 mt-4">Loading products...</p>
+          <p className="text-gray-500 mt-4">{t('manager.loading')}</p>
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
           <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No products yet
+            {t('manager.no_product_yet_title')}
           </h3>
           <p className="text-gray-500 mb-4">
-            Get started by creating your first product
+            {t('manager.no_product_yet_description')}
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
-            Create Product
+            {t('manager.form_modal.create_title')} 
           </button>
         </div>
       ) : (
@@ -364,7 +367,7 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
             <div>
               <label className='block text-sm font-medium text-gray-700 mb-1'></label>
               <input type="text" onChange={(e) =>setSearchInput(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Search product "/> 
+                    placeholder={t('manager.search_placeholder')}/> 
             </div>
 
           </div>
@@ -424,13 +427,13 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
                         </div>
                       )}
                       <div className="flex items-center gap-1">
-                        <span className="text-gray-500">Price:</span>
+                        <span className="text-gray-500">{t('manager.price_label')}</span>
                         <span className="font-medium text-gray-900">
-                          ${product.price.toFixed(2)}
+                          {product.price.toFixed(2)} XOF
                         </span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <span className="text-gray-500">Stock:</span>
+                        <span className="text-gray-500">{t('manager.stock_label')}</span>
                         <span
                           className={`font-medium ${
                             product.stock > 0
@@ -465,12 +468,12 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
                                           {product.published ? (
                                             <>
                                               <Eye className="w-3 h-3" />
-                                              Published
+                                              {t('manager.published')}
                                             </>
                                           ) : (
                                             <>
                                               <EyeOff className="w-3 h-3" />
-                                              Draft
+                                              {t('manager.draft')}
                                             </>
                                           )}
                     </button>

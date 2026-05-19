@@ -160,7 +160,7 @@ export function ProductsList({ products, shopId }: ProductsListProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
-                      ${product.price.toFixed(2)}
+                      {product.price.toFixed(2)} XOF
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -51,18 +51,18 @@ export async function GET(
        categoryIds.push(currentCategory.id);
        break; 
      }
-     else{
-      continue;
-     }
+     
     
       
     }
     console.log(categoryIds);
     // Get all attributes for these categories
+    const filterUndefinedOfCategoryIds = categoryIds.filter((id) => id !== undefined);
+    console.log(filterUndefinedOfCategoryIds);
     const categoryAttributes = await prisma.categoryAttribute.findMany({
       where: {
         categoryId: {
-          in: categoryIds,
+          in: filterUndefinedOfCategoryIds,
         },
       },
       include: {
@@ -72,7 +72,11 @@ export async function GET(
               orderBy: {
                 value: 'asc',
               },
+              include:{
+                translations:true,
+              }
             },
+            translations: true,
           },
         },
       },

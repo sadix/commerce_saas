@@ -20,6 +20,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Trash2, Plus } from 'lucide-react';
+import {useTranslations} from 'next-intl';
 
 export interface Block {
   id: string;
@@ -36,6 +37,7 @@ interface BlockEditorProps {
 export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEditorProps) {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
+  const t = useTranslations('admin.shop_pages.manager.block_editor_modal');
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -98,7 +100,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
             onClick={() => onSave(blocks)}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Save Changes
+           {t('save_changes')}
           </button>
         </div>
 
@@ -119,7 +121,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
 
         {blocks.length === 0 && (
           <div className="text-center py-12 text-gray-400">
-            No blocks yet. Add one from the sidebar.
+            {t('no_blocks_yet')} 
           </div>
         )}
       </div>
@@ -128,7 +130,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
       <div className="md:w-1/3 space-y-4">
         {/* Add Block Panel */}
         <div className="bg-white rounded-lg shadow p-4">
-          <h3 className="font-bold mb-3">Add Block</h3>
+          <h3 className="font-bold mb-3"> {t('add_block')} </h3>
           <div className="space-y-2">
             {availableBlocks.map((blockType) => (
               <button
@@ -146,7 +148,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
         {/* Block Properties Panel */}
         {selectedBlock && (
           <div className="bg-white rounded-lg shadow p-4">
-            <h3 className="font-bold mb-3">Block Properties</h3>
+            <h3 className="font-bold mb-3"> {t('block_properties_label')} </h3>
             <BlockPropertiesEditor
               block={blocks.find((b) => b.id === selectedBlock)!}
               onUpdate={(props) => updateBlockProps(selectedBlock, props)}

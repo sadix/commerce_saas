@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Page } from '@prisma/client';
 import { X } from 'lucide-react';
 import { BlockEditor, Block } from './BlockEditor';
+import {useTranslations} from 'next-intl';
 
 interface PageEditorModalProps {
   shopId: string;
@@ -13,6 +14,7 @@ interface PageEditorModalProps {
 }
 
 export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps) {
+  const t = useTranslations('admin.shop_pages.manager.editor_modal');
   const availableBlocks = [
     {
       type: 'Header',
@@ -108,7 +110,7 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
       <div className="bg-white rounded-lg w-full max-w-7xl h-[90vh] flex flex-col">
         <div className="border-b px-6 py-4 flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-bold">Edit Page: {page.title}</h2>
+            <h2 className="text-xl font-bold">{t('edit_page_label')} {page.title}</h2>
             <p className="text-sm text-gray-600">/{page.slug}</p>
           </div>
           <button
