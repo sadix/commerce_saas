@@ -800,7 +800,7 @@ export default function ProductsList({
         </div>
       )}
 
-      {selectedProduct && (
+      {selectedProduct && shopId && (
         <ProductDetailModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}

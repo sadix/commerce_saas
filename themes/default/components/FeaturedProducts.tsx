@@ -182,7 +182,7 @@ export default function FeaturedProducts({
         )}
       </div>
 
-      {selectedProduct && shopId &&(
+      {selectedProduct && (shopId !== undefined) &&(
               <ProductDetailModal
                 product={selectedProduct}
                 onClose={() => setSelectedProduct(null)}
