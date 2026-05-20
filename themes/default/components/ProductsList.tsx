@@ -77,8 +77,9 @@ export default function ProductsList({
 
   const [selectedPlatformCategory, setSelectedPlatformCategory] = useState<string>('all');
   const [expandedPlatformCategories, setExpandedPlatformCategories] = useState<Set<string>>(new Set());
-
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  
+  const [initialPriceRange, setInitialPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
   const [sortBy, setSortBy] = useState<string>('name-asc');
 
 
@@ -97,8 +98,18 @@ export default function ProductsList({
       fetchProducts();
       //fetchCategories();
       fetchPlatformCategories();
+ 
     }
   }, [shopId]);
+
+  useEffect(()  => {
+        //set Max price for price filter based on max product price
+        //fetch max price from products and set it as max value for price range filter  
+        //const maxPrice = products.reduce((max, product) => product.price > max ? product.price : max, 0);
+        const maxPrice = products.length > 0 ? Math.max(...products.map(p => p.price)) : 10000;
+        setInitialPriceRange([0, maxPrice]);
+        setPriceRange([0, maxPrice]);
+  }, [products]);
 
   const fetchProducts = async () => {
     try {
@@ -108,7 +119,7 @@ export default function ProductsList({
         // Only show published products
         setProducts(data.filter((p: Product) => p.published ));
       }
-    } catch (error) {
+    } catch (error) { 
       console.error('Failed to fetch products:', error);
     } finally {
       setLoading(false);
@@ -475,7 +486,7 @@ export default function ProductsList({
             <input
               type="number"
               value={priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 1000])}
+              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || initialPriceRange[1] ])}
               className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
               placeholder="Max"
             />
@@ -483,14 +494,14 @@ export default function ProductsList({
           <input
             type="range"
             min="0"
-            max="1000"
+            max={initialPriceRange[1]}
             value={priceRange[1]}
             onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
             className="w-full"
           />
           <div className="flex justify-between text-xs text-gray-500">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}</span>
+            <span>XOF{priceRange[0]}</span>
+            <span>XOF{priceRange[1]}</span>
           </div>
         </div>
       </div>
@@ -499,7 +510,8 @@ export default function ProductsList({
       <button
         onClick={() => {
           setSelectedCategory('all');
-          setPriceRange([0, 1000]);
+          const maxPrice = products.length > 0 ? Math.max(...products.map(p => p.price)) : 10000;
+          setPriceRange([0, maxPrice]);
           setSelectedPlatformCategory('all');
         }}
         className="w-full px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50"

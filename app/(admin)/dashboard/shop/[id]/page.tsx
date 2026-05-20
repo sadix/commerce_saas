@@ -23,6 +23,7 @@ export default async function ShopOverviewPage({ params }: ReqParamProps) {
         select: {
           pages: true,
           products: true,
+          categories: true,
         },
       },
       theme: true,
@@ -52,7 +53,7 @@ export default async function ShopOverviewPage({ params }: ReqParamProps) {
     },
     {
       name: t('stat_collections'),
-      value: 0, // Will be updated when categories are added
+      value: shop._count.categories,
       icon: FolderTree,
       href: `/dashboard/shop/${id}/categories`,
       color: 'text-purple-600',
