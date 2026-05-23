@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import {put} from '@vercel/blob'
 
 // This is a placeholder for file upload
 // In production, you would integrate with S3 or similar storage service
@@ -32,12 +33,17 @@ export async function POST(request: Request) {
 
     // TODO: Upload to S3 or MinIO
     // For now, we'll convert to base64 (not recommended for production)
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64 = buffer.toString('base64');
-    const dataUrl = `data:${file.type};base64,${base64}`;
+    //const bytes = await file.arrayBuffer();
+    //const buffer = Buffer.from(bytes);
+    //const base64 = buffer.toString('base64');
+    //const dataUrl = `data:${file.type};base64,${base64}`;
 
-    return NextResponse.json({ url: dataUrl });
+    //Upload to vercel blob storage and return the URL
+    const blob = await put(file.name, file, {
+      access: 'public',
+    });
+
+    return NextResponse.json({ url: blob.url });
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
