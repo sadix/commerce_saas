@@ -4,8 +4,9 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Filter, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import {useTranslations, useLocale} from 'next-intl';
 
-import { ProductDetailModal } from './ProductDetailModal';
+import { ProductDetailModal } from './ProductDetailModal'; 
 
 
 interface Product {
@@ -25,6 +26,7 @@ interface Product {
   platform_category: {
     id: string;
     name: string;
+    translations: Translation[];
   }; 
   platform_categoryId: string;
 }
@@ -33,6 +35,8 @@ interface Category {
   id: string;
   name: string;
   productCount: number;
+  translations: Translation[];
+  
 }
 
 interface PlatformCategory {
@@ -41,6 +45,7 @@ interface PlatformCategory {
   parentId: string | null;
   children?: PlatformCategory[];
   productCount?: number;
+  translations: Translation[];
 }
 
 interface ProductsListProps {
@@ -51,6 +56,11 @@ interface ProductsListProps {
   showFilters?: boolean;
   shopId?: string;
   
+}
+
+interface Translation {
+  locale: string;
+  name: string;
 }
 
 
@@ -87,6 +97,9 @@ export default function ProductsList({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const ITEMS_PER_PAGE_OPTIONS = [12, 24, 48];
+
+  const locale = useLocale();
+  console.log("Current locale:", locale);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -206,6 +219,7 @@ export default function ProductsList({
         parentId: cat.parentId,
         children: [],
         productCount: cat._count?.products || 0,
+        translations: cat.translations || [],
       });
     });
 
@@ -395,7 +409,7 @@ export default function ProductsList({
               onChange={(e) => setSelectedPlatformCategory(e.target.value)}
               className="text-blue-600 focus:ring-blue-500"
             />
-            <span className="text-sm text-gray-700 flex-1">{category.name}</span>
+            <span className="text-sm text-gray-700 flex-1">{(locale === "en") ? category.name : category.translations.find(t => t.locale === locale)?.name || 'untranslated'}</span>
             {category.productCount !== undefined && category.productCount > 0 && (
               <span className="text-xs text-gray-500">({category.productCount})</span>
             )}
@@ -462,7 +476,7 @@ export default function ProductsList({
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-sm text-gray-700">{category.name}</span>
+                  <span className="text-sm text-gray-700">{(locale == "en") ? category.name : category.translations.find(t => t.locale === locale)?.name || category.name}</span>
                   <span className="text-xs text-gray-500 ml-auto">({category.productCount})</span>
                 </label>
               ))}
@@ -733,11 +747,7 @@ export default function ProductsList({
                     {/* Product Image */}
                     <div className="w-48 h-48 bg-gray-200 flex-shrink-0">
                       {product.images && product.images.length > 0 ? (
-                        <img
-                          src={product.images[0]}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
+                        <img src={product.images[0]}  alt={product.name}  className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
                           No Image

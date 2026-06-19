@@ -108,7 +108,7 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
                 {product.compareAtPrice && product.compareAtPrice > currentPrice && (
                   <>
                     <span className="text-xl text-gray-500 line-through">
-                      ${product.compareAtPrice.toFixed(2)}
+                      FCFA {product.compareAtPrice.toFixed(2)}
                     </span>
                     <span className="px-2 py-1 bg-red-100 text-red-600 text-sm font-semibold rounded">
                       Save ${(product.compareAtPrice - currentPrice).toFixed(2)}

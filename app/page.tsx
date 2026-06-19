@@ -151,7 +151,7 @@ export default function HomePage() {
             {t('button_action1')}
             </Link>
             
-            <Link href="/store/mamy-store" className="rounded-2xl px-6 py-3 border border-gray-300 hover:bg-gray-100">
+            <Link href="https://mamy-store.baobuy.site/shop" className="rounded-2xl px-6 py-3 border border-gray-300 hover:bg-gray-100">
               {t('button_action2')}
             </Link>
           </div>
@@ -270,13 +270,13 @@ export default function HomePage() {
                 <li>
                   <a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/about" aria-label="About" data-component-name="about">About</a>
                 </li>
-                <li>
+               {/*  <li>
                   <a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/careers" aria-label="Careers" data-component-name="careers">Careers</a></li>
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Investors" data-component-name="investors">Investors</a></li>
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Press and Media" data-component-name="press-and-media">Press and Media</a></li>
-                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/partners" aria-label="Partners" data-component-name="partners">Partners</a></li>
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/partners" aria-label="Partners" data-component-name="partners">Partners</a></li> */}
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/affiliates" aria-label="Affiliates" data-component-name="affiliates">Affiliates</a></li>
-                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/legal" aria-label="Legal" data-component-name="legal">Legal</a></li>
+                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="/privacy-policy" aria-label="Legal" data-component-name="legal">Privacy Policy</a></li>
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Service Status" data-component-name="service-status">Service Status</a></li>
               </ul>
             </div>
@@ -286,8 +286,7 @@ export default function HomePage() {
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Merchant Support" data-component-name="merchant-support">Merchant Support</a></li>
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Help Center" data-component-name="shopify-help-center">BaoBuy Help Center</a></li>
                 <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Hire a Partner" data-component-name="hire-a-partner">Hire a Partner</a></li>
-                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Academy" data-component-name="shopify-academy">BaoBuy Academy</a></li>
-                <li><a className="mt-2 block py-3 text-base font-semi-medium hover:underline md:py-0.5 text-[#E0E0E0] hover:text-white" href="" aria-label="External source: Shopify Community" data-component-name="shopify-community">BaoBuy Community</a></li>
+                
               </ul>
             </div>
             <div className="w-[calc(50%-1rem)] sm:w-fit" data-component-name="integration">

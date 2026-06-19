@@ -1,3 +1,4 @@
+import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 import React from 'react';
 
 interface FooterProps {
@@ -10,6 +11,7 @@ export default function Footer({ shopData, copyrightText }: FooterProps) {
   
   return (
     <footer className="bg-gray-800 text-white py-8">
+      <LocaleSwitcher></LocaleSwitcher>
       <div className="max-w-7xl mx-auto px-4 text-center">
         <p>{copyrightText || `© ${year} ${shopData.name}. All rights reserved.`}</p>
       </div>
