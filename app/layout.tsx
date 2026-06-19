@@ -12,6 +12,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'BaoBuy | eCommerce Platform',
   description: 'Create your online store in minutes',
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || '',
+  }
 };
 
 export default async function RootLayout({
