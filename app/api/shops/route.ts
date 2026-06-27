@@ -60,7 +60,7 @@ export async function POST(request: Request) {
   await prisma.domain.create({
     data: {
       shopId: shop.id,
-      domain: `${subdomain}.yourdomain.com`,
+      domain: `${subdomain}.baobuy.site`,
     },
   });
 
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     data: {
       shopId: shop.id,
       slug: 'home',
-      title: 'Home',
+      title: 'Accueil',
       isHome: true,
       layout: [
         {
@@ -81,8 +81,8 @@ export async function POST(request: Request) {
           id: 'hero-1',
           type: 'Hero',
           props: {
-            title: `Welcome to ${name}`,
-            subtitle: 'Your new online store',
+            title: `Bienvenue sur ${name}`,
+            subtitle: 'Votre boutique en ligne',
           },
         },
         {
@@ -97,6 +97,73 @@ export async function POST(request: Request) {
         },
       ],
     },
+  });
+
+  //Create product Page
+  await prisma.page.create({
+    data : {
+      shopId: shop.id,
+      slug: 'produits',
+      title: 'Boutique',
+      isHome: false,
+      layout: [
+                {
+                  "id": "block-001",
+                  "type": "Header",
+                  "props": {
+                  }
+                },
+                {
+                  "id": "block-002",
+                  "type": "ProductsList",
+                  "props": {
+                    "title": "Nos Produits",
+                    "layout": "grid",
+                    "shopId": shop.id,
+                    "columns": 3,
+                    "subtitle": "Choisissez parmi notre sélection de produits de qualité",
+                    "showFilters": true
+                  }
+                },
+                
+                {
+                  "id": "block-003",
+                  "type": "Footer",
+                  "props": {
+
+                  }
+                }
+              ]
+    }
+  });
+
+  //Create default collection
+  const defaultCollection = await prisma.category.create({
+    data: {
+      shopId: shop.id,
+      name: 'Default Collection',
+      slug: 'default-collection',
+    }
+  });
+
+
+  //Create sample product
+  await prisma.product.create({
+    data: {
+      shopId: shop.id,
+      name: 'Mon produit',
+      description: 'Produit Exemple',
+      price: 1000,
+      images : ["https://knawjdpypznesc6w.public.blob.vercel-storage.com/cmkimt3ti000i20w0oo8d2xth_repared.png"],
+      stock: 1,
+      published: true,
+      categoryId: defaultCollection.id,
+      hasVariations: false,
+      sku: 'SKU-001',
+      platform_categoryId: 'gid://shopify/TaxonomyCategory/aa-1-13-8'
+
+
+    }
   });
 
   return NextResponse.json(shop, { status: 201 });

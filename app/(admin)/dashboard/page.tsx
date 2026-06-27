@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import {Shop, Theme} from '@prisma/client';
-import { Store, FileText, LayoutDashboard  } from 'lucide-react';
+import { Store, FileText, LayoutDashboard, User } from 'lucide-react';
 import { rootDomain,  } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
 
@@ -30,9 +30,25 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl flex mx-auto px-4 py-4">
           <h1 className="text-2xl font-bold">{t('title')}</h1>
+
+          <div className="flex  justify-between ml-auto">
+            <Link
+              href="/dashboard/account"
+              className="ml-4 px-4 py-2 bg-blue-600 flex text-white rounded hover:bg-blue-700"
+            >
+              <User className=""/>
+
+              Account
+            </Link>
+
+          </div>
+          
+          
         </div>
+      
+
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 py-8">

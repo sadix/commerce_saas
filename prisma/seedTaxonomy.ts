@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL || "postgresql://postgres.ocooskzlkwyzuswyntpu:UXl0yoKr9xsMsfq9@aws-1-eu-central-1.pooler.supabase.com:5432/postgres",
+  connectionString: process.env.DATABASE_URL || "postgresql://baobuy:mybaopassword@tinehouse.duckdns.org:5432/baobuydb",
 });
 
 const prisma = new PrismaClient({adapter});

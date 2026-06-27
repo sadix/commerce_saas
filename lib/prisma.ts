@@ -10,6 +10,7 @@ const globalForPrisma = globalThis as unknown as {
 
  const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
+  shadowDatabaseConnectionString: process.env.SHADOW_DATABASE_URL!,
 });
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({adapter});
