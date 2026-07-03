@@ -27,6 +27,12 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
       },
     },
     {
+      type: 'HeaderLogoTop',
+      label: 'Header with Logo on top',
+      defaultProps: {},
+    },
+    
+    {
       type: 'Hero',
       label: 'Hero Section',
       defaultProps: {
@@ -58,6 +64,19 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
         layout: 'grid',
         columns: 3,
         showFilters: true,
+        shopId: shopId,
+      },
+    },
+    {
+      type: 'ProductsCollectionList',
+      label: 'Product Collection List',
+      defaultProps: {
+        title: 'Collection',
+        subtitle: 'Browse our collection',
+        layout: 'grid',
+        columns: 3,
+        showFilters: true,
+        collectionId : "all",
         shopId: shopId,
       },
     },
@@ -126,6 +145,7 @@ export function PageEditorModal({ shopId, page, onClose }: PageEditorModalProps)
             initialBlocks={isValidBlockArray(page.layout) ? page.layout as Block[] : []}
             onSave={handleSave}
             availableBlocks={availableBlocks}
+            shopId={shopId}
           />
         </div>
       </div>

@@ -13,7 +13,7 @@ interface HeaderProps {
   }>;
 }
 
-export default function Header({ shopData, pages  }: HeaderProps) {
+export default function HeaderLogoTop({ shopData, pages  }: HeaderProps) {
   const { itemCount, setIsOpen } = useCart();
   const navPages = pages?.filter((page:any) => page.showInNav !== false) || [];
   const [mobileMenutoggle, setMobileMenuToggle] = useState(false);
@@ -22,19 +22,20 @@ export default function Header({ shopData, pages  }: HeaderProps) {
   console.log('Header settings:', settings);
   return (
     <header className="bg-white shadow-sm"  style={{ background: colors.background, color: colors.text, fontFamily: typography.fontBody, borderColor: colors.border }}>
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="max-w-7xl mx-auto px-4 py-4  items-center justify-between">
+        <div className="flex items-center items-center gap-3 mb-4">
           {shopData.logoUrl && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={shopData.logoUrl} alt="Logo" className="h-10 w-10 object-contain" />
+            <img src={shopData.logoUrl} alt="Logo" className="h-10 w-10 object-contain mx-auto" />
           
           )}
-          <h1 className="text-xl font-bold" style={{ color: colors.text, fontFamily: typography.fontDisplay }}>
+          <h1 className="text-xl font-bold mx-auto" style={{ color: colors.text, fontFamily: typography.fontDisplay }}>
             {shopData.name}
           </h1>
         </div>
+      <div className="flex items-center gap-3">
       {navPages.length > 0 && (
-          <nav className="hidden md:flex gap-6">
+          <nav className="hidden md:flex gap-6 mx-auto">
             {navPages.map((page) => (
               <a
                 key={page.slug}
@@ -47,6 +48,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
             ))}
           </nav>
         )}
+        </div>
 
         {/* Mobile menu button */}
         {navPages.length > 0 && (
@@ -81,7 +83,7 @@ export default function Header({ shopData, pages  }: HeaderProps) {
       )}
 
       {/* Right Side Icons */}
-        <div className="flex items-center gap-4">
+        <div className="flex justify-end items-center gap-4">
           <a
             href={`/account`}
             className="p-2 hover:bg-gray-100 rounded-full transition"

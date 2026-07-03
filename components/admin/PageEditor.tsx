@@ -22,6 +22,11 @@ export function PageEditor({ shopId, pages }: PageEditorProps) {
       defaultProps: {},
     },
     {
+      type: 'HeaderLogoTop',
+      label: 'Header with Logo on top',
+      defaultProps: {},
+    },
+    {
       type: 'Hero',
       label: 'Hero Section',
       defaultProps: {
@@ -116,6 +121,7 @@ export function PageEditor({ shopId, pages }: PageEditorProps) {
         initialBlocks={isValidBlockArray(selectedPage.layout) ? selectedPage.layout as Block[] : []}
         onSave={handleSave}
         availableBlocks={availableBlocks}
+        shopId={shopId}
       />
     </div>
   );

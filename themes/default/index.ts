@@ -1,4 +1,5 @@
 import Header from './components/Header';
+import HeaderLogoTop from './components/HeaderLogoTop';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import ProductsList from './components/ProductsList';
@@ -8,12 +9,15 @@ import CategoryShowcase from './components/CategoryShowcase';
 import ProductCarousel from './components/ProductCarousel';
 import Newsletter from './components/Newsletter';
 import { ThemeComponent } from '@/types/theme';
+import ProductsCollectionList from './components/ProductCollectionList';
 
 export default {
   Header: { type: 'Header', component: Header } as ThemeComponent,
+  HeaderLogoTop: { type: 'HeaderLogoTop', component: HeaderLogoTop } as ThemeComponent,
   Hero: { type: 'Hero', component: Hero } as ThemeComponent,
   Features: { type: 'Features', component: Features } as ThemeComponent,
   ProductsList: { type: 'ProductsList', component: ProductsList } as ThemeComponent,
+  ProductsCollectionList : { type: 'ProductsCollectionList', component: ProductsCollectionList } as ThemeComponent,
   Footer: { type: 'Footer', component: Footer } as ThemeComponent,
   FeaturedProducts: { type: 'FeaturedProducts', component: FeaturedProducts } as ThemeComponent,
   CategoryShowcase: { type: 'CategoryShowcase', component: CategoryShowcase } as ThemeComponent,

@@ -1,7 +1,7 @@
 // src/themes/default/components/ProductsList.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { ChevronDown, Filter, X, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import {useTranslations, useLocale} from 'next-intl';
@@ -55,6 +55,7 @@ interface ProductsListProps {
   layout?: 'grid' | 'list';
   columns?: 2 | 3 | 4;
   showFilters?: boolean;
+  collectionId?: string;
   shopId?: string;
   
 }
@@ -65,12 +66,13 @@ interface Translation {
 }
 
 
-export default function ProductsList({
+export default function ProductsCollectionList({
   title = 'Our Products',
   subtitle = 'Browse our collection',
   layout = 'grid',
   columns = 3,
   showFilters = true,
+  collectionId,
   shopId,
 }: ProductsListProps) {
   const [products, setProducts] = useState<Product[]>([]);
@@ -128,13 +130,15 @@ export default function ProductsList({
         setPriceRange([0, maxPrice]);
   }, [products]);
 
+  
   const fetchProducts = async () => {
     try {
       const response = await fetch(`/api/shops/${shopId}/products`);
       if (response.ok) {
         const data = await response.json();
         // Only show published products
-        setProducts(data.filter((p: Product) => p.published ));
+        console.log(`CollectionId: ${collectionId}`);
+        setProducts(data.filter((p: Product) => (p.published ) && p.categoryId == collectionId ));
       }
     } catch (error) { 
       console.error('Failed to fetch products:', error);

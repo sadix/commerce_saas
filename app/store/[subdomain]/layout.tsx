@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { CartProvider } from '@/contexts/CartContext';
 import { CustomerAuthProvider } from '@/contexts/CustomerAuthContext';
 import { CartDrawer } from '@/components/storefront/CartDrawer';
+import { ThemeStyleTag, ThemeSettingsProvider, ShopThemeFields } from '@/theme-settings';
 
 interface StoreProps {
   children: React.ReactNode;
@@ -20,6 +21,9 @@ export default async function StorefrontLayout({
   const { subdomain } = await params;
   const shop = await prisma.shop.findUnique({
     where: { subdomain: subdomain },
+    include : {
+      theme:true,
+    }
   });
 
   if (!shop) {
@@ -29,9 +33,14 @@ export default async function StorefrontLayout({
   return (
     <CustomerAuthProvider shopId={shop.id}>
       <CartProvider shopId={shop.id}>
-        {children}
-        <CartDrawer />
+        <ThemeStyleTag shop={shop as ShopThemeFields} />
+        <ThemeSettingsProvider shop={shop as ShopThemeFields}>
+          {children}
+          <CartDrawer />
+        </ThemeSettingsProvider>
       </CartProvider>
     </CustomerAuthProvider>
   );
 }
+     
+ 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -22,6 +22,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Trash2, Plus } from 'lucide-react';
 import {useTranslations} from 'next-intl';
 
+
 export interface Block {
   id: string;
   type: string;
@@ -32,9 +33,10 @@ interface BlockEditorProps {
   initialBlocks: Block[];
   onSave: (blocks: Block[]) => void;
   availableBlocks: Array<{ type: string; label: string; defaultProps: Record<string, any> }>;
+  shopId: string;
 }
 
-export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEditorProps) {
+export function BlockEditor({ initialBlocks, onSave, availableBlocks, shopId }: BlockEditorProps) {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks);
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null);
   const t = useTranslations('admin.shop_pages.manager.block_editor_modal');
@@ -113,7 +115,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
                 isSelected={selectedBlock === block.id}
                 onSelect={() => setSelectedBlock(block.id)}
                 onDelete={() => deleteBlock(block.id)}
-                
+              
               />
             ))}
           </SortableContext>
@@ -152,6 +154,7 @@ export function BlockEditor({ initialBlocks, onSave, availableBlocks }: BlockEdi
             <BlockPropertiesEditor
               block={blocks.find((b) => b.id === selectedBlock)!}
               onUpdate={(props) => updateBlockProps(selectedBlock, props)}
+              shopId={shopId}
             />
           </div>
         )}
@@ -217,10 +220,13 @@ function SortableBlock({
 function BlockPropertiesEditor({
   block,
   onUpdate,
+  shopId
 }: {
   block: Block;
   onUpdate: (props: Record<string, any>) => void;
+  shopId:string;
 }) {
+  
   const handleChange = (key: string, value: any) => {
     if(key === 'backgroundImage' && value instanceof File) {
       const reader = new FileReader(); 
@@ -228,7 +234,8 @@ function BlockPropertiesEditor({
         onUpdate({ [key]: e.target?.result });
       };
       reader.readAsDataURL(value);
-    } else {
+    }
+    else {
       onUpdate({ [key]: value });
     }
   };
@@ -253,6 +260,36 @@ function BlockPropertiesEditor({
     array.splice(index, 1);
     onUpdate({ [key]: array });
   };
+
+  const getShopCollections = async (shopId: string) => {
+    try {
+      const response = await fetch(`/api/shops/${shopId}/categories`);
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      } else {
+        console.error('Failed to fetch collections');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching collections:', error);
+      return [];
+    }
+  };
+
+  const [collections, setCollections] = useState<any[]>([]);
+
+  // Fetch collections when shopId changes 
+  useEffect(() => {
+    const fetchCollections = async () => {
+      if (shopId) {
+        const data = await getShopCollections(shopId);
+        setCollections(data);
+      }
+    };
+
+    fetchCollections();
+  }, [shopId]);
 
   return (
     <div className="space-y-3">
@@ -324,6 +361,24 @@ function BlockPropertiesEditor({
                 <option value="2">2 Columns</option>
                 <option value="3">3 Columns</option>
                 <option value="4">4 Columns</option>
+              </select>
+          ) : key === 'collectionId' ? (
+            <select
+                value={value}
+                onChange={(e) => handleChange(key, e.target.value)}
+                className="w-full px-3 py-2 border rounded"
+              > 
+                <option key='all' value="all">
+                   All collections
+                  </option>
+
+                {collections.map((coll) => (
+                  <option key={coll.id} value={coll.id}>
+                    {coll.name}
+                  </option>
+                ))}
+                
+                
               </select>
           ) : Array.isArray(value) ? (
             <div className="space-y-2">

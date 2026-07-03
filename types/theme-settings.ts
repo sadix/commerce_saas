@@ -2,13 +2,12 @@
 
 // ─── Primitive token types ────────────────────────────────────────────────────
 
-export type HexColor = string; // "#RRGGBB" or "#RGB"
-export type CSSSize = string;  // "1rem", "16px", "0.5em"
+export type HexColor = string;  // "#RRGGBB" or "#RGB"
+export type CSSSize = string;   // "1rem", "16px", "0.5em"
 export type FontFamily = string; // e.g. "'Playfair Display', Georgia, serif"
 
 export type ButtonStyle = 'filled' | 'outline' | 'ghost';
-export type HeroLayout = 'centered' | 'split' | 'fullbleed';
-export type BorderRadiusPreset = 'sharp' | 'soft' | 'round';
+export type HeroLayout  = 'centered' | 'split' | 'fullbleed';
 
 // ─── Token groups ─────────────────────────────────────────────────────────────
 
@@ -38,7 +37,7 @@ export interface TypographyTokens {
   fontDisplay: FontFamily;
   /** Font used for body copy, labels, nav */
   fontBody: FontFamily;
-  /** Base font size (rem) — scales the whole type system */
+  /** Base font size */
   fontSizeBase: CSSSize;
   /** Weight for display / heading text */
   fontWeightDisplay: number;
@@ -55,12 +54,12 @@ export interface ShapeTokens {
   radiusMedium: CSSSize;
   /** Large surfaces: hero cards, modals */
   radiusLarge: CSSSize;
-  /** Pill shape: pill buttons, badges */
+  /** Pill shape */
   radiusFull: CSSSize;
 }
 
 export interface SpacingTokens {
-  /** Base unit. All spacing is derived from multiples of this. */
+  /** Base spacing unit */
   unit: CSSSize;
   /** Section vertical padding */
   sectionPaddingY: CSSSize;
@@ -75,28 +74,58 @@ export interface ComponentStyleTokens {
   heroLayout: HeroLayout;
   /** Whether to show the announcement bar */
   showAnnouncementBar: boolean;
-  /** Custom announcement bar text (empty = theme default) */
+  /** Announcement bar text — empty string means theme default */
   announcementText: string;
 }
 
-// ─── The full settings object ─────────────────────────────────────────────────
+// ─── Full settings object ─────────────────────────────────────────────────────
 
 export interface ThemeSettings {
-  colors: ColorTokens;
+  colors:     ColorTokens;
   typography: TypographyTokens;
-  shape: ShapeTokens;
-  spacing: SpacingTokens;
+  shape:      ShapeTokens;
+  spacing:    SpacingTokens;
   components: ComponentStyleTokens;
 }
 
-// ─── Partial override type (what a tenant actually stores) ────────────────────
+// ─── Partial override — what gets stored in the DB ────────────────────────────
 
 /**
- * Tenants store only the tokens they've changed.
- * DeepPartial<ThemeSettings> is merged with the theme defaults at runtime.
+ * Both Theme.defaultSettings and Shop.themeOverrides use this type.
+ * Only the tokens that differ from DEFAULT_THEME_SETTINGS are stored.
  */
 export type ThemeOverrides = DeepPartial<ThemeSettings>;
 
 type DeepPartial<T> = T extends object
   ? { [P in keyof T]?: DeepPartial<T[P]> }
   : T;
+
+// ─── DB model types ───────────────────────────────────────────────────────────
+
+/**
+ * Mirrors the Prisma Theme model exactly.
+ * defaultSettings is a Json? column — the theme's token overrides on top of
+ * DEFAULT_THEME_SETTINGS. This replaces the old hardcoded theme-defaults.ts.
+ */
+export interface ThemeRow {
+  id:             string;
+  name:           string;
+  slug:           string;
+  description:    string | null;
+  thumbnail:      string | null;
+  isActive:       boolean;
+  defaultSettings: ThemeOverrides | null;
+  created_at:     Date;
+  updated_at:     Date;
+}
+
+/**
+ * The theme-relevant fields from a Shop row, with related Theme included.
+ * Pass this to resolveThemeSettings() and ThemeSettingsProvider.
+ */
+export interface ShopThemeFields {
+  themeId:        string;
+  theme:          Pick<ThemeRow, 'id' | 'slug' | 'defaultSettings'>;
+  /** The tenant's personalised token changes — layered on top of theme.defaultSettings */
+  themeOverrides: ThemeOverrides | null;
+}

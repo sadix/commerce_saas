@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { X, ShoppingCart, Heart, Share2, Check, Minus, Plus } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import {useThemeSettings} from '@/theme-settings';
 
 interface ProductDetailModalProps {
   product: any;
@@ -17,6 +18,8 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
   const [selectedImage, setSelectedImage] = useState(0);
 
   const { addItem } = useCart();
+
+  const { colors , shape, components, typography} = useThemeSettings ();
 
  
 
@@ -32,10 +35,10 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto" style={{ backgroundColor: colors.surface, borderRadius: shape.radiusLarge ,borderColor: colors.border}}>
         {/* Header */}
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center z-10">
-          <h2 className="text-xl font-bold">Product Details</h2>
+          <h2 className="text-xl font-bold" style={{fontFamily:typography.fontDisplay}}>Product Details</h2>
           <div className="flex gap-2">
             <button className="p-2 hover:bg-gray-100 rounded-full">
               <Heart className="w-5 h-5" />
@@ -94,7 +97,7 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
                     {product.category.name}
                   </p>
                 )}
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2" style={{fontFamily:typography.fontDisplay}} >{product.name}</h1>
                 {product.sku && (
                   <p className="text-sm text-gray-500">SKU: {product.sku}</p>
                 )}
@@ -103,7 +106,7 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
               {/* Price */}
               <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-bold text-gray-900">
-                  ${currentPrice.toFixed(2)}
+                  FCFA {currentPrice.toFixed(2)}
                 </span>
                 {product.compareAtPrice && product.compareAtPrice > currentPrice && (
                   <>
@@ -166,6 +169,7 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
                 onClick={handleAddToCart}
                 disabled={currentStock === 0}
                 className="w-full py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                style={{backgroundColor:colors.background, color:colors.accent}}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {currentStock > 0 ? 'Add to Cart' : 'Out of Stock'}

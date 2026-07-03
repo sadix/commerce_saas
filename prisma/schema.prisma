@@ -6,6 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+
 }
 
 model Account {
@@ -87,6 +88,7 @@ model Shop {
   logoUrl     String?
   themeId     String?
   userId      String
+  themeOverrides Json?
 
   // Payment settings
   stripeAccountId     String?
@@ -132,6 +134,9 @@ model Theme {
   description String?
   thumbnail   String?
   isActive    Boolean  @default(true)
+
+  defaultSettings Json?
+
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
   
@@ -565,4 +570,19 @@ model ProductAttribute {
   @@index([productId])
   @@index([attributeId])
   @@map("product_attributes")
+}
+
+
+
+// ============================================
+// USER ACTIVITY LOG 
+// ============================================
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String   // e.g., "USER_LOGIN", "EXPORTED_REPORT"
+  details   String?  // JSON string of metadata
+  ipAddress String?
+  createdAt DateTime @default(now())
 }

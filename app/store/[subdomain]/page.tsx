@@ -40,7 +40,7 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
   return (
     <ThemeRenderer
       blocks={homePage.layout as any[]}
-      themeSlug={shop.theme?.slug || 'default'}
+      themeSlug={'default'}
       shopData={{
         name: shop.name,
         logoUrl: shop.logoUrl || undefined,

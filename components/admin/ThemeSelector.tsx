@@ -27,6 +27,8 @@ export function ThemeSelector({ shopId, themes, currentThemeId }: ThemeSelectorP
       if (response.ok) {
         setSelectedThemeId(themeId);
         alert('Theme updated successfully!');
+        //reload the page to apply the new theme
+        window.location.reload();
       } else {
         alert('Failed to update theme');
       }

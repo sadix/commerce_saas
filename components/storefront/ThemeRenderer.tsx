@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Block } from '@/components/admin/BlockEditor';
 import { ThemeComponent } from '@/types/theme';
+import { useThemeSettings } from '@/theme-settings';
 
 interface ThemeRendererProps {
   blocks: Block[];
@@ -28,7 +29,8 @@ export function ThemeRenderer({ blocks, themeSlug, shopData, pages  }: ThemeRend
   useEffect(() => {
     async function loadThemeComponents() {
       try {
-        const themModule = await import(`@/themes/${themeSlug}`);
+        //const themModule = await import(`@/themes/${themeSlug}`);
+        const themModule = await import(`@/themes/default`);
         setThemeComponents(themModule.default || themModule);
       } catch (error) {
         console.error('Failed to load theme:', error);
@@ -40,9 +42,11 @@ export function ThemeRenderer({ blocks, themeSlug, shopData, pages  }: ThemeRend
     loadThemeComponents();
   }, [themeSlug]);
 
+  const { colors, shape, components, typography} = useThemeSettings();
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" >
         <div className="text-gray-500">Loading theme...</div>
       </div>
     );
@@ -50,14 +54,14 @@ export function ThemeRenderer({ blocks, themeSlug, shopData, pages  }: ThemeRend
 
   if (!themeComponents) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" >
         <div className="text-red-500">Failed to load theme</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ color: colors.text , backgroundColor: colors.background, fontFamily: typography.fontBody }}>
       {blocks.map((block) => {
         const Component = themeComponents[block.type]?.component;
 
@@ -67,7 +71,7 @@ export function ThemeRenderer({ blocks, themeSlug, shopData, pages  }: ThemeRend
         }
 
         // Pass pages to Header component
-        const props = block.type === 'Header' 
+        const props = block.type === 'Header' || block.type === 'HeaderLogoTop'
           ? { ...block.props, shopData, pages }
           : { ...block.props, shopData };
 
