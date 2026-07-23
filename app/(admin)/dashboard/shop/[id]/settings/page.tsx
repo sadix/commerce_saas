@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ShopSettingsForm } from '@/components/admin/ShopSettingsForm';
+import { BillingSettings } from '@/components/billing/BillingSettings';
 
 export default async function SettingsPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -31,6 +32,9 @@ export default async function SettingsPage({ params }: { params: { id: string } 
       <div className="max-w-4xl mx-auto px-4 py-8">
         <ShopSettingsForm shop={shop} />
       </div>
+
+      
+      
     </div>
   );
 }

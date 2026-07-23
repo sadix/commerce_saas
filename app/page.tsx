@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent } from '@/components/ui/Card';
 import { LandingLinks } from '@/components/LandingLinks';
 import {LocaleSwitcher} from '@/components/LocaleSwitcher';
+import { PricingPlans } from '@/components/billing/PricingPlans';
 
 import { use } from 'react';
 import { setRequestLocale } from 'next-intl/server';
@@ -216,7 +217,9 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
+          <PricingPlans />
         </div>
+        
       </section>
 
       {/* Call to Action */}

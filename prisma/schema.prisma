@@ -78,6 +78,8 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+
+  subscription Subscription?
 }
 
 model Shop {
@@ -585,4 +587,77 @@ model ActivityLog {
   details   String?  // JSON string of metadata
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+
+
+// ============================================
+// SUBSCRIPTION 
+// ============================================
+
+
+enum PlanTier {
+  FREE
+  STARTER
+  PRO
+  BUSINESS
+}
+
+enum PaymentProvider {
+  STRIPE
+  SENEPAY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  UNPAID
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+
+  // One subscription per user. If your billing entity is an Organization
+  // instead of a User, rename userId -> organizationId and adjust the
+  // relation below (and every lib/ file that references it).
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id])
+
+  stripeCustomerId     String             @unique
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+
+
+  // ── SenePay-specific (used when provider = SENEPAY) ─────────────────────
+  // SenePay has no native recurring billing — each period is a fresh
+  // checkout session. We track the phone used and the last session so
+  // support/debugging has something to look at.
+  senepayPhone            String?
+  senepayLastSessionToken String?
+  renewalReminderSentAt   DateTime? // last time we emailed/texted a renewal link; reset to null on each new period
+
+
+  plan                 PlanTier           @default(FREE)
+  status               SubscriptionStatus @default(ACTIVE)
+
+  // Which gateway currently owns this subscription. Null until the first
+  // successful payment — a brand-new signup has no provider yet.
+  provider             PaymentProvider?
+
+  // Set once at signup: createdAt + 30 days. Drives the free-trial lockout.
+  trialEndsAt          DateTime?
+
+
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@index([stripeCustomerId])
+  @@index([status, provider])
 }
