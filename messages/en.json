@@ -184,6 +184,29 @@
     },
     "subtitle": "BaoBuy helps entrepreneurs and businesses build beautiful, fully customizable online stores — designed for Africa and ready for the world.\n",
     "title_first": "Open Your Market.",
-    "title_second": "Sell Without Limits."
+    "title_second": "Sell Without Limits.",
+    "middle_cta": {
+      "description": "Join the next generation of African businesses going digital with BaoBuy.",
+      "title": "Start Selling Today",
+      "button": "Create Your Store"
+    },
+    "testimonials": {
+      "title": "What Our Users Say",
+      "testimonial1": {
+        "name": "Amina Yusuf",
+        "role": "Founder, Amina's Boutique",
+        "text": "BaoBuy transformed my small boutique into a thriving online store. The platform is intuitive and the themes are beautiful."
+      },
+      "testimonial2": {
+        "name": "Kwame Mensah",
+        "role": "Owner, Kwame's Electronics",
+        "text": "I was able to set up my electronics store in just a few hours. BaoBuy's support team was incredibly helpful."
+      },
+      "testimonial3": {
+        "name": "Chinwe Okafor",
+        "role": "Entrepreneur, Chinwe's Crafts",
+        "text": "The drag-and-drop builder made it easy for me to create a unique online presence for my handmade crafts."
+      }
+    }
   }
 }

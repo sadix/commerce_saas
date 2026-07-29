@@ -85,56 +85,7 @@ export default function HomePage() {
             
           </div>
 
-      {/* <main className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          Build Your Online Store in Minutes
-        </h1>
-        <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-          Create a professional e-commerce store with our easy-to-use platform.
-          No coding required. Start selling online today.
-        </p>
-
-        <div className="flex gap-4 justify-center">
-          <Link
-            href="/signup"
-            className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 shadow-lg"
-          >
-            Start Free Trial
-          </Link>
-          <Link
-            href="/login"
-            className="px-8 py-4 bg-white text-gray-700 text-lg font-semibold rounded-lg hover:bg-gray-50 shadow-lg border border-gray-300"
-          >
-            View Demo
-          </Link>
-        </div>
-
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow">
-            <div className="text-4xl mb-4">🎨</div>
-            <h3 className="text-xl font-semibold mb-2">Beautiful Themes</h3>
-            <p className="text-gray-600">
-              Choose from professionally designed themes and customize them to match your brand.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-lg shadow">
-            <div className="text-4xl mb-4">🚀</div>
-            <h3 className="text-xl font-semibold mb-2">Quick Setup</h3>
-            <p className="text-gray-600">
-              Get your store online in minutes with our intuitive drag-and-drop builder.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-lg shadow">
-            <div className="text-4xl mb-4">📱</div>
-            <h3 className="text-xl font-semibold mb-2">Mobile Optimized</h3>
-            <p className="text-gray-600">
-              All themes are fully responsive and optimized for mobile shopping.
-            </p>
-          </div>
-        </div>
-      </main> */}
+      
       {/* Hero Section */}
       <section id="hero" className="container mx-auto px-6 py-24 grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto px-4 py-16">
         <div className=''>
@@ -195,7 +146,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-semibold text-center mb-12">
              {t('pricing.title')}
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+         {/*  <div className="grid md:grid-cols-3 gap-8">
             {[
               { tier: 'Basic', price: '$15/mo', features: ['Unlimited Products', 'Basic Themes', 'Email Support','Generated Domain name'] },
               { tier: 'Pro', price: '$29/mo', features: ['All Basic Features', 'Premium Themes', 'Priority Support', 'Custom Domain'] },
@@ -216,8 +167,8 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
-          </div>
-          <PricingPlans />
+          </div> */}
+          <PricingPlans loggedIn={false} />
         </div>
         
       </section>
@@ -225,12 +176,12 @@ export default function HomePage() {
       {/* Call to Action */}
       <section id="cta" className="bg-[#1E2A3A] text-white py-20">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold">Start Selling Today</h2>
+          <h2 className="text-4xl font-bold">{t('middle_cta.title')}</h2>
           <p className="mt-4 text-gray-300 max-w-xl mx-auto">
-            Join the next generation of African businesses going digital with BaoBuy.
+            {t('middle_cta.description')}
           </p>
           <Button className="mt-8 bg-[#F68B1E] hover:bg-[#e07c18] px-8 py-4 rounded-2xl">
-            Create Your Store
+            {t('middle_cta.button')}
           </Button>
         </div>
       </section>
@@ -238,13 +189,13 @@ export default function HomePage() {
       {/* Testimonials */}
       <section id="testimonials" className="container mx-auto px-6 py-20 max-w-7xl">
         <h2 className="text-3xl font-semibold text-center mb-12">
-          What Our Users Say
+          {t('testimonials.title')}
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { name: 'Amina K.', feedback: 'BaoBuy made it so easy to set up my online store. The themes are beautiful and the support team is fantastic!' },
-            { name: 'John D.', feedback: 'I love how customizable my store is with BaoBuy. The drag-and-drop builder is a game-changer.' },
-            { name: 'Sophie M.', feedback: 'Thanks to BaoBuy, I was able to launch my business quickly and start selling to customers worldwide.' },
+            { name: t('testimonials.testimonial1.name'), feedback: t('testimonials.testimonial1.text') },
+            { name: t('testimonials.testimonial2.name'), feedback: t('testimonials.testimonial2.text') },
+            { name: t('testimonials.testimonial3.name'), feedback: t('testimonials.testimonial3.text') },
           ].map((testimonial) => (
             <Card key={testimonial.name} className="rounded-2xl shadow-sm hover:shadow-lg transition border-0">
               <CardContent className="p-6">

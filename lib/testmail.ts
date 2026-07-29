@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   service:'gmail',
   auth: {
     user: "serignetine08@gmail.com",
-    pass: "ixhl xbhx cqcc kilm",
+    pass: "wiji oypd zfvz atnb",
   },
 });
 
@@ -70,8 +70,8 @@ async function main() {
   
 
 await transporter.sendMail({
-    from: "serignetine08@gmail.com",
-    to: "tineserignesaliou@gmail.com",
+    from: "contact@baobuy.site",
+    to: "salioutine2@hotmail.com",
     subject: `Order Confirmation - TEST`,
     html: emailHtml,
   });

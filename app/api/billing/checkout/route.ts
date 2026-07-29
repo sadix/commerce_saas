@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
   let customerId: string | undefined;
   const existing = await prisma.subscription.findUnique({ where: { userId: user.id } });
   customerId = existing?.stripeCustomerId;
+  customerId = customerId == user.id ? undefined : customerId;
 
   if (!customerId) {
     const customer = await stripe.customers.create({

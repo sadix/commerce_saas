@@ -2,10 +2,17 @@
 
 import { useState } from 'react';
 import { Check, Loader2, CreditCard, Smartphone } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/Card';
 import { PLANS, PlanTier, PLAN_ORDER } from '@/lib/plans';
+
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
+
 
 interface PricingPlansProps {
   currentPlan?: PlanTier;
+  loggedIn?: boolean;
 }
 
 type Provider = 'stripe' | 'senepay';
@@ -13,8 +20,14 @@ type Provider = 'stripe' | 'senepay';
 
 
 
-export function PricingPlans({ currentPlan = 'FREE' }: PricingPlansProps) {
+export   function PricingPlans({ currentPlan = 'FREE', loggedIn }: PricingPlansProps) {
   const [loading, setLoading] = useState<{ plan: PlanTier; provider: Provider } | null>(null);
+
+  //const session = await getServerSession(authOptions);
+
+  
+ 
+
 
   const handleSubscribe = async (plan: PlanTier, provider: Provider) => {
     setLoading({ plan, provider });
@@ -44,20 +57,25 @@ export function PricingPlans({ currentPlan = 'FREE' }: PricingPlansProps) {
   const [canPayStripeState, setCanPayStripe] = useState(canPayStripe);
   const [canPaySenepayState, setCanPaySenepay] = useState(canPaySenepay);
   
-  console.log('canPayStripe:', canPayStripe);
-  console.log('canPaySenepay:', canPaySenepay);
-  console.log('canPayStripeState:', canPayStripeState);
-  console.log('canPaySenepayState:', canPaySenepayState);
-
-
-
-
+  
+  //Return un link to login page if the user is not logged in
+  if (!loggedIn) {
+    return (
+      <a
+        href="/login"
+        className="bg-[#F68B1E] hover:bg-[#e07c18] text-white px-6 py-3 rounded-2xl"
+      >
+        Subscribe
+      </a>
+    );
+  }
 
   return(
      <>
+      
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full px-4 py-2 rounded text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+        className="bg-[#F68B1E] hover:bg-[#e07c18] text-white px-6 py-3 rounded-2xl"
       >
         Subscribe
       </button>
@@ -123,32 +141,33 @@ export function PricingPlans({ currentPlan = 'FREE' }: PricingPlansProps) {
         const canPaySenepay = plan.priceXOF !== null;
 
         return (
-          <div
+          <Card 
             key={tier}
-            className={`border rounded-lg p-5 flex flex-col ${
+            className={`rounded-2xl shadow-sm hover:shadow-lg transition text-center border-0 ${
               isCurrent ? 'border-blue-600 ring-1 ring-blue-600' : 'border-gray-200'
             }`}
           >
-            <h3 className="font-semibold text-lg">{plan.name}</h3>
-            <p className="text-2xl font-bold mt-1">{plan.priceLabel}</p>
+            <CardContent className="p-6">
+            <h3 className="text-xl font-semibold mb-4 ">{plan.name}</h3>
+            <p className="text-3xl font-bold break-words">{plan.priceLabel}</p>
 
-            <ul className="mt-4 space-y-2 flex-1">
+            <ul className="mb-6 text-gray-600">
               {plan.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm text-gray-600">
+                <li key={feature} className="flex items-start gap-2 text-sm text-gray-600 mb-2">
                   <Check className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
-            {isCurrent ? (
+            {isCurrent && loggedIn ? (
               <button
                 disabled
                 className="mt-5 px-4 py-2 rounded text-sm font-medium bg-gray-100 text-gray-500 cursor-default"
               >
                 Current plan
               </button>
-            ) : !canPayStripe && !canPaySenepay ? (
+            ) : !canPayStripe && !canPaySenepay && loggedIn ? (
               <button
                 disabled
                 className="mt-5 px-4 py-2 rounded text-sm font-medium bg-gray-100 text-gray-500 cursor-default"
@@ -170,7 +189,8 @@ export function PricingPlans({ currentPlan = 'FREE' }: PricingPlansProps) {
                 )}
               </div>
             )}
-          </div>
+            </CardContent>
+          </Card >
         );
       })}
     </div>

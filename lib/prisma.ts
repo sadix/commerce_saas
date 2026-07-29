@@ -35,7 +35,7 @@ export const prisma = basePrisma.$extends({
               plan: 'FREE',
               status: 'TRIALING',
               trialEndsAt: computeTrialEnd(),
-              stripeCustomerId: "",
+              stripeCustomerId: user.id? user.id : "", // Ensure stripeCustomerId is not null
               stripeSubscriptionId: user.id,
               stripePriceId: null,
             },

@@ -1,7 +1,7 @@
 {
   "admin": {
     "dashboard": {
-      "create_store": "Créer un nouveau magasin",
+      "create_store": "Créer une nouvelle boutique",
       "first_store": "Créez votre première boutique",
       "no_store": "Aucun magasin pour l'instant",
       "no_store_text": "Créez votre première boutique en ligne pour commencer",
@@ -183,6 +183,29 @@
     },
     "subtitle": "BaoBuy aide les entrepreneurs et les entreprises à créer de magnifiques boutiques en ligne entièrement personnalisables — conçues pour l'Afrique et prêtes pour le monde.",
     "title_first": "Ouvrez votre boutique.",
-    "title_second": "Vendez sans limites."
+    "title_second": "Vendez sans limites.",
+    "middle_cta": {
+      "description": "Rejoignez la prochaine génération d'entreprises africaines qui passent au digital avec BaoBuy.",
+      "title": "Commencez à vendre aujourd'hui",
+      "button": "Créer votre boutique"
+    },
+    "testimonials": {
+      "title": "Ce que disent nos utilisateurs",
+      "testimonial1": {
+        "name": "Amina Yusuf",
+        "role": "Founder, Amina's Boutique",
+        "text": "BaoBuy a transformé ma petite boutique en une boutique en ligne florissante. La plateforme est intuitive et les thèmes sont magnifiques."
+      },
+      "testimonial2": {
+        "name": "Kwame Mensah",
+        "role": "Owner, Kwame's Electronics",
+        "text": "J'ai été capable de configurer ma boutique d'électronique en quelques heures. L'équipe de support de BaoBuy était incroyablement utile."
+      },
+      "testimonial3": {
+        "name": "Chinwe Okafor",
+        "role": "Entrepreneur, Chinwe's Crafts",
+        "text": "Le constructeur par glisser-déposer a rendu facile pour moi la création d'une présence en ligne unique pour mes créations artisanales."
+      }
+    }
   }
 }

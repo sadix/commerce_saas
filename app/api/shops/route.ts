@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { canCreateShop, gateResponse } from '@/lib/access-control';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -23,6 +24,12 @@ export async function POST(request: Request) {
   
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const gate = await canCreateShop(session.user.id);
+  if (!gate.allowed) {
+    //return gateResponse(gate);
+    return NextResponse.json({ error: gate.reason }, { status: 403 });
   }
 
   const body = await request.json();

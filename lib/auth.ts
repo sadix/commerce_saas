@@ -6,6 +6,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from './prisma';
 import bcrypt from 'bcryptjs';
+import EmailProvider from 'next-auth/providers/email';
 
 export const authOptions: NextAuthOptions = {
   //adapter: PrismaAdapter(prisma) as any,
@@ -36,10 +37,16 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Invalid credentials');
         }
 
+
+
         const isValid = await bcrypt.compare(credentials.password, user.password);
 
         if (!isValid) {
           throw new Error('Invalid credentials');
+        }
+
+        if (!user.emailVerified) {
+          throw new Error("Please verify your email address before logging in.");
         }
 
         return {
@@ -52,6 +59,17 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+    }),
+    EmailProvider({
+      server: {
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || '587'),
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
+        },
+      },
+      from: process.env.SMTP_FROM,
     }),
   ],
   callbacks: {

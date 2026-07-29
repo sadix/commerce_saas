@@ -12,6 +12,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const domain = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
 export async function sendOrderConfirmationEmail(order: any) {
   const emailHtml = `
     <!DOCTYPE html>
@@ -132,4 +134,60 @@ export async function sendOrderStatusEmail(order: any, newStatus: string) {
     subject: `Order Update - ${order.orderNumber}`,
     html: emailHtml,
   });
+}
+
+export const sendVerificationEmail = async (email: string, token: string) => {
+    const confirmationLink = `${domain}/verify-email?token=${token}`
+
+    const logo_url = `${domain}/_next/static/media/logo-baobuy-colored.9d6b8b24.png`;
+
+    const emailHtml = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #4F46E5; color: white; padding: 20px; text-align: center; }
+          .content { background: #f9fafb; padding: 20px; }
+          .order-details { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; }
+          .item { border-bottom: 1px solid #e5e7eb; padding: 10px 0; }
+          .total { font-size: 18px; font-weight: bold; margin-top: 20px; padding-top: 20px; border-top: 2px solid #4F46E5; }
+          .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 14px; }
+          .logo { height: 50px; width: auto; margin-bottom: 20px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+             <img src="${logo_url}" alt="Logo" class="logo" />
+            <h1>Email Verification</h1>
+            <p>Welcome to Baobuy!</p>
+          </div>
+          
+          <div class="content">
+            <p>Hi there,</p>
+            <p>Thank you for signing up:</p>
+            
+            <p>Click <a href="${confirmationLink}" target="_blank">here</a> to verify your email.</p>
+            
+            <p>Yours,</p>
+            <p>The Baobuy Team</p>
+          </div>
+          
+          <div class="footer">
+            <p>Questions? Contact us at </p>
+            <p>&copy; ${new Date().getFullYear()} . Baobuy All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;  
+
+    await transporter.sendMail({
+        from: "contact@baobuy.site",
+        to: email,
+        subject: "Verify your email",
+        html: emailHtml,
+    })
 }
