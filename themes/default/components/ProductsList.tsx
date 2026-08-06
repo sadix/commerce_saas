@@ -30,7 +30,17 @@ interface Product {
     translations: Translation[];
   }; 
   platform_categoryId: string;
+  attributes: Array<{
+    id: string;
+    attributeId: string;
+    value: string;
+    attribute: {
+      name: string;
+    };
+  }>; 
 }
+
+
 
 interface Category {
   id: string;

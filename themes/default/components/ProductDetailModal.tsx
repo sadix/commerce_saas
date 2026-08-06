@@ -178,17 +178,25 @@ export function ProductDetailModal({ product, onClose, shopId }: ProductDetailMo
               {/* Additional Info */}
               <div className="border-t pt-6 space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Free Shipping</span>
-                  <span className="font-medium">On orders over $100</span>
+                  {/* Attributes */}
+                    {product.attributes?.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {product.attributes.map((attr:any) => (
+                          <span
+                            key={attr.id}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                            style={{borderRadius:shape.radiusSmall}}
+                          >
+                            <span className="font-semibold mr-1">
+                              {attr.attribute?.name}:
+                            </span>
+                            {attr.value}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Delivery</span>
-                  <span className="font-medium">2-5 business days</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Returns</span>
-                  <span className="font-medium">30-day return policy</span>
-                </div>
+                
               </div>
             </div>
           </div>

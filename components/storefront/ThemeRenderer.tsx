@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Block } from '@/components/admin/BlockEditor';
 import { ThemeComponent } from '@/types/theme';
 import { useThemeSettings } from '@/theme-settings';
+import { getGoogleFontUrl } from '@/lib/fonts'
 
 interface ThemeRendererProps {
   blocks: Block[];
@@ -59,9 +60,19 @@ export function ThemeRenderer({ blocks, themeSlug, shopData, pages  }: ThemeRend
       </div>
     );
   }
+  
+  //GET fonts from typography
+  const displayFontUrl = getGoogleFontUrl(typography.fontDisplay.split(' ')[0].replaceAll("'", "").replaceAll(",", ""));
+  const bodyFontUrl = getGoogleFontUrl(typography.fontBody.split(' ')[0].replaceAll("'", "").replaceAll(",", ""));
+  
+  
 
   return (
     <div className="min-h-screen" style={{ color: colors.text , backgroundColor: colors.background, fontFamily: typography.fontBody }}>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://gstatic.com"  />
+      <link rel="stylesheet" href={displayFontUrl} />
+      <link rel="stylesheet" href={bodyFontUrl} />
       {blocks.map((block) => {
         const Component = themeComponents[block.type]?.component;
 

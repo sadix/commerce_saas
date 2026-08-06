@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
+import {useThemeSettings} from '@/theme-settings';
 
 interface ProductCarouselProps {
   title?: string;
@@ -19,6 +20,8 @@ export default function ProductCarousel({
   const [products, setProducts] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { addItem } = useCart();
+
+  const { colors , shape, components, typography} = useThemeSettings ();
 
   useEffect(() => {
     if (shopId) {
@@ -54,22 +57,24 @@ export default function ProductCarousel({
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white" style={{backgroundColor:colors.surface}}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
+          <h2 className="text-3xl font-bold text-gray-900" style={{ color:colors.primary, fontFamily:typography.fontDisplay, fontWeight:typography.fontWeightDisplay}}>{title}</h2>
           <div className="flex gap-2">
             <button
               onClick={prev}
               disabled={currentIndex === 0}
               className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{borderRadius:shape.radiusSmall, borderColor:colors.border}}
             >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
+              <ChevronLeft className="w-5 h-5"   />
+            </button> 
             <button
               onClick={next}
               disabled={currentIndex >= maxIndex}
               className="p-2 rounded-full border border-gray-300 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{borderRadius:shape.radiusSmall, borderColor:colors.border}}
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -88,7 +93,7 @@ export default function ProductCarousel({
                 key={product.id}
                 className="flex-shrink-0 w-[calc(25%-1.125rem)]"
               >
-                <div className="border rounded-lg overflow-hidden hover:shadow-lg transition">
+                <div className="border rounded-lg overflow-hidden hover:shadow-lg transition" style={{borderRadius:shape.radiusMedium, borderColor:colors.border}}>
                   <div className="aspect-square bg-gray-100">
                     {product.images?.[0] ? (
                       <img
@@ -102,14 +107,15 @@ export default function ProductCarousel({
                       </div>
                     )}
                   </div>
-                  <div className="p-4">
+                  <div className="p-4" style={{ backgroundColor:colors.primaryForeground}}>
                     <h3 className="font-semibold mb-2 line-clamp-2">{product.name}</h3>
                     <p className="text-lg font-bold text-gray-900 mb-2">
-                      ${product.price.toFixed(2)}
+                      FCFA {product.price.toFixed(2)}
                     </p>
                     <button
                       onClick={() => addItem(product)}
                       className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                      style={{ backgroundColor:colors.primary, borderRadius:shape.radiusMedium}}
                     >
                       Add to Cart
                     </button>

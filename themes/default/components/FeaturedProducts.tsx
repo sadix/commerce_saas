@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { ProductDetailModal } from './ProductDetailModal';
+import {useThemeSettings} from '@/theme-settings';
 
 interface FeaturedProductsProps {
   title?: string;
@@ -28,6 +29,8 @@ export default function FeaturedProducts({
 
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const { addItem } = useCart();
+
+  const { colors , shape, components, typography} = useThemeSettings ();
 
   useEffect(() => {
     if (shopId) {
@@ -80,7 +83,7 @@ export default function FeaturedProducts({
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2"style={{ color:colors.primary, fontFamily:typography.fontDisplay, fontWeight:typography.fontWeightDisplay}}>{title}</h2>
           {subtitle && <p className="text-gray-600">{subtitle}</p>}
         </div>
 
@@ -91,6 +94,7 @@ export default function FeaturedProducts({
               <div
                 key={product.id}
                 className="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
+                style={{borderRadius:shape.radiusMedium, borderColor:colors.border}}
               >
                 {/* Product Image */}
                 <div className="relative aspect-square bg-gray-100 overflow-hidden">
@@ -126,7 +130,9 @@ export default function FeaturedProducts({
 
                   {/* Quick View Overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" onClick={() => setSelectedProduct(product)}>
+                    <button className="bg-white text-gray-900 px-4 py-2 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform"
+                    style={{  borderRadius:shape.radiusSmall}}
+                     onClick={() => setSelectedProduct(product)}>
                       <Eye className="w-4 h-4" />
                       Quick View
                     </button>
@@ -134,7 +140,7 @@ export default function FeaturedProducts({
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4">
+                <div className="p-4" style={{backgroundColor:colors.surface}}>
                   {product.category && (
                     <p className="text-xs text-blue-600 font-medium mb-1">
                       {product.category.name}
@@ -147,7 +153,7 @@ export default function FeaturedProducts({
                   {/* Price */}
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-lg font-bold text-gray-900">
-                      ${product.price.toFixed(2)}
+                      FCFA {product.price.toFixed(2)}
                     </span>
                     {product.compareAtPrice && product.compareAtPrice > product.price && (
                       <span className="text-sm text-gray-500 line-through">
@@ -161,6 +167,7 @@ export default function FeaturedProducts({
                     <button
                       onClick={() => addItem(product)}
                       className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                      style={{ backgroundColor:colors.primary, borderRadius:shape.radiusMedium}}
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Add to Cart
@@ -169,6 +176,7 @@ export default function FeaturedProducts({
                     <button
                       disabled
                       className="w-full py-2 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed"
+                      style={{ backgroundColor:colors.primary, borderRadius:shape.radiusMedium}}
                     >
                       Out of Stock
                     </button>

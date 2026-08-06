@@ -34,11 +34,11 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  const gate = await canUseTheme(id, themeId);
+  /* const gate = await canUseTheme(id, themeId);
   if (!gate.allowed) {
     //return gateResponse(gate);
     return NextResponse.json({ error: gate.reason }, { status: 403 });
-  }
+  } */
 
   const updated = await prisma.shop.update({
     where: { id: id },

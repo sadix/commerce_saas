@@ -21,6 +21,8 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Trash2, Plus } from 'lucide-react';
 import {useTranslations} from 'next-intl';
+import { regex } from 'zod';
+
 
 
 export interface Block {
@@ -228,7 +230,7 @@ function BlockPropertiesEditor({
 }) {
   
   const handleChange = (key: string, value: any) => {
-    if(key === 'backgroundImage' && value instanceof File) {
+    if((key === 'backgroundImage' || key === 'backgroundImage1' || key === 'backgroundImage2' || key === 'backgroundImage3') && value instanceof File) {
       const reader = new FileReader(); 
       reader.onload = (e) => {
         onUpdate({ [key]: e.target?.result });
@@ -261,6 +263,11 @@ function BlockPropertiesEditor({
     onUpdate({ [key]: array });
   };
 
+  const handleDateChange = (key: string, value: string) => {
+    //const date = new Date(value);
+    onUpdate({ [key]: value });
+  };
+
   const getShopCollections = async (shopId: string) => {
     try {
       const response = await fetch(`/api/shops/${shopId}/categories`);
@@ -276,6 +283,57 @@ function BlockPropertiesEditor({
       return [];
     }
   };
+
+  function isStringifiedDate(value: unknown): value is string {
+  // 1. Ensure the value is a string
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  // 2. Reject empty strings or whitespace (which return 0/Unix epoch in new Date())
+  if (!value.trim()) {
+    return false;
+  }
+
+  const trimmed = value.trim();
+
+  if (/^\d+$/.test(trimmed) && trimmed.length < 4) {
+    return false;
+  }
+
+  const structuralDatePattern = /[\/\-\:\,\s]/;
+  if (!structuralDatePattern.test(trimmed)) {
+    // If it's pure text with numbers but no separators (like "Title1"), reject it
+    // EXCEPT if it is a pure ISO timestamp or year length block
+    if (!/^\d{4}/.test(trimmed)) {
+      return false;
+    }
+  }
+
+    // Expression régulière stricte pour le format ISO 8601
+  //const iso8601Regex_short = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})$/;  /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/
+  const iso8601NoSecondsRegex = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)$/;
+  const iso8601Regex = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{3}))?(Z|[+-]\d{2}:\d{2})?)?$/;
+  const localIsoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+  if (!localIsoRegex.test(value)) {
+    return false;
+  }
+
+
+  // 3. Try parsing it with the Date constructor
+  const timestamp = Date.parse(value);
+
+  
+
+  // 4. Verify that the parsed result is a valid number, not NaN
+  return !isNaN(timestamp);
+ }
+
+ console.log(isStringifiedDate("Titre 1"));
+
+ function isStringifiedDateV2(value:string){
+     //tell if a string is a stringfied date 
+ }
 
   const [collections, setCollections] = useState<any[]>([]);
 
@@ -298,7 +356,7 @@ function BlockPropertiesEditor({
         
         <div key={key}>
           <label className="block text-sm font-medium mb-1 capitalize">
-            {key.replace(/([A-Z])/g, ' $1').trim()}
+            {key.replace(/([A-Z])/g, ' $1').replace('_',' ').trim()}
           </label>
           {typeof value === 'boolean' ? (
             <input
@@ -314,18 +372,26 @@ function BlockPropertiesEditor({
               onChange={(e) => handleChange(key, parseFloat(e.target.value))}
               className="w-full px-3 py-2 border rounded"
             />
+          ): (((typeof value === 'object') && (value instanceof Date)) || (typeof value == 'string' && isStringifiedDate(value)))  ? (
+            <input
+              type="datetime-local"
+              //value={(typeof value === 'object')?value.toISOString().split('T')[0]:value.split('T')[0]}
+              value={(typeof value === 'object')?value.toISOString():value}
+              onChange={(e) => handleDateChange(key, e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+            />
           ) : typeof value === 'object' ? (
             <textarea
               value={JSON.stringify(value, null, 2)}
               onChange={(e) => handleChange(key, JSON.parse(e.target.value))}
               className="w-full px-3 py-2 border rounded"
             />
-          ): (typeof value === 'string') && key === 'backgroundImage' ? (
+          ): ((typeof value === 'string') && (key === 'backgroundImage' || key === 'backgroundImage1' || key === 'backgroundImage2' || key === 'backgroundImage3')) ? (
             <div>
 
-              <input type="file"  accept="image/png, image/jpeg" onChange={(e) => handleChange(key, e.target.files?.[0])} />
+              <input type="file" className="text-white  p-2 border bg-gray-600" accept="image/png, image/jpeg" onChange={(e) => handleChange(key, e.target.files?.[0])} />
 
-              {value && (
+              {value && value!=="" && (
                 <div>
                   <h3>Preview:</h3>
                   {/* Display the image using the Base64 string as the source */}
@@ -334,8 +400,7 @@ function BlockPropertiesEditor({
                 </div>
               )}
             </div>
-          ) : 
-           key === 'shopId' ? (null)
+          )  : key === 'shopId' ? (null)
           : typeof value === 'boolean' ? (
             <input
               type="checkbox"

@@ -10,6 +10,9 @@ import ProductCarousel from './components/ProductCarousel';
 import Newsletter from './components/Newsletter';
 import { ThemeComponent } from '@/types/theme';
 import ProductsCollectionList from './components/ProductCollectionList';
+import CountDownSide from './components/CountDownSide';
+import HeroMansory from './components/HeroMansory';
+import AboutSection from './components/AboutSection';
 
 export default {
   Header: { type: 'Header', component: Header } as ThemeComponent,
@@ -23,6 +26,9 @@ export default {
   CategoryShowcase: { type: 'CategoryShowcase', component: CategoryShowcase } as ThemeComponent,
   ProductCarousel: { type: 'ProductCarousel', component: ProductCarousel },
   Newsletter: { type: 'Newsletter', component: Newsletter } as ThemeComponent,
+  CountDownSide: { type: 'CountDownSide', component: CountDownSide } as ThemeComponent,
+  HeroMansory: {type: 'HeroMansory', component: HeroMansory } as ThemeComponent,
+  AboutSection: {type: 'AboutSection', component: AboutSection } as ThemeComponent,
 
 };
 
