@@ -59,7 +59,7 @@ export default function HeroMansory({
                 </div>
                 {/* <img src={backgroundImage1} alt="" loading="lazy" width="513" height="542"  className=" w-full " style={{}} /> */}
             </div>
-            <div className="flex flex-col md:flex- xl:flex-col gap-5 xl:max-w-sm text-sm text-slate-600">
+            <div className="flex flex-col md:flex- xl:flex-col gap-5  text-sm text-slate-600">
                 <div className="flex-1 flex items-center justify-between w-full bg-orange-200 rounded-3xl p-6 px-8 group mb-2" style={{ borderRadius:shape.radiusLarge , backgroundColor:colors.surface, padding:10, backgroundImage:`url(${backgroundImage2})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
                     <div>
                         <h2 className="text-3xl sm:text-5xl " style={{ color: colors.primary, fontFamily: typography.fontDisplay, fontWeight:typography.fontWeightDisplay}}>{title2}</h2>
