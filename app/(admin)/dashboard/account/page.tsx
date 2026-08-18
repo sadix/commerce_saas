@@ -53,6 +53,13 @@ export default async function AccountPage(){
     },
   };
 
+  // get user activity from the database
+  const userActivity = await prisma.activityLog.findMany({
+    where: { userId: userAccount?.id },
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+  });
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-10">
       <div className="mx-auto max-w-6xl px-4">
@@ -165,25 +172,16 @@ export default async function AccountPage(){
               </h2>
 
               <div className="space-y-5">
-                <ActivityItem
-                  title="Created a new project"
-                  date="2 hours ago"
-                />
-
-                <ActivityItem
-                  title="Updated profile information"
-                  date="Yesterday"
-                />
-
-                <ActivityItem
-                  title="Completed an order"
-                  date="3 days ago"
-                />
-
-                <ActivityItem
-                  title="Received a new review"
-                  date="1 week ago"
-                />
+                
+                
+               { userActivity.map((activity) => (
+                  <ActivityItem
+                    key={activity.id}
+                    title={activity.action}
+                    date={activity.createdAt.toLocaleString()}
+                    details={activity.details ? activity.details : undefined}
+                  />
+                ))}
               </div>
             </div>
 
@@ -255,9 +253,11 @@ function StatCard({
 function ActivityItem({
   title,
   date,
+  details
 }: {
   title: string;
   date: string;
+  details?: string;
 }) {
   return (
     <div className="flex items-center gap-4 p-4 border-b border-dotted border-gray-100">
@@ -271,6 +271,9 @@ function ActivityItem({
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {date}
         </p>
+      </div>
+      <div className="text-sm text-gray-500 dark:text-gray-400">
+        
       </div>
     </div>
   );

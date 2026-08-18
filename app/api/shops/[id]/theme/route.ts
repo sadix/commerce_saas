@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { canUseTheme, gateResponse } from '@/lib/access-control';
+import { logActivity } from '@/lib/activity-logger';
 
 interface ReqParamProps {
   params: Promise<{ // <- Added Promise wrapper
@@ -44,6 +45,6 @@ export async function PATCH(
     where: { id: id },
     data: { themeId },
   });
-
+  logActivity('Theme Updated', 'system', { shopId: id }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
   return NextResponse.json(updated);
 }

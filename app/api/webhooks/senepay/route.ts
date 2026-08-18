@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifySenePaySignature, SenePayWebhookPayload } from '@/lib/senepay';
 import { PlanTier } from '@/lib/plans';
+import { logActivity } from '@/lib/activity-logger';
 
 const ONE_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -58,12 +59,14 @@ export async function POST(req: NextRequest) {
       // immediately lock someone out. The cron job in
       // /api/cron/senepay-renewals is what moves PAST_DUE -> EXPIRED once
       // the grace period actually runs out.
-      console.warn(`SenePay payment failed for user ${userId}, session ${payload.sessionToken}`);
+      logActivity('SenePay Payment Failed', 'system', { userId, sessionToken: payload.sessionToken }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
     }
   } catch (err) {
     console.error('Error processing SenePay webhook:', err);
     return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
   }
+
+  logActivity('SenePay Webhook Received', 'system', { userId, eventType: payload.event, sessionToken: payload.sessionToken }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
 
   return NextResponse.json({ received: true });
 }

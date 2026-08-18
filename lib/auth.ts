@@ -8,6 +8,7 @@ import { prisma } from './prisma';
 import bcrypt from 'bcryptjs';
 import EmailProvider from 'next-auth/providers/email';
 
+
 export const authOptions: NextAuthOptions = {
   //adapter: PrismaAdapter(prisma) as any,
   adapter: PrismaAdapter(prisma),
@@ -47,6 +48,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user.emailVerified) {
           throw new Error("Please verify your email address before logging in.");
+          
         }
 
         return {
@@ -109,4 +111,5 @@ export const authOptions: NextAuthOptions = {
     } */
   },
 };
+
 

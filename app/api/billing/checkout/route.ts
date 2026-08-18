@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { PLANS, PlanTier } from '@/lib/plans';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
+import { logActivity } from '@/lib/activity-logger';
 
 type Provider = 'stripe' | 'senepay';
 
@@ -91,7 +92,7 @@ export async function POST(req: NextRequest) {
     metadata: { userId: user.id, plan },
   });
 
-   
+   logActivity('Stripe Checkout Session Created', 'system', { sessionId: session.id }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
 
   return NextResponse.json({ url: session.url });
 }

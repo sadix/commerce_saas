@@ -4,6 +4,7 @@ import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { getPlanByPriceId } from '@/lib/plans';
 import {headers} from 'next/headers';
+import { logActivity } from '@/lib/activity-logger'; 
 
 // Required so Next.js doesn't parse the body — Stripe's signature check
 // needs the exact raw bytes.
@@ -112,7 +113,7 @@ export async function POST(req: NextRequest) {
       // which is what actually drives access — this is just for messaging.
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
-        console.warn(`Invoice payment failed for customer ${invoice.customer}`);
+        logActivity('Stripe Payment Failed', 'system', { customerId: invoice.customer, invoiceId: invoice.id }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
         // TODO: send a "your payment failed" email/notification here.
         break;
       }
@@ -125,6 +126,8 @@ export async function POST(req: NextRequest) {
     // Return 500 so Stripe retries the event.
     return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 });
   }
+
+  logActivity('Stripe Webhook Received', 'system', { eventType: event.type, eventId: event.id }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
 
   return NextResponse.json({ received: true });
 }

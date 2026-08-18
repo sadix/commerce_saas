@@ -4,7 +4,8 @@ import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { canCreateProduct, gateResponse } from '@/lib/access-control';
+import { canCreateProduct} from '@/lib/access-control';
+import { logActivity } from '@/lib/activity-logger';
 
 interface ReqParamProps {
   params: Promise<{ // <- Added Promise wrapper
@@ -74,6 +75,7 @@ export async function POST(
       }
     },
   });
-
+  await logActivity('Product Created', session.user.id, { productId: product.id, shopId: id }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
   return NextResponse.json(product, { status: 201 });
 }
+

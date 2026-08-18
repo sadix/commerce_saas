@@ -5,6 +5,7 @@ import { getAccessStatus } from '@/lib/subscription';
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 
+
 export async function GET(req: NextRequest) {
   const auth_session = await getServerSession(authOptions);
   const user = auth_session?.user;

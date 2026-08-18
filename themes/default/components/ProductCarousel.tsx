@@ -83,7 +83,7 @@ export default function ProductCarousel({
 
         <div className="overflow-hidden">
           <div
-            className="flex gap-6 transition-transform duration-300"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-transform duration-300"
             style={{
               transform: `translateX(-${currentIndex * (100 / itemsToShow)}%)`,
             }}
@@ -91,7 +91,7 @@ export default function ProductCarousel({
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex-shrink-0 w-[calc(25%-1.125rem)]"
+                className="flex-shrink-0 lg:w-[calc(25%-1.125rem)]"
               >
                 <div className="border rounded-lg overflow-hidden hover:shadow-lg transition" style={{borderRadius:shape.radiusMedium, borderColor:colors.border}}>
                   <div className="aspect-square bg-gray-100">

@@ -4,12 +4,16 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+
+import {ResendVerificationEmailLink} from './ResendVerificationLink';
+
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showResendLink, setShowResendLink] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +29,9 @@ export function LoginForm() {
 
       if (result?.error) {
         setError(result.error);
+        if (result.error === "Please verify your email address before logging in.") {
+          setShowResendLink(true);
+        }
       } else {
         router.push('/dashboard');
       }
@@ -40,6 +47,16 @@ export function LoginForm() {
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
           {error}
+        </div>
+      )}
+
+      {showResendLink && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-600 px-4 py-3 rounded">
+          Resend verification email?{' '}
+          {/* <ResendVerificationEmailLink email={email} /> */}
+          <a href={`/login/resend-verification?email=${encodeURIComponent(email)}`} className="text-blue-600 hover:text-blue-500">
+            Resend verification email
+          </a>
         </div>
       )}
 
@@ -116,3 +133,5 @@ export function LoginForm() {
     </form>
   );
 }
+
+

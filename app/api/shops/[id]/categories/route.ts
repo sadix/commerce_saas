@@ -5,6 +5,7 @@ import {NextRequest} from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logActivity } from '@/lib/activity-logger';
 
 interface ReqParamProps {
   params: Promise<{ // <- Added Promise wrapper
@@ -69,6 +70,8 @@ export async function POST(
       shopId: id,
     },
   });
+
+  await logActivity('Collection Created', session.user.id, { categoryId: category.id, shopId: id }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
 
   return NextResponse.json(category, { status: 201 });
 }

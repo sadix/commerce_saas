@@ -4,10 +4,11 @@
 import { useState, useEffect } from 'react';
 import { ProductFormModal } from '@/components/admin/ProductFormModalCustom';
 import { ProductVariationsManager } from '@/components/admin/ProductVariationsManager';
-import { Plus, Edit, Trash2, Package, Eye, EyeOff  } from 'lucide-react';
+import { Plus, Edit, Trash2, Package, Eye, EyeOff, Copy , Import } from 'lucide-react';
 import { platform } from 'os';
 import { CategoryPath, getCategoryAncestors } from '@/lib/categoryHelpers';
 import {useTranslations} from 'next-intl';
+import {FileUploadModal} from '@/components/admin/FileUploadModal';
 
 
 interface Product {
@@ -59,6 +60,8 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
   //const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [preparingEdit, setPreparingEdit] = useState(false);
+
+  const[isFileInputModalOpen, setIsFileInputModalOpen] = useState(false);
 
 
   //Search Inputs
@@ -240,10 +243,72 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
     }
   };
 
+  const handleDuplicate = async (product: Product) => {
+    try {
+      const response = await fetch(`/api/shops/${shopId}/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:  JSON.stringify({
+          name: product.name+" (Copy)",
+          images: product.images,
+          description: product.description,
+          sku: product.sku,
+          price: product.price,
+          stock: product.stock,
+          published: product.published || false,
+          categoryId: product.categoryId,
+          platform_categoryId: product.platform_categoryId,
+          attributes: Object.entries(product.attributes)
+            .filter(([_, value]) => value)
+            .map(([attributeId, value]) => ({
+              attributeId,
+              value,
+            })),
+        }),
+      });
+
+      if (response.ok) {
+        await loadProducts();
+      } else {
+        const error = await response.json();
+        alert(`Failed to duplicate product: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Failed to duplicate product:', error);
+      alert('Failed to duplicate product. Please try again.');
+    }
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingProduct(null);
     setInitialFormData(null);
+  };
+  
+  const handleImportProducts = async  (file:File) => {
+   
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch(`/api/shops/${shopId}/products/import`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          await loadProducts();
+        } else {
+          const error = await response.json();
+          alert(`Failed to import products: ${error.error}`);
+        }
+      } catch (error) {
+        console.error('Import error:', error);
+        alert('Failed to import products. Please try again.');
+      }
+    
   };
 
   const getInitialFormData =   (product: Product) => {
@@ -305,7 +370,7 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
       return true;
     })
 
-
+  //console.log("isFileInputModalOpen",isFileInputModalOpen);
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -316,10 +381,35 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
           <p className="text-gray-600 mt-1">
             {t('description')}
           </p>
+          <div className="mt-2 flex gap-2">
+            <button 
+             onClick={() => setIsFileInputModalOpen(true)}
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2 font-medium cursor-pointer" >
+              <Import 
+              //onClick={() => setIsFileInputModalOpen(true)}
+              onClick={() => console.log("Import button clicked")}
+              className="w-5 h-5 " />
+              Import
+            </button>
+            <button
+             onClick={() => {
+              const exportUrl = `/api/shops/${shopId}/products/export`;
+              window.open(exportUrl, '_blank');
+            }}
+             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 font-medium cursor-pointer" >
+              <Import className="w-5 h-5 rotate-180" />
+              Export
+            </button>
+            <FileUploadModal
+              isOpen={isFileInputModalOpen}
+              onClose={() => setIsFileInputModalOpen(false)}
+              onUpload={handleImportProducts}
+            />
+          </div>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 font-medium"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 font-medium cursor-pointer"
         >
           <Plus className="w-5 h-5" />
           {t('add_product')}
@@ -476,6 +566,13 @@ export default  function ProductsListPage({ shopid }: ProductsListProps) {
                                               {t('manager.draft')}
                                             </>
                                           )}
+                    </button>
+                    <button
+                      onClick={() => handleDuplicate(product)}
+                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      title="Duplicate product"
+                    >
+                      <Copy className="w-5 h-5" />
                     </button>
                     <button
                       onClick={() => handleEdit(product)}

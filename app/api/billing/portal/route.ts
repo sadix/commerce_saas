@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe';
 import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
 import {getServerSession} from 'next-auth';
+import { logActivity } from '@/lib/activity-logger';
 //import { getCurrentUser } from '@/lib/auth'; // TODO: point this at your existing auth helper
 
 export async function POST(req: NextRequest) {
@@ -22,5 +23,6 @@ export async function POST(req: NextRequest) {
     return_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
   });
 
+  logActivity('Stripe Billing Portal Session Created', 'system', { sessionId: portalSession.id }, req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || "unknown ip address");
   return NextResponse.json({ url: portalSession.url });
 }

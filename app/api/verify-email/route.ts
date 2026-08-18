@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { VerificationToken } from "@prisma/client";
 import { NextRequest } from "next/server";
+import { logActivity } from '@/lib/activity-logger';
 
 export async function POST(request: NextRequest) {
   const token = new URL(request.url).searchParams.get("token");
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
   });
   // 4. Redirect to login
    // return Response.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/login?verified=true`);
+   logActivity('Email Verified', 'system', { userId: verificationToken.identifier }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
    //return { success: true, message: "Email verified successfully" };
    return new Response(JSON.stringify({ success: true, message: "Email verified successfully" }), {
     status: 200,

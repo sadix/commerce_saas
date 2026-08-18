@@ -2,6 +2,7 @@ import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logActivity } from '@/lib/activity-logger';
 
 
 interface ReqParamProps {
@@ -60,6 +61,8 @@ export async function PATCH(
             id: userId
         }   
     });
+
+    logActivity('User Updated', userId, { updatedFields: body }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
 
     return NextResponse.json(updatedUser);
 

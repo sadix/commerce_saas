@@ -100,7 +100,7 @@ export function CreateShopForm() {
             className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span className="px-4 py-2 bg-gray-100 border border-l-0 border-gray-300 rounded-r-md text-gray-600">
-            .yourdomain.com
+            .baobuy.site
           </span>
         </div>
         <p className="mt-1 text-sm text-gray-500">

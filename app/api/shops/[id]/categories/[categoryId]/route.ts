@@ -4,6 +4,7 @@ import { NextResponse,NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { logActivity } from '@/lib/activity-logger';
 
 interface ReqParamProps {
   params: Promise<{ 
@@ -74,6 +75,7 @@ export async function PATCH(
     data: body,
   });
 
+  await logActivity('Collection Updated', session.user.id, { categoryId: categoryId, shopId: id }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
   return NextResponse.json(updated);
 }
 
@@ -114,5 +116,6 @@ export async function DELETE(
     where: { id: categoryId },
   });
 
+  await logActivity('Collection Deleted', session.user.id, { categoryId: categoryId, shopId: id }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
   return NextResponse.json({ success: true });
 }

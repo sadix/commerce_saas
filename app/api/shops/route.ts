@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { canCreateShop, gateResponse } from '@/lib/access-control';
+import { logActivity } from '@/lib/activity-logger';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -62,6 +63,7 @@ export async function POST(request: Request) {
       themeId: defaultTheme?.id,
     },
   });
+  
 
   // Create domain record
   await prisma.domain.create({
@@ -172,6 +174,7 @@ export async function POST(request: Request) {
 
     }
   });
-
+   logActivity('Shop Created', session.user.id, { shopId: shop.id, shopName: name, subdomain }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
+  
   return NextResponse.json(shop, { status: 201 });
 }

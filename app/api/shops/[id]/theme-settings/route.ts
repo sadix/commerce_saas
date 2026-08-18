@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { ThemeOverrides } from '@/types/theme-settings';
+import { logActivity } from '@/lib/activity-logger';
 
 interface ReqParamProps {
   params: Promise<{ // <- Added Promise wrapper
@@ -66,7 +67,7 @@ export async function PUT(
     //   data:  { themeOverrides: body },
     // });
 
-    
+    logActivity('Theme Settings Updated', 'system', { shopId: (await params).id, changes: body }, request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || "unknown ip address");
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error('PUT theme-settings error:', err);
