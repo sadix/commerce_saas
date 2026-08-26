@@ -54,7 +54,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
             <div>
               <p className="text-sm text-gray-600">Total Revenue</p>
               <p className="text-3xl font-bold">
-                ${customers.reduce((sum: number, c: any) => 
+                FCFA {customers.reduce((sum: number, c: any) => 
                   sum + c.orders.reduce((s: number, o: any) => s + o.total, 0), 0
                 ).toFixed(2)}
               </p>
@@ -121,7 +121,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
                     {customer._count.orders}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    ${totalSpent.toFixed(2)}
+                    FCFA {totalSpent.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(customer.createdAt).toLocaleDateString()}
@@ -163,9 +163,7 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
   const [orders, setOrders] = useState<any[]>([]);
   const [addresses, setAddresses] = useState<any[]>([]);
 
-  useState(() => {
-    fetchCustomerData();
-  });
+ 
 
   const fetchCustomerData = async () => {
     const ordersRes = await fetch(`/api/customer/orders?customerId=${customer.id}`);
@@ -178,6 +176,10 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
       setAddresses(await addressesRes.json());
     }
   };
+
+   useState(() => {
+    fetchCustomerData();
+  });
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -215,7 +217,7 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-medium">${order.total.toFixed(2)}</p>
+                      <p className="text-sm font-medium">FCFA {order.total.toFixed(2)}</p>
                       <p className="text-xs text-gray-600">{order.status}</p>
                     </div>
                   </div>

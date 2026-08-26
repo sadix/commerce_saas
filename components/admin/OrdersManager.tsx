@@ -102,7 +102,7 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
                   {order._count.items} items
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  ${order.total.toFixed(2)}
+                  FCFA {order.total.toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <select
@@ -217,7 +217,7 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
                     )}
                     <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                   </div>
-                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-medium">FCFA{(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               ))}
             </div>
@@ -227,19 +227,19 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
           <div className="border-t pt-4">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>${order.subtotal.toFixed(2)}</span>
+              <span>FCFA {order.subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span>Shipping</span>
-              <span>${order.shipping.toFixed(2)}</span>
+              <span>FCFA {order.shipping.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span>Tax</span>
-              <span>${order.tax.toFixed(2)}</span>
+              <span>FCFA {order.tax.toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold text-lg border-t pt-2">
               <span>Total</span>
-              <span>${order.total.toFixed(2)}</span>
+              <span>FCFA {order.total.toFixed(2)}</span>
             </div>
           </div>
 

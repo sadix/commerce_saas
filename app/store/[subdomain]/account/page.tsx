@@ -153,13 +153,13 @@ export default function CustomerAccountPage({params}: {params: {subdomain: strin
                         {order.items.map((item: any) => (
                           <div key={item.id} className="flex justify-between text-sm">
                             <span>{item.product.name} × {item.quantity}</span>
-                            <span>${item.price.toFixed(2)}</span>
+                            <span>FCFA {item.price.toFixed(2)}</span>
                           </div>
                         ))}
                       </div>
                       <div className="border-t mt-2 pt-2 flex justify-between font-semibold">
                         <span>Total</span>
-                        <span>${order.total.toFixed(2)}</span>
+                        <span>FCFA {order.total.toFixed(2)}</span>
                       </div>
                     </div>
                   ))}

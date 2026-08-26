@@ -11,7 +11,7 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { CreditCard, Truck, MapPin } from 'lucide-react';
 import { rootDomain,protocol  } from '@/lib/utils';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+//const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCart();
   const { customer, isAuthenticated } = useCustomerAuth();
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
                 <h2 className="text-xl font-semibold">Payment Method</h2>
               </div>
 
-              <Elements stripe={stripePromise}>
+              {/* <Elements stripe={stripePromise}>
                 <PaymentForm
                   customerId={customer!.id}
                   addressId={selectedAddress}
@@ -179,8 +179,8 @@ export default function CheckoutPage() {
 
               {/* Alternative Wave Mobile Payment */}
               {/* {selectedAddress && wavemobilePaymentForm(customer!.id, selectedAddress, total, items)} */} 
-              <WavemobilePaymentForm customerId={customer!.id} addressId={selectedAddress} total={total} subdomain={subdomain} items={items} />
-
+              {/* <WavemobilePaymentForm customerId={customer!.id} addressId={selectedAddress} total={total} subdomain={subdomain} items={items} /> */}
+              {selectedAddress && ( <PayOnDeliveryForm customerId ={customer!.id} addressId = {selectedAddress} total={total} items={items} subdomain={subdomain} onSuccess ={ () => { clearCart(); router.push(`/account?tab=orders`); } } /> )}
 
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
                     <span>
                       {item.productName} × {item.quantity}
                     </span>
-                    <span>${(item.price * item.quantity).toFixed(2)}</span>
+                    <span>FCFA {(item.price * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -204,7 +204,7 @@ export default function CheckoutPage() {
               <div className="border-t pt-4 space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>Subtotal</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>FCFA {total.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping</span>
@@ -212,11 +212,11 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tax</span>
-                  <span>$0.00</span>
+                  <span>FCFA 0.00</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between font-bold text-lg">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>FCFA {total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -578,4 +578,66 @@ function WavemobilePaymentFormWOApi({ customerId, addressId, total, items, subdo
     </div>
   );
 } 
-                   
+
+function PayOnDeliveryForm({ customerId, addressId, total, items, subdomain, onSuccess }: any) {
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!addressId) {
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      // Create payment intent
+      const response = await fetch('/api/checkout/pay-on-delivery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerId,
+          addressId,
+          items,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create payment intent');
+      }
+
+      const { success, order } = await response.json();
+     if(!success){
+        throw new Error('Failed to create order');
+     }
+     onSuccess();
+      
+    } catch (err: any) {
+      setError(err.message || 'Payment failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-4">
+      <h3 className="text-lg font-semibold mb-2">Pay on Delivery</h3>
+      <form onSubmit={handleSubmit}>
+        <div className='flex items-center justify-center'>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold disabled:opacity-50"
+          >
+            {loading ? 'Processing...' : `Pay FCFA ${total.toFixed(2)} at delivery`}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+} 
