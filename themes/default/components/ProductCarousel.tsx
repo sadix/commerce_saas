@@ -91,7 +91,7 @@ export default function ProductCarousel({
             {products.map((product) => (
               <div
                 key={product.id}
-                className="flex-shrink-0 lg:w-[calc(25%-1.125rem)]"
+                className="flex-shrink-0 "
               >
                 <div className="border rounded-lg overflow-hidden hover:shadow-lg transition" style={{borderRadius:shape.radiusMedium, borderColor:colors.border}}>
                   <div className="aspect-square bg-gray-100">

@@ -18,6 +18,7 @@ interface ThemeRendererProps {
     title: string;
     slug: string;
     showInNav?: boolean;
+    weight?: number;
   }>;
 }
 

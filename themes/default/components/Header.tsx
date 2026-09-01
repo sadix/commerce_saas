@@ -10,12 +10,13 @@ interface HeaderProps {
     title: string;
     slug: string;
     showInNav?: boolean;
+    weight?: number;
   }>;
 }
 
 export default function Header({ shopData, pages  }: HeaderProps) {
   const { itemCount, setIsOpen } = useCart();
-  const navPages = pages?.filter((page:any) => page.showInNav !== false) || [];
+  const navPages = pages?.filter((page:any) => page.showInNav !== false).sort((a, b) => (a.weight || 0) - (b.weight || 0)) || [];
   const [mobileMenutoggle, setMobileMenuToggle] = useState(false);
 
   const { colors , shape, components, typography, settings} = useThemeSettings ();
