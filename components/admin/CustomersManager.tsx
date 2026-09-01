@@ -4,6 +4,8 @@
 import { useState } from 'react';
 import { User, Mail, Phone, ShoppingBag, DollarSign } from 'lucide-react';
 
+import { useTranslations } from 'next-intl';
+
 export function CustomersManager({ customers: initialCustomers, shopId }: any) {
   const [customers] = useState(initialCustomers);
   const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
@@ -14,13 +16,15 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
     customer.email.toLowerCase().includes(search.toLowerCase())
   );
 
+  const t = useTranslations('admin.shop_customers.manager');
+
   return (
     <div className="space-y-6">
       {/* Search */}
       <div className="flex gap-4">
         <input
           type="text"
-          placeholder="Search customers..."
+          placeholder={t('search_placeholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
@@ -32,7 +36,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Customers</p>
+              <p className="text-sm text-gray-600">{t('total_customers')}</p>
               <p className="text-3xl font-bold">{customers.length}</p>
             </div>
             <User className="w-12 h-12 text-blue-600" />
@@ -41,7 +45,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Orders</p>
+              <p className="text-sm text-gray-600">{t('total_orders')}</p>
               <p className="text-3xl font-bold">
                 {customers.reduce((sum: number, c: any) => sum + c._count.orders, 0)}
               </p>
@@ -52,7 +56,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Revenue</p>
+              <p className="text-sm text-gray-600">{t('total_revenue')}</p>
               <p className="text-3xl font-bold">
                 FCFA {customers.reduce((sum: number, c: any) => 
                   sum + c.orders.reduce((s: number, o: any) => s + o.total, 0), 0
@@ -70,22 +74,22 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Customer
+                {t('customer_list.customer_name_label')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Contact
+                {t('customer_list.customer_email_label')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Orders
+                {t('customer_list.customer_orders_label')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Total Spent
+                {t('customer_list.customer_total_spent')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Joined
+                {t('customer_list.customer_joined_label')}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                Actions
+                {t('customer_list.customer_actions_label')}
               </th>
             </tr>
           </thead>
@@ -131,7 +135,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
                       onClick={() => setSelectedCustomer(customer)}
                       className="text-blue-600 hover:text-blue-900"
                     >
-                      View Details
+                      {t('customer_list.view_details_button')}
                     </button>
                   </td>
                 </tr>
@@ -142,7 +146,7 @@ export function CustomersManager({ customers: initialCustomers, shopId }: any) {
 
         {filteredCustomers.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            No customers found
+            {t('no_customers_yet_description')}
           </div>
         )}
       </div>
@@ -181,11 +185,13 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
     fetchCustomerData();
   });
 
+  const t = useTranslations('admin.shop_customers.manager.customer_details');
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold">Customer Details</h2>
+          <h2 className="text-xl font-bold">{t('customer_details_title')}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             ×
           </button>
@@ -194,18 +200,18 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
         <div className="p-6 space-y-6">
           {/* Customer Info */}
           <div>
-            <h3 className="font-semibold mb-2">Contact Information</h3>
+            <h3 className="font-semibold mb-2">{t('contact_info_label')}</h3>
             <p className="font-medium">{customer.name}</p>
             <p className="text-sm text-gray-600">{customer.email}</p>
             {customer.phone && <p className="text-sm text-gray-600">{customer.phone}</p>}
             <p className="text-sm text-gray-500 mt-2">
-              Customer since {new Date(customer.createdAt).toLocaleDateString()}
+             {t('joined_since')} {new Date(customer.createdAt).toLocaleDateString()}
             </p>
           </div>
 
           {/* Order History */}
           <div>
-            <h3 className="font-semibold mb-2">Order History ({orders.length})</h3>
+            <h3 className="font-semibold mb-2">{t('order_history_label')} ({orders.length})</h3>
             {orders.length > 0 ? (
               <div className="space-y-2">
                 {orders.slice(0, 5).map((order: any) => (
@@ -230,7 +236,7 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
 
           {/* Saved Addresses */}
           <div>
-            <h3 className="font-semibold mb-2">Saved Addresses ({addresses.length})</h3>
+            <h3 className="font-semibold mb-2">{t('saved_addresses_label')} ({addresses.length})</h3>
             {addresses.length > 0 ? (
               <div className="space-y-2">
                 {addresses.map((address: any) => (
@@ -246,6 +252,9 @@ function CustomerDetailModal({ customer, onClose, shopId }: any) {
                     <p className="text-gray-600">{address.address1}</p>
                     <p className="text-gray-600">
                       {address.city}, {address.state} {address.zipCode}
+                    </p>
+                    <p className="text-gray-600">
+                     tel: {address.phone}
                     </p>
                   </div>
                 ))}

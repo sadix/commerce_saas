@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { Package, Eye, Truck, CheckCircle, XCircle, ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function OrdersManager({ orders: initialOrders, shopId }: any) {
   const [orders, setOrders] = useState(initialOrders);
@@ -13,6 +14,8 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
     if (filter === 'all') return true;
     return order.status === filter;
   });
+
+  const t = useTranslations('admin.shop_orders.manager');
 
   const statusColors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-800',
@@ -36,11 +39,21 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
     }
   };
 
+  const labels: Record<string, string> = {
+            all: t('all_orders'),
+            pending: t('status_pending'),
+            processing: t('status_processing'),
+            shipped: t('status_shipped'),
+            delivered: t('status_delivered'),
+            cancelled: t('status_cancelled')
+          };
+
   return (
     <div className="space-y-6">
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
         {['all', 'pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => (
+          
           <button
             key={status}
             onClick={() => setFilter(status)}
@@ -50,7 +63,7 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
                 : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
             }`}
           >
-            {status} ({orders.filter((o: any) => status === 'all' || o.status === status).length})
+            {labels[status]} ({orders.filter((o: any) => status === 'all' || o.status === status).length})
           </button>
         ))}
       </div>
@@ -61,25 +74,25 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Order
+                {t('order_list.order_name')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Customer
+                {t('order_list.order_customer')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Date
+                {t('order_list.order_date')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Items
+                {t('order_list.order_items')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Total
+                {t('order_list.order_total')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Status
+                {t('order_list.order_status')}
               </th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                Actions
+                {t('order_list.order_actions')}
               </th>
             </tr>
           </thead>
@@ -110,11 +123,11 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
                     onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                     className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}
                   >
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="pending">{labels.pending}</option>
+                    <option value="processing">{labels.processing}</option>
+                    <option value="shipped">{labels.shipped}</option>
+                    <option value="delivered">{labels.delivered}</option>
+                    <option value="cancelled">{labels.cancelled}</option>
                   </select>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -151,21 +164,25 @@ export function OrdersManager({ orders: initialOrders, shopId }: any) {
 
 function OrderDetailModal({ order, onClose, shopId }: any) {
   const [trackingNumber, setTrackingNumber] = useState(order.trackingNumber || '');
+  const [loading, setLoading] =  useState(false);
 
   const saveTracking = async () => {
+    setLoading(true);
     await fetch(`/api/shops/${shopId}/orders/${order.id}/tracking`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ trackingNumber }),
     });
+    setLoading(false);
     window.location.reload();
   };
+  const t = useTranslations('admin.shop_orders.manager.order_details');
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-bold">Order Details</h2>
+          <h2 className="text-xl font-bold">{t('order_detail_title')}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             ×
           </button>
@@ -174,15 +191,15 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
         <div className="p-6 space-y-6">
           {/* Order Info */}
           <div>
-            <h3 className="font-semibold mb-2">Order #{order.orderNumber}</h3>
+            <h3 className="font-semibold mb-2">{t('order_label')} #{order.orderNumber}</h3>
             <p className="text-sm text-gray-600">
-              Placed on {new Date(order.createdAt).toLocaleString()}
+              {t('order_date_label')} {new Date(order.createdAt).toLocaleString()}
             </p>
           </div>
 
           {/* Customer Info */}
           <div>
-            <h3 className="font-semibold mb-2">Customer</h3>
+            <h3 className="font-semibold mb-2">{t('order_customer_label')}</h3>
             <p>{order.customer.name}</p>
             <p className="text-sm text-gray-600">{order.customer.email}</p>
             {order.customer.phone && (
@@ -192,8 +209,9 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
 
           {/* Shipping Address */}
           <div>
-            <h3 className="font-semibold mb-2">Shipping Address</h3>
+            <h3 className="font-semibold mb-2">{t('shipping_address_label')}</h3>
             <p>{order.address.firstName} {order.address.lastName}</p>
+            <p className="text-sm text-gray-600">{order.address.phone}</p>
             <p className="text-sm text-gray-600">{order.address.address1}</p>
             {order.address.address2 && (
               <p className="text-sm text-gray-600">{order.address.address2}</p>
@@ -206,7 +224,7 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
 
           {/* Items */}
           <div>
-            <h3 className="font-semibold mb-2">Items</h3>
+            <h3 className="font-semibold mb-2">{t('order_items_label')}</h3>
             <div className="space-y-2">
               {order.items.map((item: any) => (
                 <div key={item.id} className="flex justify-between border-b pb-2">
@@ -257,8 +275,9 @@ function OrderDetailModal({ order, onClose, shopId }: any) {
               <button
                 onClick={saveTracking}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                disabled={loading}
               >
-                Save
+                {loading? t('save_tracking_button_loading') : t('save_tracking_button_label')}
               </button>
             </div>
           </div>

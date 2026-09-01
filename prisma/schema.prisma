@@ -154,13 +154,14 @@ model Page {
   isHome    Boolean  @default(false)
   published Boolean  @default(true)
   showInNav Boolean  @default(true)
+  weight      Int      @default(0)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
   
   @@unique([shopId, slug])
-  @@index([shopId])
+  @@index([shopId, weight])
 }
 
 

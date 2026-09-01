@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma';
 import { PageEditor } from '@/components/admin/PageEditor';
 import { PagesManager } from '@/components/admin/PagesManager';
 import {getTranslations} from 'next-intl/server';
+import { PageMenuOrderManager } from '@/components/admin/PageMenuOrderManager';
 
 export default async function PagesPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -50,6 +51,7 @@ export default async function PagesPage({ params }: { params: { id: string } }) 
       </div>
 
       <PagesManager shopId={shop.id} pages={shop.pages} />
+      <PageMenuOrderManager shopId={shop.id} initialPages={shop.pages.map((p) => ({ id: p.id, title: p.title, slug: p.slug, weight: p.weight ?? 0, published: p.published ?? false, isHome: p.isHome ?? false }))} />
     </div>
     /* <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">

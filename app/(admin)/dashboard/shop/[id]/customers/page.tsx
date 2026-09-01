@@ -5,10 +5,13 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { CustomersManager } from '@/components/admin/CustomersManager';
+import {getTranslations} from 'next-intl/server';
 
 export default async function CustomersPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   const { id } = await params;
+
+  const t = await getTranslations('admin.shop_customers');
   
   if (!session?.user) {
     redirect('/login');
@@ -41,8 +44,8 @@ export default async function CustomersPage({ params }: { params: { id: string }
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Customers</h2>
-          <p className="text-gray-600">Manage your customers</p>
+          <h2 className="text-2xl font-bold">{t('title')}</h2>
+          <p className="text-gray-600">{t('description')}</p>
         </div>
       </div>
 

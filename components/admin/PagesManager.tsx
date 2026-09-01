@@ -108,7 +108,7 @@ export function PagesManager({ shopId, pages }: PagesManagerProps) {
                   ) : (
                     <>
                       <EyeOff className="w-3 h-3" />
-                      {t('Draft')}
+                      {t('draft')}
                     </>
                   )}
                 </button>

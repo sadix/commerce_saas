@@ -4,10 +4,13 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ShopSettingsForm } from '@/components/admin/ShopSettingsForm';
 import { BillingSettings } from '@/components/billing/BillingSettings';
+import {getTranslations} from 'next-intl/server';
 
 export default async function SettingsPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   const { id } = await params;
+
+  const t = await getTranslations('admin.shop_settings');
   
   if (!session?.user) {
     redirect('/login');
@@ -25,7 +28,7 @@ export default async function SettingsPage({ params }: { params: { id: string } 
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold">{shop.name} - Settings</h1>
+          <h1 className="text-2xl font-bold">{shop.name} - {t('title')}</h1>
         </div>
       </nav>
 

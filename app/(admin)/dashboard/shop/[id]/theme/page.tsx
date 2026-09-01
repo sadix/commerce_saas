@@ -6,12 +6,14 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ThemeSelector } from '@/components/admin/ThemeSelector';
 import { LogoUpload } from '@/components/admin/LogoUpload';
+import {getTranslations} from 'next-intl/server';
 
 import { ThemeSettingsEditor } from '@/theme-settings';
 import type { ThemeOverrides , ThemeRow, ThemeSettings } from '@/theme-settings';
 
 export default async function ThemePage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
+  const t = await getTranslations('admin.shop_themes');
 
   const { id } = await params;
   
@@ -53,7 +55,7 @@ export default async function ThemePage({ params }: { params: { id: string } }) 
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold">{shop.name} - Theme Settings</h1>
+          <h1 className="text-2xl font-bold">{shop.name} - {t('title')}</h1>
         </div>
       </nav>
 

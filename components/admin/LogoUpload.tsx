@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Upload, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface LogoUploadProps {
   shopId: string;
@@ -12,6 +13,8 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
   const [logoUrl, setLogoUrl] = useState(currentLogoUrl);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const t = useTranslations('admin.shop_themes.logo');
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,7 +85,7 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">Store Logo</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('logo_label')}</h2>
       
       <div className="flex items-start gap-6 flex-col md:flex-row">
         {/* Logo Preview */}
@@ -97,7 +100,7 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
         {/* Upload Controls */}
         <div className="flex-1">
           <p className="text-sm text-gray-600 mb-4">
-            Upload your store logo. Recommended size: 200x200px. Maximum file size: 5MB.
+            {t('logo_input_description')}
           </p>
           
           <div className="flex gap-3">
@@ -111,7 +114,7 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
                 disabled={uploading}
               />
               <span className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50">
-                {uploading ? 'Uploading...' : logoUrl ? 'Change Logo' : 'Upload Logo'}
+                {uploading ? t('logo_input_button_uploading') : logoUrl ? t('logo_input_button_change') : t('logo_input_button')}
               </span>
             </label>
 
@@ -121,7 +124,7 @@ export function LogoUpload({ shopId, currentLogoUrl }: LogoUploadProps) {
                 className="flex items-center gap-2 px-4 py-2 border border-red-500 text-red-500 rounded hover:bg-red-50"
               >
                 <X className="w-4 h-4" />
-                Remove
+                {t('logo_input_button_remove')}
               </button>
             )}
           </div>

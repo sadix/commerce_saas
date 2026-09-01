@@ -139,7 +139,7 @@ export default async function AccountPage(){
             </div>
 
             {/* Stats */}
-            <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-gray-900">
+            {/* <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">
                 Statistics
               </h2>
@@ -160,7 +160,7 @@ export default async function AccountPage(){
                   value={user.stats.products}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column */}
@@ -185,7 +185,7 @@ export default async function AccountPage(){
               </div>
             </div>
 
-            {/* About */}
+            {/* About 
             <div className="rounded-3xl bg-white p-6 shadow-sm dark:bg-gray-900">
               <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">
                 About
@@ -194,7 +194,7 @@ export default async function AccountPage(){
               <p className="leading-relaxed text-gray-600 dark:text-gray-400">
                 {user.bio}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

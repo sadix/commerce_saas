@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Theme } from '@prisma/client';
 import { Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ThemeSelectorProps {
   shopId: string;
@@ -13,6 +14,8 @@ interface ThemeSelectorProps {
 export function ThemeSelector({ shopId, themes, currentThemeId }: ThemeSelectorProps) {
   const [selectedThemeId, setSelectedThemeId] = useState(currentThemeId);
   const [loading, setLoading] = useState(false);
+
+  const t = useTranslations('admin.shop_themes.manager');
 
   const handleThemeChange = async (themeId: string) => {
     setLoading(true);
@@ -42,7 +45,7 @@ export function ThemeSelector({ shopId, themes, currentThemeId }: ThemeSelectorP
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">Select Theme</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('theme_select_label')}</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {themes.map((theme) => {

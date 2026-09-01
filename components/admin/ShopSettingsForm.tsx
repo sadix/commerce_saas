@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Shop } from '@prisma/client';
 import { rootDomain, protocol } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface ShopSettingsFormProps {
   shop: Shop;
@@ -16,6 +17,8 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  const t = useTranslations('admin.shop_settings.manager');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -61,13 +64,13 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
 
       {success && (
         <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded">
-          Settings updated successfully!
+          {t('success_message')}
         </div>
       )}
 
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-          Store Name
+          {t('store_name_label')}
         </label>
         <input
           id="name"
@@ -82,7 +85,7 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
 
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-          Store Description
+          {t('store_description_label')}
         </label>
         <textarea
           id="description"
@@ -90,13 +93,13 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
           value={formData.description}
           onChange={handleChange}
           rows={4}
-          placeholder="Tell customers about your store..."
+          placeholder={t('store_description_placeholder')}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div className="bg-gray-50 p-4 rounded-md">
-        <h3 className="font-medium mb-2">Store URL</h3>
+        <h3 className="font-medium mb-2">{t('store_url_label')}</h3>
         <p className="text-sm text-gray-600">
           {shop.subdomain}.{rootDomain}
         </p>
@@ -107,7 +110,7 @@ export function ShopSettingsForm({ shop }: ShopSettingsFormProps) {
         disabled={loading}
         className="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
       >
-        {loading ? 'Saving...' : 'Save Settings'}
+        {loading ? t('saving') : t('save_changes_button')}
       </button>
     </form>
   );

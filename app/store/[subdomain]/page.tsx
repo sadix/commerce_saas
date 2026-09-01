@@ -23,8 +23,8 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
   if (!shop) {
     notFound();
   }
-
-  const homePage = shop.pages[0];
+  // select page with isHomePage true, if not found select first page
+  const homePage = shop.pages.find((p) => p.isHome) || shop.pages[0];
 
   if (!homePage) {
     return (
@@ -50,6 +50,7 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
         title: p.title,
         slug: p.slug,
         showInNav: p.showInNav ?? true,
+        weight: p.weight ?? 0,
       }))}
     />
   );

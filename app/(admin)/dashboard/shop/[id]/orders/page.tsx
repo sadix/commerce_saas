@@ -5,9 +5,12 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { OrdersManager } from '@/components/admin/OrdersManager';
+import {getTranslations} from 'next-intl/server';
 
 export default async function OrdersPage({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
+
+  const t = await getTranslations('admin.shop_orders');
 
   const { id } = await params;
   
@@ -45,8 +48,8 @@ export default async function OrdersPage({ params }: { params: { id: string } })
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold">Orders</h2>
-          <p className="text-gray-600">Manage customer orders</p>
+          <h2 className="text-2xl font-bold">{t('title')}</h2>
+          <p className="text-gray-600">{t('description')}</p>
         </div>
       </div>
 

@@ -41,7 +41,7 @@ export default async function DashboardPage() {
             >
               <CreditCardIcon className=""/>
 
-              Billing
+              {(t('billing'))}
             </Link>
 
            </div> 
@@ -54,7 +54,7 @@ export default async function DashboardPage() {
             >
               <User className=""/>
 
-              Account
+              {(t('account'))}
             </Link>
 
           </div>

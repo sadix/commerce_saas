@@ -8,10 +8,13 @@
       "overview": "Aperçu",
       "pages": "Pages",
       "stores_title": "Vos magasins",
-      "title": "Tableau de bord administrateur"
+      "title": "Tableau de bord administrateur",
+      "billing": "Facturation",
+      "account": "Compte"
     },
     "shop_layout": {
       "back_to_dashboard": "Retour au tableau de bord",
+      
       "shop_sidebar": {
         "collections": "Collections",
         "customers": "Clients",
@@ -50,6 +53,11 @@
         "draft": "Brouillon",
         "delete_confirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette action ne peut pas être annulée.",
         "failed_to_delete": "Échec de la suppression de la page. Veuillez réessayer.",
+        "menu_order": "Ordre du menu",
+        "menu_order_description": "Glissez-déposez pour réorganiser les pages dans le menu de navigation.",
+        "saving_order": "Enregistrement en cours...",
+        "saved": "Enregistré avec succès",
+        "failed_to_save_order": "Échec de l'enregistrement du nouvel ordre. Veuillez réessayer.",
         "form_modal":{
           "create_title": "Créer une nouvelle page",
           "edit_title": "Modifier la page",
@@ -153,6 +161,106 @@
           "update": "Mettre à jour la collection",
           "create": "Créer une collection"
         }
+      }
+    },
+    "shop_customers":{
+      "title": "Clients",
+      "description": "Gérez vos clients",
+      "manager":{
+        "search_placeholder": "Recherche clients...",
+        "total_customers":"Total Clients",
+        "total_orders":"Total Commandes",
+        "total_revenue":"Total Revenue",
+        "no_customers_yet_title":"Pas de clients pour le moment",
+        "no_customers_yet_description":"Les clients ayant effectué des achat apparaîtrons ici.",
+        "customer_list":{
+          "customer_name_label":"Nom Client",
+          "customer_email_label":"Email",
+          "customer_orders_label":"Commandes",
+          "customer_total_spent":"Total dépensé",
+          "customer_joined_label":"Inscrit",
+          "customer_actions_label":"Actions",
+          "view_details_button":"Voir Détails"
+        },
+        "customer_details":{
+           "customer_details_title": "Détails Client",
+          "contact_info_label": "Information de Contact",
+          "joined_since": "client depuis",
+          "order_history_label": "Historique Commandes",
+          "saved_addresses_label": "Addresses Enregistrés"
+        }
+      }
+    },
+    "shop_orders":{
+      "title": "Commandes",
+      "description": "Gérez vos commandes",
+      "manager":{
+        "all_orders":"Toute ",
+        "status_pending":"En attente",
+        "status_processing":"En traitement",
+        "status_shipped":"Expédiée",
+        "status_delivered":"Livrée",
+        "status_cancelled":"Annulée",
+        "order_list":{
+          "order_name":"Commande",
+          "order_customer":"Client",
+          "order_date":"Commandes",
+          "order_items":"Total Dépensé",
+          "order_total":"Total",
+          "order_status":"Etat",
+          "order_actions":"Actions",
+          "view_details_button":"Voir Détails"
+        },
+        "order_details":{
+          "order_detail_title": "Details commande",
+          "order_label": "Commande",
+          "order_date_label": "Placée le",
+          "order_customer_label": "Client",
+          "shipping_address_label": "Adresse de livraison",
+          "order_items_label": "Articles",
+          "order_tracking_number_label": "Numéro de suivi",
+          "save_tracking_button_label": "Enregistrer",
+          "save_tracking_button_loading" : "Chargement..."
+        }
+      }
+    },
+    "shop_themes":{
+      "title": "Paramètres des thèmes",
+      "description": "Gérez les thèmes de votre boutique",
+      "logo":{
+        "logo_label": "Logo boutique",
+        "logo_input_description": "Importez le logo de votre boutique. Taille recommandée : 200 x 200 px. Taille maximale du fichier : 5 Mo.",
+        "logo_input_button": "Upload logo",
+        "logo_input_button_change": "Changer logo",
+        "logo_input_button_remove": "Supprimer",
+        "logo_input_button_uploading": "Chargement..."
+      },
+      "manager":{
+        "theme_select_label":"Sélectionner un thème",
+        "no_themes_yet_description":"Parcourez notre marketplace de thèmes pour trouver le thème idéal pour votre boutique.",
+        "theme_list":{
+          "theme_name_label":"Theme Name",
+          "theme_version_label":"Version",
+          "theme_status_label":"Status",
+          "theme_actions_label":"Actions",
+          "activate_button":"Activate",
+          "preview_button":"Preview"
+        }
+      }
+    },
+    "shop_settings":{
+      "title": "Paramètres",
+      "description": "Gérez les paramètres de votre boutique",
+      "manager":{
+        "store_info_label":"Informations de boutiques",
+        "store_name_label":"Nom de la boutique",
+        "store_description_label":"Description",
+        "store_description_placeholder":"Présentez votre boutique à vos clients....",
+        "store_url_label":"URL de la boutique",
+        "save_changes_button":"Enregistrer les paramètres",
+        "saving":"Sauvegarde...",
+        "success_message":"Paramètres mis à jour avec succès ",
+        "error_message":"Échec de la mise à jour des paramètres. Veuillez réessayer."
       }
     }
   },
