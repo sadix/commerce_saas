@@ -11,7 +11,7 @@ export default getRequestConfig(async ({}) => {
   const acceptLanguages = acceptLanguageHeader ? acceptLanguageHeader.split(',').map(lang => lang.trim()) : [];
   console.log('Parsed Accept-Language:', acceptLanguages);
   const store = await cookies();
-  const locale = store.get('NEXT_LOCALE')?.value || acceptLanguages[0].split('-')[0] || 'en'; 
+  const locale = store.get('NEXT_LOCALE')?.value || acceptLanguages[0]?.split('-')[0] || 'fr'; 
   return {
     locale,
     messages: (await import(`../messages/${locale}.json`)).default

@@ -48,11 +48,12 @@ export async function PATCH(
       { status: 400 }
     );
   }
-
+  try {
   await prisma.$transaction(
     async (tx) =>{
-        pages.map((p) =>
-        prisma.page.update({
+        
+        pages.map( async(p) =>
+        await prisma.page.update({
             where: { id: p.id },
             data: { weight: p.weight },
         })
@@ -64,6 +65,10 @@ export async function PATCH(
     }
     
   );
+    } catch (error) {
+      console.error('Error occurred while reordering pages:', error);
+      return NextResponse.json({ error: 'Failed to reorder pages' }, { status: 500 });
+    }
 
   const updated = await prisma.page.findMany({
     where: { shopId: id },
