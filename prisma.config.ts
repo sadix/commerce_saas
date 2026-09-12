@@ -9,7 +9,7 @@ export default defineConfig({
      seed: "prisma/seed.ts",
    },
   datasource: {
-    url: env("DATABASE_URL"), // Use 'url' here for the CLI
+    url: env("DIRECT_URL"), // Use 'url' here for the CLI
     // Optional: add shadowDatabaseUrl here if you use one
     // shadowDatabaseUrl: env("SHADOW_DATABASE_URL"),
   },
