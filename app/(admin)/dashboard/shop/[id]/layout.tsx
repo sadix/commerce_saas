@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { ShopSidebar } from '@/components/admin/ShopSidebar';
 import { rootDomain, protocol } from '@/lib/utils';
 import {getTranslations} from 'next-intl/server';
+import { requireActiveAccess } from '@/lib/access-control';
 
 
 
@@ -32,6 +33,12 @@ export default async function ShopLayout({
   
   if (!session?.user) {
     redirect('/login');
+  }
+
+  const access = await requireActiveAccess(session.user.id);
+  
+  if (!access.allowed) {
+    redirect('/dashboard/billing?locked=true');
   }
 
   const shop = await prisma.shop.findUnique({

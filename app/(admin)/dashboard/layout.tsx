@@ -18,10 +18,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect('/login');
   }
 
-  const access = await requireActiveAccess(user.id);
+  /*const access = await requireActiveAccess(user.id);
+  
   if (!access.allowed) {
     redirect('/dashboard/billing?locked=true');
-  }
+  } */
 
   return <>{children}</>;
 }

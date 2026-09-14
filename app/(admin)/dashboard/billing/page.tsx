@@ -18,6 +18,7 @@ export default async function BillingPage() {
             </div>
         );
     }
+    
     const  currentPlan = await prisma.subscription.findUnique({ where: { userId: user.id } });
     return (
        

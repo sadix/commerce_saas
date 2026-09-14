@@ -6,12 +6,19 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeftIcon  } from 'lucide-react';
+import { requireActiveAccess } from '@/lib/access-control';
 
 export default async function CreateShopPage() {
   const session = await getServerSession(authOptions);
   
   if (!session?.user) {
     redirect('/login');
+  }
+
+  const access = await requireActiveAccess(session.user.id);
+  
+  if (!access.allowed) {
+    redirect('/dashboard/billing?locked=true');
   }
 
   return (

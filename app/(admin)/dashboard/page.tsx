@@ -9,6 +9,7 @@ import {Shop, Theme} from '@prisma/client';
 import { Store, FileText, LayoutDashboard, User , CreditCardIcon } from 'lucide-react';
 import { rootDomain,  } from '@/lib/utils';
 import { getTranslations } from 'next-intl/server';
+import { requireActiveAccess } from '@/lib/access-control';
 
 interface ShopWithTheme extends Shop {
   theme: Theme | null;
@@ -16,10 +17,19 @@ interface ShopWithTheme extends Shop {
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
+
   const t = await getTranslations('admin.dashboard');
+
+  
   
   if (!session?.user) {
     redirect('/login');
+  }
+
+  const access = await requireActiveAccess(session.user.id);
+  
+  if (!access.allowed) {
+    redirect('/dashboard/billing?locked=true');
   }
 
   const shops = await prisma.shop.findMany({
